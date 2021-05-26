@@ -40,13 +40,13 @@ We are both Y1 students studying Computer Science in NUS. After taking career-fo
 
 ## Set Up 
 
-Available Scripts 
-
 In the project directory, you can run: 
 
 ```bash 
 
-npm start/yarn start/expo start 
+npm start
+yarn start
+expo start 
 
 ``` 
 
@@ -58,7 +58,9 @@ You will also see any lint errors in the console.
 
 ```bash 
 
-npm test/yarn test/expo test 
+npm test
+yarn test
+expo test 
 
 ``` 
 
@@ -66,7 +68,9 @@ Launches the test runner in the interactive watch mode.
 See the section about running tests for more information. 
 
 ```bash 
-npm run build/yarn run build/expo run build 
+npm run build
+yarn run build
+expo run build 
 
 ``` 
 
