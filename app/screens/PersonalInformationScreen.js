@@ -7,14 +7,17 @@ import Colors from '../config/colors';
 import WorkExperience from './WorkExperience';
 import AppButton from "../container/AppButton";
 import ProficiencyChip from "../container/ProficiencyChip"
+import EducationScreen from "./EducationScreen";
 
 const PersonalInformationScreen =  ( {navigation, route} ) => {
     const [isAddWorkExperienceMode, setWorkExperienceMode] = useState(false);
+    const [isEducationMode, setEducationMode] = useState(false);
     const [skills, setSkills] = useState([])
     const [skillInput, setSkillInput] = useState('')
     const [languages, setLanguages] = useState([])
     const [languageInput, setLanguageInput] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
+    const [education, setEducation] = useState([]);
     const [workExperiences, setWorkExperiences] = useState([])
 
     useEffect(async () => {
@@ -25,6 +28,7 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
                 setSkills(doc.data().skills);
                 setLanguages(doc.data().languages);
                 setWorkExperiences(doc.data().workExperiences);
+                setEducation(doc.data().education);
             }
 
             return () => console.log("Done")
@@ -36,6 +40,12 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
         setWorkExperienceMode(!isAddWorkExperienceMode);
     }
 
+    const toggleEducationHandler = () => {
+        setEducationMode(!isEducationMode);
+    }
+
+
+
     const add = async () => {
         await db.collection('User Profiles')
             .doc(auth.currentUser.uid)
@@ -44,6 +54,7 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
                 phoneNumber,
                 skills,
                 languages,
+                education,
                 workExperiences
         }).then(() => navigation.goBack())
             .catch(error => alert(error))
@@ -52,12 +63,20 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
     const updateWorkExperiences = (work) => {
         setWorkExperiences([...workExperiences, work]);
     }
+    const updateEducation = (edu) => {
+        setEducation([...education, edu]);
+    }
+
     const removeSkill = (skill) => {
         setSkills(skills.filter(x => x !== skill));
     }
 
     const removeWorkExperience = (workExperience) => {
         setWorkExperiences(workExperiences.filter(x => x !== workExperience));
+    }
+
+    const removeEducation = (edu) => {
+        setEducation(education.filter(x => x !== edu));
     }
    return (
        <SafeAreaView>
@@ -66,23 +85,23 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
                <View style={styles.label}>
                    <Text style={styles.text}>Proficiency</Text>
                </View>
-               <Input inputContainerStyle={styles.containerInput}
-                      style={styles.input}
-                      placeholder='Skills'
-                      placeholderTextColor={Colors.placeholderColor}
-                      leftIcon={<Icon name='tools'
-                                      type='material-community' />}
-                      multiline={true}
-                      onChangeText={text => setSkillInput(text)}
-                      onEndEditing={() => {
-                          if (skillInput !== "" && !skills.includes(skillInput)) {
-                              setSkills([...skills, skillInput])
-                          }
-                          setSkillInput("")
-                      }}
-                      value={skillInput}
-               />
                <View>
+                   <Input inputContainerStyle={styles.containerInput}
+                          style={styles.input}
+                          placeholder='Skills'
+                          placeholderTextColor={Colors.placeholderColor}
+                          leftIcon={<Icon name='tools'
+                                          type='material-community' />}
+                          multiline={true}
+                          onChangeText={text => setSkillInput(text)}
+                          onEndEditing={() => {
+                              if (skillInput !== "" && !skills.includes(skillInput)) {
+                                  setSkills([...skills, skillInput])
+                              }
+                              setSkillInput("")
+                          }}
+                          value={skillInput}
+                   />
                </View>
                <Input inputContainerStyle={styles.containerInput}
                       style={styles.input}
@@ -125,8 +144,41 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
                </View>
 
                <View style={styles.label}>
+                   <Text style={styles.text}>Education</Text>
+               </View>
+
+               <View style={styles.addButton}>
+                   <Icon
+                       reverse
+                       name='plus'
+                       type='material-community'
+                       size={20}
+                       color={Colors.placeholderColor}
+                       onPress={toggleEducationHandler} />
+               </View>
+
+               <View style={styles.containerChip}>
+                   {education.map(edu => {
+                       const string = JSON.stringify(edu,null,'\t')
+
+                       return (
+                           <ProficiencyChip title={string}
+                                            toRemove={edu}
+                                            remove={removeEducation} />
+                       )
+                   })}
+               </View>
+
+               <View style={styles.containerModal}>
+                   <EducationScreen visible={isEducationMode}
+                                    onDone={toggleEducationHandler}
+                                    handler={updateEducation}/>
+               </View>
+
+               <View style={styles.label}>
                    <Text style={styles.text}>Work Experiences</Text>
                </View>
+
 
                <View style={styles.containerChip}>
                    {workExperiences.map(workExperience => {
