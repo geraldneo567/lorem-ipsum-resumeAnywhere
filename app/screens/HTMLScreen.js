@@ -6,6 +6,7 @@ import RenderHtml, {domNodeToHTMLString} from 'react-native-render-html';
 import * as Sharing from 'expo-sharing';
 import * as Print from "expo-print";
 import * as MediaLibrary from "expo-media-library";
+import * as IntentLauncher from "expo-intent-launcher";
 
 
 // This screen is for IOS app users
@@ -21,12 +22,18 @@ const HTMLScreen = ({navigation, route}) => {
         const descriptionRegEx = new RegExp(`\{\{description${number}\}\}`);
         const startDateRegEx = new RegExp(`\{\{startDate${number}\}\}`);
         const endDateRegEx = new RegExp(`\{\{endDate${number}\}\}`);
+        const schoolNameRegEx = new RegExp(`\{\{schoolName${number}\}\}`);
+        const educationStartDateRegEx = new RegExp(`\{\{educationStartDate${number}\}\}`);
+        const educationEndDateRegEx = new RegExp(`\{\{educationEndDate${number}\}\}`);
 
         text.data = text.data.replace(companyNameRegEx, route.params.object.workExperiences[number - 1].companyName);
         text.data = text.data.replace(jobPositionRegEx, route.params.object.workExperiences[number - 1].jobPosition);
         text.data = text.data.replace(descriptionRegEx, route.params.object.workExperiences[number - 1].description);
         text.data = text.data.replace(startDateRegEx, route.params.object.workExperiences[number - 1].startDate.toDate().toISOString().substring(0, 10));
         text.data = text.data.replace(endDateRegEx, route.params.object.workExperiences[number - 1].endDate.toDate().toISOString().substring(0, 10));
+        text.data = text.data.replace(schoolNameRegEx, route.params.object.education[number - 1].schoolName);
+        text.data = text.data.replace(educationStartDateRegEx, route.params.object.education[number - 1].startDate.toDate().toISOString().substring(0, 10));
+        text.data = text.data.replace(educationEndDateRegEx, route.params.object.education[number - 1].endDate.toDate().toISOString().substring(0, 10));
     }
 
     function generateSkills(text, number) {
@@ -69,9 +76,15 @@ const HTMLScreen = ({navigation, route}) => {
             if (Platform.OS==='ios') {
                 await Sharing.shareAsync(uri);
             } else {
+                console.log("55");
                 const permission = await MediaLibrary.requestPermissionsAsync();
                 if (permission.granted) {
-                    await MediaLibrary.createAssetAsync(uri);
+                    //await MediaLibrary.createAssetAsync(uri);
+                    await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+                        data: uri,
+                        flags: 1,
+                        type: 'application/pdf'
+                    })
                 }
             }
         } catch (err) {

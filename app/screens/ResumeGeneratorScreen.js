@@ -54,11 +54,10 @@ const ResumeGeneratorScreen = ({navigation}) => {
             await FileSystem.getContentUriAsync(uri)
                 .then(cUri => {
                     if (Platform.OS === 'android') {
-                        IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-                            data: cUri,
-                            flags: 1,
-                            type: 'application/pdf'
-                        })
+                        navigation.navigate("HTML Preview",
+                            {htmlContent: html,
+                                handler: createAndSavePDF,
+                                object: data});
                     } else {
                         navigation.navigate("HTML Preview",
                                 {htmlContent: html,
