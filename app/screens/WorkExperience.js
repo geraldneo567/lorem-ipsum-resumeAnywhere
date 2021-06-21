@@ -31,7 +31,6 @@ const WorkExperience = (props) => {
         description
     }
 
-
     return (
         <Modal visible={props.visible}
                statusBarTranslucent={true}

@@ -8,6 +8,7 @@ import Colors from '../config/colors';
 
 const WorkExperience = (props) => {
     const [schoolName, setSchoolName] = useState("");
+    const [educationLevel, setEducationLevel] = useState("");
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
 
@@ -24,6 +25,7 @@ const WorkExperience = (props) => {
 
     const experience = {
         schoolName,
+        educationLevel,
         startDate,
         endDate
     }
@@ -50,6 +52,12 @@ const WorkExperience = (props) => {
                            onChangeText={name => setSchoolName(name)}
                            value={schoolName}
                     />
+                    <Input placeholder='Education Level'
+                           placeholderTextColor={Colors.grey}
+                           inputContainerStyle={styles.containerDescription}
+                           onChangeText={level => setEducationLevel(level)}
+                           value={educationLevel} />
+
                     <View style={styles.containerDate}>
                         <View style={styles.containerIndivDate}>
                             <Text>Start Date</Text>

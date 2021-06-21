@@ -32,19 +32,10 @@ const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const RegistrationAndLoginStack = ({navigation}) => {
+const RegistrationAndLoginStack = () => {
     return (
         <Stack.Navigator initialRouteName="Login"
-                         screenOptions={{
-                             headerStyle: {
-                                 backgroundColor: Colors.placeholderColor
-                             },
-                             headerTintColor: '#fff',
-                             headerTitleStyle: {
-                                 fontWeight: 'bold'
-                             },
-                             headerLeft: () => null
-                         }}>
+                         screenOptions={{headerShown: false}}>
             <Stack.Screen
                 name="Login"
                 component={LoginScreen}
@@ -57,30 +48,30 @@ const RegistrationAndLoginStack = ({navigation}) => {
     );
 }
 
-const DocumentStackScreen = ({navigation}) => {
+const DocumentStackScreen = () => {
     return (
-        <Stack.Navigator initialRouteName="Documents">
+        <Stack.Navigator initialRouteName="Documents"
+                         screenOptions={{headerShown: false}}>
             <Stack.Screen
                 name="Documents"
                 component={DocumentsScreen}
                 options={{
-                    title: 'Documents',
-                    headerShown: false
+                    title: 'Documents'
                 }}/>
             <Stack.Screen name='Camera'
                           component={CameraScreen}
                           options={{
-                              title: 'Camera',
-                              headerShown: false
+                              title: 'Camera'
                           }}/>
         </Stack.Navigator>
     )
 }
 
-const InformationStackScreen = ({navigation}) => {
+const InformationStackScreen = () => {
     return (
         <Stack.Navigator initialRouteName="Resume Generator"
                         screenOptions={{
+                            headerShown: false,
                             headerStyle: {
                                 backgroundColor: Colors.placeholderColor
                             },
@@ -90,11 +81,10 @@ const InformationStackScreen = ({navigation}) => {
             <Stack.Screen name="Resume Generator"
                           component={ResumeGeneratorScreen}
                           options={{
-                              title: "Resume Generator",
-                              headerShown: false,
+                              title: "Resume Generator"
                           }} />
             <Stack.Screen name="HTML Preview"
-                          component={HTMLScreen} />
+                          component={HTMLScreen}/>
         </Stack.Navigator>
     )
 }
@@ -204,7 +194,7 @@ const MenuScreen = () => {
     )
 }
 
-export default function App(props) {
+export default function App() {
     return (
         <NavigationContainer>
             <MainStack.Navigator initialRouteName='Main'>

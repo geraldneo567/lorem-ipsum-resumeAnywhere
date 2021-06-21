@@ -5,4 +5,5 @@ export default {
     black: '#000',
     menu: '#3D6DCC',
     grey: '#aaa',
+    tooltipBackground: '#c5cbd2'
 }

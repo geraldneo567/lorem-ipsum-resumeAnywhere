@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, SafeAreaView, Platform, StatusBar} from 'react-native';
+import {
+    Alert,
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    SafeAreaView,
+    Platform,
+    StatusBar} from 'react-native';
 import {Icon, Input} from "react-native-elements";
 import {auth , db} from "../config/Database"
 
@@ -7,9 +15,11 @@ import Colors from '../config/colors';
 import WorkExperience from './WorkExperience';
 import AppButton from "../container/AppButton";
 import ProficiencyChip from "../container/ProficiencyChip"
+import InfoTooltip from "../container/InfoTooltip";
 import EducationScreen from "./EducationScreen";
+import DescriptionContainer from "../container/DescriptionContainer";
 
-const PersonalInformationScreen =  ( {navigation, route} ) => {
+const PersonalInformationScreen =  ( {navigation} ) => {
     const [isAddWorkExperienceMode, setWorkExperienceMode] = useState(false);
     const [isEducationMode, setEducationMode] = useState(false);
     const [skills, setSkills] = useState([])
@@ -20,7 +30,7 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
     const [education, setEducation] = useState([]);
     const [workExperiences, setWorkExperiences] = useState([])
 
-    useEffect(async () => {
+    const loadExistingInformation = async () => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
         await docRef.get().then(doc => {
             if (doc.exists) {
@@ -30,11 +40,12 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
                 setWorkExperiences(doc.data().workExperiences);
                 setEducation(doc.data().education);
             }
-
             return () => console.log("Done")
-        })}, [])
+        })
+    }
 
-
+    useEffect(() => {(async () => loadExistingInformation())()},
+        []);
 
     const toggleWorkExperienceHandler = () => {
         setWorkExperienceMode(!isAddWorkExperienceMode);
@@ -44,7 +55,25 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
         setEducationMode(!isEducationMode);
     }
 
-
+    const alertMessage = () => {
+        Alert.alert(
+            'Generate Your Resume',
+            'Do you want to go to Resume Generator?',
+            [
+                {
+                    text: 'Yes',
+                    onPress: () => navigation.navigate('Resume Generator'),
+                    AlertButtonStyle: 'default'
+                },
+                {
+                    text: 'No',
+                    onPress: () => {},
+                    AlertButtonStyle: 'cancel'
+                }
+            ],
+            {cancelable: false}
+        )
+    }
 
     const add = async () => {
         await db.collection('User Profiles')
@@ -56,7 +85,7 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
                 languages,
                 education,
                 workExperiences
-        }).then(() => navigation.goBack())
+        }).then(() => alertMessage())
             .catch(error => alert(error))
     }
 
@@ -71,6 +100,10 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
         setSkills(skills.filter(x => x !== skill));
     }
 
+    const removeLanguage = (language) => {
+        setLanguages(languages.filter(x => x !== language));
+    }
+
     const removeWorkExperience = (workExperience) => {
         setWorkExperiences(workExperiences.filter(x => x !== workExperience));
     }
@@ -79,11 +112,11 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
         setEducation(education.filter(x => x !== edu));
     }
    return (
-       <SafeAreaView>
-           <ScrollView ContainerStyle={styles.container}>
-
+       <SafeAreaView style={styles.container}>
+           <ScrollView>
                <View style={styles.label}>
                    <Text style={styles.text}>Proficiency</Text>
+                   <InfoTooltip input={"skills or languages"}/>
                </View>
                <View>
                    <Input inputContainerStyle={styles.containerInput}
@@ -138,13 +171,47 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
                <View style={styles.containerChip}>
                    {skills.map(skill => {
                        return (
-                           <ProficiencyChip title={skill} toRemove={skill} remove={removeSkill} />
+                           <ProficiencyChip title={skill}
+                                            toRemove={skill}
+                                            remove={removeSkill} />
+                       )
+                   })}
+               </View>
+
+               <View style={styles.label}>
+                   <Text style={styles.text}>Languages</Text>
+               </View>
+               <View style={styles.containerChip}>
+                   {languages.map(language => {
+                       return (
+                           <ProficiencyChip title={language}
+                                            toRemove={language}
+                                            remove={removeLanguage} />
                        )
                    })}
                </View>
 
                <View style={styles.label}>
                    <Text style={styles.text}>Education</Text>
+               </View>
+
+               <View style={styles.containerChip}>
+                   {education.map(edu => {
+                       const schoolName = edu.schoolName;
+                       const level = edu.educationLevel;
+                       const startDate = edu.startDate.toDate().toISOString().substring(0, 10);
+                       const endDate = edu.endDate.toDate().toISOString().substring(0, 10);
+
+                       return (
+                           <DescriptionContainer title={schoolName}
+                                                 startDate={startDate}
+                                                 endDate={endDate}
+                                                 additional={level}
+                                                 description={''}
+                                                 toRemove={edu}
+                                                 remove={removeEducation} />
+                       )
+                   })}
                </View>
 
                <View style={styles.addButton}>
@@ -155,18 +222,6 @@ const PersonalInformationScreen =  ( {navigation, route} ) => {
                        size={20}
                        color={Colors.placeholderColor}
                        onPress={toggleEducationHandler} />
-               </View>
-
-               <View style={styles.containerChip}>
-                   {education.map(edu => {
-                       const string = JSON.stringify(edu,null,'\t')
-
-                       return (
-                           <ProficiencyChip title={string}
-                                            toRemove={edu}
-                                            remove={removeEducation} />
-                       )
-                   })}
                </View>
 
                <View style={styles.containerModal}>
@@ -221,7 +276,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 15
     },
     container: {
-        marginVertical: 20,
+        flex: 1,
+        marginVertical: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
         marginHorizontal: 15
     },
     containerButton: {
@@ -252,11 +308,12 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     label: {
-        marginBottom: 5,
+        flexDirection: 'row',
+        marginVertical: 5,
         marginHorizontal: 15
     },
     text: {
-        fontSize: 15
+        fontSize: 20
     }
 });
 

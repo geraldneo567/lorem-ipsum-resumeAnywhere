@@ -19,7 +19,6 @@ function ProficiencyChip(props) {
                 iconRight
             />
         </View>
-
     );
 }
 
