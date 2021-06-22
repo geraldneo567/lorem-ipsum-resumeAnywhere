@@ -6,7 +6,7 @@ import {Icon, Input} from "react-native-elements";
 import AppButton from "../container/AppButton";
 import Colors from '../config/colors';
 
-const WorkExperience = (props) => {
+const EducationScreen = (props) => {
     const [schoolName, setSchoolName] = useState("");
     const [educationLevel, setEducationLevel] = useState("");
     const [startDate, setStartDate] = useState(new Date());
@@ -139,5 +139,5 @@ const styles = StyleSheet.create({
     }
 })
 
-export default WorkExperience;
+export default EducationScreen;
 

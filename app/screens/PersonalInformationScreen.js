@@ -62,7 +62,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
             [
                 {
                     text: 'Yes',
-                    onPress: () => navigation.navigate('Resume Generator'),
+                    onPress: () => navigation.navigate("Information Page", {screen: 'Resume Generator'}),
                     AlertButtonStyle: 'default'
                 },
                 {
@@ -84,7 +84,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                 skills,
                 languages,
                 education,
-                workExperiences
+                workExperiences,
         }).then(() => alertMessage())
             .catch(error => alert(error))
     }
@@ -206,20 +206,23 @@ const PersonalInformationScreen =  ( {navigation} ) => {
 
                <View style={styles.containerChip}>
                    {education.map(edu => {
-                       const schoolName = edu.schoolName;
-                       const level = edu.educationLevel;
-                       const startDate = edu.startDate.toDate().toISOString().substring(0, 10);
-                       const endDate = edu.endDate.toDate().toISOString().substring(0, 10);
+                        if (edu) {
+                            const schoolName = edu.schoolName;
+                            const level = edu.educationLevel;
 
-                       return (
-                           <DescriptionContainer title={schoolName}
-                                                 startDate={startDate}
-                                                 endDate={endDate}
-                                                 additional={level}
-                                                 description={''}
-                                                 toRemove={edu}
-                                                 remove={removeEducation} />
-                       )
+                            const startDate = edu.startDate.toDate().getMonth().toString() + "/" + edu.startDate.toDate().getFullYear().toString();
+                            const endDate = edu.endDate.toDate().getMonth().toString() + "/" + edu.endDate.toDate().getFullYear().toString();
+
+                            return (
+                                <DescriptionContainer title={schoolName}
+                                                      startDate={startDate}
+                                                      endDate={endDate}
+                                                      additional={level}
+                                                      description={''}
+                                                      toRemove={edu}
+                                                      remove={removeEducation} />
+                            )
+                        }
                    })}
                </View>
 
@@ -245,11 +248,20 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                <View style={styles.containerChip}>
                    {workExperiences.map(workExperience => {
                        const string = JSON.stringify(workExperience,null,'\t')
-
+                       const companyName = workExperience.companyName;
+                       const description = workExperience.description;
+                       const jobPosition = workExperience.jobPosition;
+                       const startDate = workExperience.startDate.toDate().getMonth().toString() + "/" + workExperience.startDate.toDate().getFullYear().toString();
+                       const endDate = workExperience.endDate.toDate().getMonth().toString() + "/" + workExperience.endDate.toDate().getFullYear().toString();
                        return (
-                               <ProficiencyChip title={string}
-                                                toRemove={workExperience}
-                                                remove={removeWorkExperience} />
+
+                           <DescriptionContainer title={companyName}
+                                                 startDate={startDate}
+                                                 endDate={endDate}
+                                                 additional={jobPosition}
+                                                 description={''}
+                                                 toRemove={workExperience}
+                                                 remove={removeWorkExperience} />
                        )
                    })}
                </View>

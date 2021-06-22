@@ -7,6 +7,7 @@ import * as Sharing from 'expo-sharing';
 import * as Print from "expo-print";
 import * as MediaLibrary from "expo-media-library";
 import Colors from '../config/colors';
+import {db, auth} from "../config/Database";
 
 
 // This screen is for IOS app users
@@ -38,6 +39,18 @@ const HTMLScreen = (props) => {
         }
     }
 
+    function generateEducation(text) {
+        const education = props.object.education;
+        for (let i = 0; i < education.length; i++) {
+            const schoolNameRegEx = new RegExp(`\{\{schoolName${i + 1}\}\}`);
+            const educationStartDateRegEx = new RegExp(`\{\{educationStartDate${i + 1}\}\}`);
+            const educationEndDateRegEx = new RegExp(`\{\{educationEndDate${i + 1}\}\}`);
+            text.data = text.data.replace(schoolNameRegEx, props.object.education[i].schoolName);
+            text.data = text.data.replace(educationStartDateRegEx, props.object.education[i].startDate.toDate().toISOString().substring(0, 10));
+            text.data = text.data.replace(educationEndDateRegEx, props.object.education[i].endDate.toDate().toISOString().substring(0, 10));
+        }
+    }
+
     function generateSkills(text, number) {
 
     }
@@ -48,10 +61,14 @@ const HTMLScreen = (props) => {
 
     function onText(text) {
         generateJobs(text);
+        generateEducation(text);
         text.data = text.data.replace(/{{fullName}}/g, props.object.displayName);
         text.data = text.data.replace(/{{skill1}}/g, props.object.skills[0]);
         text.data = text.data.replace(/{{skill2}}/g, props.object.skills[1]);
         text.data = text.data.replace(/{{skill3}}/g, props.object.skills[2]);
+        text.data = text.data.replace(/{{email}}/g, auth.currentUser.email);
+        console.log(props.object);
+        text.data = text.data.replace(/{{phoneNumber}}/g, props.object.phoneNumber);
     }
 
     const domVisitors = {

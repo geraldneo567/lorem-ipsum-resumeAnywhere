@@ -11,6 +11,7 @@ import AppButton from "../container/AppButton";
 import HTMLScreen from "./HTMLScreen";
 
 import {auth, db} from "../config/Database";
+import { doc, onSnapshot } from "firebase/firestore";
 import {LinearProgress} from "react-native-elements";
 
 const ResumeGeneratorScreen = ({navigation}) => {
@@ -22,11 +23,15 @@ const ResumeGeneratorScreen = ({navigation}) => {
 
     useEffect(() => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
-        docRef.get().then(doc => {
-            if (doc.exists) {
-                setData(doc.data());
+
+        docRef.onSnapshot(snapshot => {
+            if (snapshot.exists) {
+                setData(snapshot.data());
             }
-        })}, [])
+        })
+       }, [])
+
+
 
     const togglePreviewHandler = () => {
         setPreviewMode(!isPreviewMode);
@@ -64,7 +69,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
                 .then(cUri => {
                     setPreviewMode(true);
                     setView(true);
-                    setShowLoading(false);
+                    setShowLoading(false);f
                 })
         } catch (err) {
             console.log(err);
