@@ -80,7 +80,10 @@ const HTMLScreen = (props) => {
             } else {
                 const permission = await MediaLibrary.requestPermissionsAsync();
                 if (permission.granted) {
-                    await MediaLibrary.createAssetAsync(uri);
+                    const promise = await Print.printAsync({
+                        orientation: Print.Orientation.portrait,
+                        html: htmlString,
+                    });
                 }
             }
         } catch (err) {

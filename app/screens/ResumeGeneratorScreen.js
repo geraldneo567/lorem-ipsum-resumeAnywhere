@@ -62,16 +62,9 @@ const ResumeGeneratorScreen = ({navigation}) => {
             const {uri} = await Print.printToFileAsync({html: html});
             await FileSystem.getContentUriAsync(uri)
                 .then(cUri => {
-                    if (Platform.OS === 'android') {
-                        navigation.navigate("HTML Preview",
-                            {htmlContent: html,
-                                handler: createAndSavePDF,
-                                object: data});
-                    } else {
-                        setPreviewMode(true);
-                        setView(true);
-                        setShowLoading(false);
-                    }
+                    setPreviewMode(true);
+                    setView(true);
+                    setShowLoading(false);
                 })
         } catch (err) {
             console.log(err);
