@@ -28,6 +28,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
     const [languageInput, setLanguageInput] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [education, setEducation] = useState([]);
+    const [personalProfile, setPersonalProfile] = useState('');
     const [workExperiences, setWorkExperiences] = useState([])
 
     const loadExistingInformation = async () => {
@@ -39,6 +40,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                 setLanguages(doc.data().languages);
                 setWorkExperiences(doc.data().workExperiences);
                 setEducation(doc.data().education);
+                setPersonalProfile(doc.data().personalProfile);
             }
             return () => console.log("Done")
         })
@@ -85,6 +87,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                 languages,
                 education,
                 workExperiences,
+                personalProfile,
         }).then(() => alertMessage())
             .catch(error => alert(error))
     }
@@ -164,6 +167,18 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                                       type='material-community' />}
                       onChangeText={(text) => setPhoneNumber(text)}
                       value={phoneNumber}/>
+
+               <View style={styles.label}>
+                   <Text style={styles.text}>Personal Profile</Text>
+               </View>
+               <Input inputContainerStyle={styles.containerInputBig}
+                      placeholder='A short description about you'
+                      placeholderTextColor={Colors.placeholderColor}
+                      keyboardType={'text'}
+                      leftIcon={<Icon name='account'
+                                      type='material-community' />}
+                      onChangeText={(text) => setPersonalProfile(text)}
+                      value={personalProfile}/>
 
                <View style={styles.label}>
                    <Text style={styles.text}>Added Skills</Text>
@@ -308,6 +323,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 20,
         paddingHorizontal: 10
+    },
+    containerInputBig: {
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderRadius: 20,
+        paddingHorizontal: 10,
+        height: 100,
     },
     containerModal: {
         flex: 1,

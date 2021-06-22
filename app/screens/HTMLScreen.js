@@ -67,8 +67,8 @@ const HTMLScreen = (props) => {
         text.data = text.data.replace(/{{skill2}}/g, props.object.skills[1]);
         text.data = text.data.replace(/{{skill3}}/g, props.object.skills[2]);
         text.data = text.data.replace(/{{email}}/g, auth.currentUser.email);
-        console.log(props.object);
         text.data = text.data.replace(/{{phoneNumber}}/g, props.object.phoneNumber);
+        text.data = text.data.replace(/{{personalProfile}}/g, props.object.personalProfile);
     }
 
     const domVisitors = {
