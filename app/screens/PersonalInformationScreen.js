@@ -193,6 +193,15 @@ const PersonalInformationScreen =  ( {navigation} ) => {
 
                <View style={styles.label}>
                    <Text style={styles.text}>Education</Text>
+                   <View style={styles.addButton}>
+                       <Icon
+                           reverse
+                           name='plus'
+                           type='material-community'
+                           size={15}
+                           color={Colors.placeholderColor}
+                           onPress={toggleEducationHandler} />
+                   </View>
                </View>
 
                <View style={styles.containerChip}>
@@ -214,15 +223,6 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                    })}
                </View>
 
-               <View style={styles.addButton}>
-                   <Icon
-                       reverse
-                       name='plus'
-                       type='material-community'
-                       size={20}
-                       color={Colors.placeholderColor}
-                       onPress={toggleEducationHandler} />
-               </View>
 
                <View style={styles.containerModal}>
                    <EducationScreen visible={isEducationMode}
@@ -232,6 +232,13 @@ const PersonalInformationScreen =  ( {navigation} ) => {
 
                <View style={styles.label}>
                    <Text style={styles.text}>Work Experiences</Text>
+                   <Icon
+                       reverse
+                       name='plus'
+                       type='material-community'
+                       size={15}
+                       color={Colors.placeholderColor}
+                       onPress={toggleWorkExperienceHandler} />
                </View>
 
 
@@ -252,13 +259,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                                    handler={updateWorkExperiences}/>
                </View>
                <View style={styles.addButton}>
-                   <Icon
-                       reverse
-                       name='plus'
-                       type='material-community'
-                       size={20}
-                       color={Colors.placeholderColor}
-                       onPress={toggleWorkExperienceHandler} />
+
                </View>
 
 
@@ -272,8 +273,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
 
 const styles = StyleSheet.create({
     addButton: {
-        marginTop: 10,
-        marginHorizontal: 15
+
     },
     container: {
         flex: 1,
@@ -310,10 +310,12 @@ const styles = StyleSheet.create({
     label: {
         flexDirection: 'row',
         marginVertical: 5,
-        marginHorizontal: 15
+        marginHorizontal: 15,
+
     },
     text: {
-        fontSize: 20
+        fontSize: 20,
+        paddingTop: 10,
     }
 });
 
