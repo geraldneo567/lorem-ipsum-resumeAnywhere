@@ -28,7 +28,6 @@ const PersonalInformationScreen =  ( {navigation} ) => {
     const [languageInput, setLanguageInput] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [education, setEducation] = useState([]);
-    const [personalProfile, setPersonalProfile] = useState('');
     const [workExperiences, setWorkExperiences] = useState([])
 
     const loadExistingInformation = async () => {
@@ -40,7 +39,6 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                 setLanguages(doc.data().languages);
                 setWorkExperiences(doc.data().workExperiences);
                 setEducation(doc.data().education);
-                setPersonalProfile(doc.data().personalProfile);
             }
             return () => console.log("Done")
         })
@@ -64,8 +62,12 @@ const PersonalInformationScreen =  ( {navigation} ) => {
             [
                 {
                     text: 'Yes',
+<<<<<<< HEAD
                     onPress: () => navigation.navigate("Information Page",
                         {screen: 'Resume Generator'}),
+=======
+                    onPress: () => navigation.navigate('Resume Generator'),
+>>>>>>> 2d756d5 (Revert "Merge 2 branches on document tests")
                     AlertButtonStyle: 'default'
                 },
                 {
@@ -87,9 +89,14 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                 skills,
                 languages,
                 education,
+<<<<<<< HEAD
                 workExperiences,
                 personalProfile,
         }).then(alertMessage)
+=======
+                workExperiences
+        }).then(() => alertMessage())
+>>>>>>> 2d756d5 (Revert "Merge 2 branches on document tests")
             .catch(error => alert(error))
     }
 
@@ -170,18 +177,6 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                       value={phoneNumber}/>
 
                <View style={styles.label}>
-                   <Text style={styles.text}>Personal Profile</Text>
-               </View>
-               <Input inputContainerStyle={styles.containerInputBig}
-                      placeholder='A short description about you'
-                      placeholderTextColor={Colors.placeholderColor}
-                      keyboardType={'text'}
-                      leftIcon={<Icon name='account'
-                                      type='material-community' />}
-                      onChangeText={(text) => setPersonalProfile(text)}
-                      value={personalProfile}/>
-
-               <View style={styles.label}>
                    <Text style={styles.text}>Added Skills</Text>
                </View>
                <View style={styles.containerChip}>
@@ -209,43 +204,36 @@ const PersonalInformationScreen =  ( {navigation} ) => {
 
                <View style={styles.label}>
                    <Text style={styles.text}>Education</Text>
-                   <View style={styles.addButton}>
-                       <Icon
-                           reverse
-                           name='plus'
-                           type='material-community'
-                           size={15}
-                           color={Colors.placeholderColor}
-                           onPress={toggleEducationHandler} />
-                   </View>
                </View>
 
                <View style={styles.containerChip}>
                    {education.map(edu => {
-                        if (edu) {
-                            console.log(edu);
-                            const schoolName = edu.schoolName;
-                            const level = edu.educationLevel;
-                            const start = new Date(edu.startDate.seconds * 1000);
-                            const end = new Date(edu.endDate.seconds * 1000);
+                       const schoolName = edu.schoolName;
+                       const level = edu.educationLevel;
+                       const startDate = edu.startDate.toDate().toISOString().substring(0, 10);
+                       const endDate = edu.endDate.toDate().toISOString().substring(0, 10);
 
-                            const startDate = isNaN(start.getMonth()) ? edu.startDate.toString() : start.getMonth().toString() + "/" + start.getFullYear().toString();
-                            const endDate = isNaN(end.getMonth()) ?  edu.endDate.toString() : end.getMonth().toString() + "/" + end.getFullYear().toString();
-
-
-                            return (
-                                <DescriptionContainer title={schoolName}
-                                                      startDate={startDate}
-                                                      endDate={endDate}
-                                                      additional={level}
-                                                      description={''}
-                                                      toRemove={edu}
-                                                      remove={removeEducation} />
-                            )
-                        }
+                       return (
+                           <DescriptionContainer title={schoolName}
+                                                 startDate={startDate}
+                                                 endDate={endDate}
+                                                 additional={level}
+                                                 description={''}
+                                                 toRemove={edu}
+                                                 remove={removeEducation} />
+                       )
                    })}
                </View>
 
+               <View style={styles.addButton}>
+                   <Icon
+                       reverse
+                       name='plus'
+                       type='material-community'
+                       size={20}
+                       color={Colors.placeholderColor}
+                       onPress={toggleEducationHandler} />
+               </View>
 
                <View style={styles.containerModal}>
                    <EducationScreen visible={isEducationMode}
@@ -255,37 +243,17 @@ const PersonalInformationScreen =  ( {navigation} ) => {
 
                <View style={styles.label}>
                    <Text style={styles.text}>Work Experiences</Text>
-                   <Icon
-                       reverse
-                       name='plus'
-                       type='material-community'
-                       size={15}
-                       color={Colors.placeholderColor}
-                       onPress={toggleWorkExperienceHandler} />
                </View>
 
 
                <View style={styles.containerChip}>
                    {workExperiences.map(workExperience => {
                        const string = JSON.stringify(workExperience,null,'\t')
-                       const companyName = workExperience.companyName;
-                       const description = workExperience.description;
-                       const jobPosition = workExperience.jobPosition;
 
-                       const start = new Date(workExperience.startDate.seconds * 1000);
-                       const end = new Date(workExperience.endDate.seconds * 1000);
-
-                       const startDate = isNaN(start.getMonth()) ? workExperience.startDate.toString() : start.getMonth().toString() + "/" + start.getFullYear().toString();
-                       const endDate = isNaN(end.getMonth()) ?  workExperience.endDate.toString() : end.getMonth().toString() + "/" + end.getFullYear().toString();
                        return (
-
-                           <DescriptionContainer title={companyName}
-                                                 startDate={startDate}
-                                                 endDate={endDate}
-                                                 additional={jobPosition}
-                                                 description={''}
-                                                 toRemove={workExperience}
-                                                 remove={removeWorkExperience} />
+                               <ProficiencyChip title={string}
+                                                toRemove={workExperience}
+                                                remove={removeWorkExperience} />
                        )
                    })}
                </View>
@@ -295,7 +263,13 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                                    handler={updateWorkExperiences}/>
                </View>
                <View style={styles.addButton}>
-
+                   <Icon
+                       reverse
+                       name='plus'
+                       type='material-community'
+                       size={20}
+                       color={Colors.placeholderColor}
+                       onPress={toggleWorkExperienceHandler} />
                </View>
 
 
@@ -309,7 +283,8 @@ const PersonalInformationScreen =  ( {navigation} ) => {
 
 const styles = StyleSheet.create({
     addButton: {
-
+        marginTop: 10,
+        marginHorizontal: 15
     },
     container: {
         flex: 1,
@@ -333,13 +308,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         paddingHorizontal: 10
     },
-    containerInputBig: {
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderRadius: 20,
-        paddingHorizontal: 10,
-        height: 100,
-    },
     containerModal: {
         flex: 1,
         flexDirection: 'column',
@@ -353,12 +321,10 @@ const styles = StyleSheet.create({
     label: {
         flexDirection: 'row',
         marginVertical: 5,
-        marginHorizontal: 15,
-
+        marginHorizontal: 15
     },
     text: {
-        fontSize: 20,
-        paddingTop: 10,
+        fontSize: 20
     }
 });
 

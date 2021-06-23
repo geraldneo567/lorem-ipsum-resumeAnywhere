@@ -1,16 +1,17 @@
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useLayoutEffect} from 'react';
 import {
     StyleSheet,
     SafeAreaView,
     ImageBackground,
     Platform,
     StatusBar,
-    Button, TouchableOpacity, FlatList, View, Text, Image
+    Button
 } from 'react-native';
 import {auth} from "../config/Database"
 
 export default function HomeScreen({navigation}) {
 
+<<<<<<< HEAD
 
     const [data, setData] = useState(     [
         {id:1, title: "Resume Generator", image:"https://img.icons8.com/color/70/000000/resume.png",
@@ -21,65 +22,28 @@ export default function HomeScreen({navigation}) {
             screenContainer: "Personal Information", screenName: "Personal Information"} ,
     ])
 
+=======
+>>>>>>> 2d756d5 (Revert "Merge 2 branches on document tests")
     useLayoutEffect(() =>
         navigation.setOptions({
             headerTitle: "Welcome " + auth.currentUser.displayName
         })
     , [])
 
-
     return (
-        <View>
-            <FlatList contentContainerStyle={{alignItems: "center", height: '85%'}}
-                      data={data}
-                      horizontal={false}
-                      numColumns={2}
-                      keyExtractor= {(item) => {
-                          return item.id;
-                      }}
-                      renderItem={({item}) => {
-                          return (
-                              <View>
-                                  <TouchableOpacity style={styles.card} onPress={() => navigation.navigate(item.screenContainer, item.screenName)}>
-                                      <Image style={styles.cardImage} source={{uri:item.image}}/>
-                                  </TouchableOpacity>
-
-                                  <View style={styles.cardHeader}>
-                                      <View style={{alignItems:"center", justifyContent:"center"}}>
-                                          <Text style={styles.title}>{item.title}</Text>
-                                      </View>
-                                  </View>
-
-                              </View>
-                          )
-                      }}/>
-            <View style={{justifyContent: "flex-end"}}>
-                <Text style={{alignSelf: "center"}}> {'\u00A9'} Orbital 2021</Text>
-            </View>
-
-        </View>
-
-        
-        /*
         <ImageBackground style={styles.background}
                          source={require('../assets/background.jpg')}
                          opacity={0.3}
                          blurRadius={8} >
             <SafeAreaView style={styles.container}>
-                <TouchableOpacity style={styles.card} title={"Resume Generator"}
+                <Button title={"Resume Generator"}
                         onPress={() => navigation.navigate("Information Page", {screen: 'Resume Generator'})}/>
             </SafeAreaView>
         </ImageBackground>
-         */
     );
 }
 
 const styles = StyleSheet.create({
-    logo: {
-        alignSelf: 'center',
-        height: 50,
-        width: 50,
-    },
     background: {
         width: '100%',
         height: '100%'
@@ -88,47 +52,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    },
-
-    card:{
-        shadowColor: '#474747',
-        shadowOffset: {
-            width: 0,
-            height: 6,
-        },
-        shadowOpacity: 0.37,
-        shadowRadius: 7.49,
-
-        elevation: 12,
-        marginVertical: 20,
-        marginHorizontal: 20,
-        backgroundColor:"#e2e2e2",
-        //flexBasis: '42%',
-        width:140,
-        height:140,
-        borderRadius:60,
-        alignItems:'center',
-        justifyContent:'center'
-    },
-
-    cardImage:{
-        height: 50,
-        width: 50,
-        alignSelf:'center'
-    },
-    cardHeader: {
-        paddingVertical: 0,
-        paddingHorizontal: 10,
-        borderTopLeftRadius: 1,
-        borderTopRightRadius: 1,
-        flexDirection: 'row',
-        alignItems:"center",
-        justifyContent:"center"
-    },
-    title:{
-        fontSize:18,
-        alignSelf:'center',
-        color:"#696968"
-    },
+        marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+    }
 })
