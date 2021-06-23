@@ -4,6 +4,7 @@ import {StyleSheet} from 'react-native';
 
 // Will be removed later on
 import TestHomeScreen from "./app/screens/TestHomeScreen";
+import DocumentTest from "./app/screens/DocumentTest";
 
 import PersonalInformationScreen from './app/screens/PersonalInformationScreen';
 import HomeScreen from './app/screens/HomeScreen';
@@ -54,7 +55,7 @@ const DocumentStackScreen = () => {
                          screenOptions={{headerShown: false}}>
             <Stack.Screen
                 name="Documents"
-                component={DocumentsScreen}
+                component={DocumentTest}
                 options={{
                     title: 'Documents'
                 }}/>

@@ -25,8 +25,7 @@ if (firebase.apps.length === 0) {
 
 const db = app.firestore();
 const auth = firebase.auth();
-
-
+const fb = firebase.storage().ref();
 
 const handleImageSave = (image) => {
     const uploadImage = async() => {
@@ -76,4 +75,4 @@ const handleImageSave = (image) => {
     )
 }
 
-export { db, auth };
+export { db, auth, fb };

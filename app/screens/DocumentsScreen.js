@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import DocumentPicker from "expo-document-picker/src/ExpoDocumentPicker";
+import loadLocalResource from 'react-native-local-resource';
 
 import AppButton from "../container/AppButton";
 
 const DocumentsScreen = ({navigation}) => {
-    const [fileURI, setfileURI] = useState('');
+    const [fileURI, setFileURI] = useState('');
     const [show, setShow] = useState(false);
 
     const selectDocuments = async () => {
         let result = await DocumentPicker.getDocumentAsync({});
-        setfileURI(result.uri);
+        setFileURI(result.uri);
         setShow(true);
         console.log(result);
     }
