@@ -14,7 +14,7 @@ const PDFPreview = (props) => {
         await docRef.get().then(doc => {
             if (doc.exists) {
                 console.log(doc.data());
-                setFileURI(doc.data().file)
+                setFileURI(doc.data().files[0])
             }
             return () => console.log("Done")
         })
