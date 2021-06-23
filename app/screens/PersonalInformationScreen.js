@@ -64,7 +64,8 @@ const PersonalInformationScreen =  ( {navigation} ) => {
             [
                 {
                     text: 'Yes',
-                    onPress: () => navigation.navigate("Information Page", {screen: 'Resume Generator'}),
+                    onPress: () => navigation.navigate("Information Page",
+                        {screen: 'Resume Generator'}),
                     AlertButtonStyle: 'default'
                 },
                 {
@@ -88,7 +89,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                 education,
                 workExperiences,
                 personalProfile,
-        }).then(() => alertMessage())
+        }).then(alertMessage)
             .catch(error => alert(error))
     }
 

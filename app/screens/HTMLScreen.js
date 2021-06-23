@@ -76,7 +76,6 @@ const HTMLScreen = (props) => {
         text.data = text.data.replace(/{{email}}/g, auth.currentUser.email);
         text.data = text.data.replace(/{{phoneNumber}}/g, props.object.phoneNumber);
         text.data = text.data.replace(/{{personalProfile}}/g, props.object.personalProfile);
-        text.data = text.data.replace(/{{personalProfile}}/g, props.object.personalProfile);
     }
 
     const domVisitors = {
@@ -131,11 +130,13 @@ const HTMLScreen = (props) => {
                                           type={'material-community'}
                                           onPress={createAndSavePDF} />} />
                 <ScrollView contentContainerStyle={styles.container}>
-                    <RenderHtml source={{html: src}}
-                                domVisitors={domVisitors}
-                                contentWidth={width}
-                                onTTreeChange={updateTTree} />
-                    <Button title="Save HTML" onPress={createAndSavePDF} />
+                    <ScrollView horizontal={true}>
+                        <RenderHtml source={{html: src}}
+                                    domVisitors={domVisitors}
+                                    enableCSSInlineProcessing={true}
+                                    contentWidth={width}
+                                    onTTreeChange={updateTTree} />
+                    </ScrollView>
                 </ScrollView>
             </SafeAreaView>
         </Modal>
@@ -145,8 +146,8 @@ const HTMLScreen = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        flex: 0,
+        flexDirection: 'column',
         marginHorizontal: 20,
     },
     containerRibbon: {

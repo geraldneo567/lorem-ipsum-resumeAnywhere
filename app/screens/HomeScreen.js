@@ -13,10 +13,12 @@ export default function HomeScreen({navigation}) {
 
 
     const [data, setData] = useState(     [
-        {id:1, title: "Resume Generator", image:"https://img.icons8.com/color/70/000000/resume.png", screenContainer: "Information Page", screenName: "Resume Generator"},
+        {id:1, title: "Resume Generator", image:"https://img.icons8.com/color/70/000000/resume.png",
+            screenContainer: "Information Page", screenName: "Resume Generator"},
         {id:1, title: "PS Helper", image:"https://img.icons8.com/ios-filled/50/000000/facilitator.png"},
         {id:2, title: "Resume Guru", image:"https://img.icons8.com/color/70/000000/guru.png"} ,
-        {id:3, title: "Edit Information", image:"https://img.icons8.com/color/70/000000/edit.png", screenContainer: "Personal Information", screenName: "Personal Information"} ,
+        {id:3, title: "Edit Information", image:"https://img.icons8.com/color/70/000000/edit.png",
+            screenContainer: "Personal Information", screenName: "Personal Information"} ,
     ])
 
     useLayoutEffect(() =>

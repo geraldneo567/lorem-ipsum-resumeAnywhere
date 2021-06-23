@@ -11,7 +11,6 @@ import AppButton from "../container/AppButton";
 import HTMLScreen from "./HTMLScreen";
 
 import {auth, db} from "../config/Database";
-import { doc, onSnapshot } from "firebase/firestore";
 import {LinearProgress} from "react-native-elements";
 
 const ResumeGeneratorScreen = ({navigation}) => {
@@ -26,7 +25,6 @@ const ResumeGeneratorScreen = ({navigation}) => {
 
         loadLocalResource(require('../templates/html-resume-master/test.html'))
             .then((content) => {
-
                 setHtml(content);
             });
 
@@ -36,8 +34,6 @@ const ResumeGeneratorScreen = ({navigation}) => {
             }
         })
        }, [])
-
-
 
     const togglePreviewHandler = () => {
         setPreviewMode(!isPreviewMode);
@@ -63,8 +59,6 @@ const ResumeGeneratorScreen = ({navigation}) => {
             console.log(err);
         }
     }
-
-
 
     const viewFile = async () => {
         setShowLoading(true);
@@ -97,8 +91,6 @@ const ResumeGeneratorScreen = ({navigation}) => {
             </View>
             {view ?
                 (<View style={styles.containerModal}>
-
-                    {console.log(html)}
                     <HTMLScreen visible={isPreviewMode}
                                 htmlContent={html}
                                 handler={createAndSavePDF}

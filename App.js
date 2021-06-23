@@ -152,8 +152,6 @@ const MenuScreen = () => {
                                              color={Colors.placeholderColor} />
                                    )
                                )}} />
-            <Drawer.Screen name={"Test Home"}
-                           component={TestHomeScreen} />
             <Drawer.Screen name="Documents"
                            component={DocumentStackScreen}
                            options={{
