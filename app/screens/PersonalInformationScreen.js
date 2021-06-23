@@ -222,11 +222,15 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                <View style={styles.containerChip}>
                    {education.map(edu => {
                         if (edu) {
+                            console.log(edu);
                             const schoolName = edu.schoolName;
                             const level = edu.educationLevel;
+                            const start = new Date(edu.startDate.seconds * 1000);
+                            const end = new Date(edu.endDate.seconds * 1000);
 
-                            const startDate = edu.startDate.toDate().getMonth().toString() + "/" + edu.startDate.toDate().getFullYear().toString();
-                            const endDate = edu.endDate.toDate().getMonth().toString() + "/" + edu.endDate.toDate().getFullYear().toString();
+                            const startDate = isNaN(start.getMonth()) ? edu.startDate.toString() : start.getMonth().toString() + "/" + start.getFullYear().toString();
+                            const endDate = isNaN(end.getMonth()) ?  edu.endDate.toString() : end.getMonth().toString() + "/" + end.getFullYear().toString();
+
 
                             return (
                                 <DescriptionContainer title={schoolName}
@@ -266,8 +270,12 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                        const companyName = workExperience.companyName;
                        const description = workExperience.description;
                        const jobPosition = workExperience.jobPosition;
-                       const startDate = workExperience.startDate.toDate().getMonth().toString() + "/" + workExperience.startDate.toDate().getFullYear().toString();
-                       const endDate = workExperience.endDate.toDate().getMonth().toString() + "/" + workExperience.endDate.toDate().getFullYear().toString();
+
+                       const start = new Date(workExperience.startDate.seconds * 1000);
+                       const end = new Date(workExperience.endDate.seconds * 1000);
+
+                       const startDate = isNaN(start.getMonth()) ? workExperience.startDate.toString() : start.getMonth().toString() + "/" + start.getFullYear().toString();
+                       const endDate = isNaN(end.getMonth()) ?  workExperience.endDate.toString() : end.getMonth().toString() + "/" + end.getFullYear().toString();
                        return (
 
                            <DescriptionContainer title={companyName}

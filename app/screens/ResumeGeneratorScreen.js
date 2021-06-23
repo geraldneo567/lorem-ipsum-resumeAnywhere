@@ -24,6 +24,12 @@ const ResumeGeneratorScreen = ({navigation}) => {
     useEffect(() => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
 
+        loadLocalResource(require('../templates/html-resume-master/test.html'))
+            .then((content) => {
+
+                setHtml(content);
+            });
+
         docRef.onSnapshot(snapshot => {
             if (snapshot.exists) {
                 setData(snapshot.data());
@@ -38,8 +44,9 @@ const ResumeGeneratorScreen = ({navigation}) => {
     }
 
     const createAndSavePDF = async () => {
+        console.log(html);
         try {
-            await loadLocalResource(require("../templates/html-resume-master/resume.html"))
+            await loadLocalResource(require("../templates/html-resume-master/test.html"))
                 .then((content) => {
                     setHtml(content);
                 });
@@ -57,10 +64,12 @@ const ResumeGeneratorScreen = ({navigation}) => {
         }
     }
 
+
+
     const viewFile = async () => {
         setShowLoading(true);
         try {
-            await loadLocalResource(require('../templates/html-resume-master/resume.html'))
+            await loadLocalResource(require('../templates/html-resume-master/test.html'))
                 .then((content) => {
                     setHtml(content);
                 });
@@ -88,6 +97,8 @@ const ResumeGeneratorScreen = ({navigation}) => {
             </View>
             {view ?
                 (<View style={styles.containerModal}>
+
+                    {console.log(html)}
                     <HTMLScreen visible={isPreviewMode}
                                 htmlContent={html}
                                 handler={createAndSavePDF}

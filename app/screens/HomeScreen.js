@@ -25,6 +25,7 @@ export default function HomeScreen({navigation}) {
         })
     , [])
 
+
     return (
         <View>
             <FlatList contentContainerStyle={{alignItems: "center", height: '85%'}}

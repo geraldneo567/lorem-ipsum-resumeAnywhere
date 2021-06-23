@@ -45,9 +45,11 @@ const HTMLScreen = (props) => {
             const schoolNameRegEx = new RegExp(`\{\{schoolName${i + 1}\}\}`);
             const educationStartDateRegEx = new RegExp(`\{\{educationStartDate${i + 1}\}\}`);
             const educationEndDateRegEx = new RegExp(`\{\{educationEndDate${i + 1}\}\}`);
+            const educationLevelRegEx = new RegExp(`\{\{educationLevel${i + 1}\}\}`);
             text.data = text.data.replace(schoolNameRegEx, props.object.education[i].schoolName);
             text.data = text.data.replace(educationStartDateRegEx, props.object.education[i].startDate.toDate().toISOString().substring(0, 10));
             text.data = text.data.replace(educationEndDateRegEx, props.object.education[i].endDate.toDate().toISOString().substring(0, 10));
+            text.data = text.data.replace(educationLevelRegEx, props.object.education[i].educationLevel);
         }
     }
 
@@ -56,18 +58,24 @@ const HTMLScreen = (props) => {
     }
 
     function generateLanguages(text, number) {
-
+        const languages = props.object.languages;
+        for (let i = 0; i < languages.length; i++) {
+            const languageRegEx = new RegExp(`\{\{language${i + 1}\}\}`);
+            text.data = text.data.replace(languageRegEx, props.object.languages[i]);
+        }
     }
 
     function onText(text) {
         generateJobs(text);
         generateEducation(text);
+        generateLanguages(text);
         text.data = text.data.replace(/{{fullName}}/g, props.object.displayName);
         text.data = text.data.replace(/{{skill1}}/g, props.object.skills[0]);
         text.data = text.data.replace(/{{skill2}}/g, props.object.skills[1]);
         text.data = text.data.replace(/{{skill3}}/g, props.object.skills[2]);
         text.data = text.data.replace(/{{email}}/g, auth.currentUser.email);
         text.data = text.data.replace(/{{phoneNumber}}/g, props.object.phoneNumber);
+        text.data = text.data.replace(/{{personalProfile}}/g, props.object.personalProfile);
         text.data = text.data.replace(/{{personalProfile}}/g, props.object.personalProfile);
     }
 
