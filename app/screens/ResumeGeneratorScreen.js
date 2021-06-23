@@ -11,6 +11,7 @@ import AppButton from "../container/AppButton";
 import HTMLScreen from "./HTMLScreen";
 
 import {auth, db} from "../config/Database";
+import { doc, onSnapshot } from "firebase/firestore";
 import {LinearProgress} from "react-native-elements";
 
 const ResumeGeneratorScreen = ({navigation}) => {
@@ -22,19 +23,30 @@ const ResumeGeneratorScreen = ({navigation}) => {
 
     useEffect(() => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
-        docRef.get().then(doc => {
-            if (doc.exists) {
-                setData(doc.data());
+
+        loadLocalResource(require('../templates/html-resume-master/test.html'))
+            .then((content) => {
+
+                setHtml(content);
+            });
+
+        docRef.onSnapshot(snapshot => {
+            if (snapshot.exists) {
+                setData(snapshot.data());
             }
-        })}, [])
+        })
+       }, [])
+
+
 
     const togglePreviewHandler = () => {
         setPreviewMode(!isPreviewMode);
     }
 
     const createAndSavePDF = async () => {
+        console.log(html);
         try {
-            await loadLocalResource(require("../templates/html-resume-master/resume.html"))
+            await loadLocalResource(require("../templates/html-resume-master/test.html"))
                 .then((content) => {
                     setHtml(content);
                 });
@@ -52,26 +64,21 @@ const ResumeGeneratorScreen = ({navigation}) => {
         }
     }
 
+
+
     const viewFile = async () => {
         setShowLoading(true);
         try {
-            await loadLocalResource(require('../templates/html-resume-master/resume.html'))
+            await loadLocalResource(require('../templates/html-resume-master/test.html'))
                 .then((content) => {
                     setHtml(content);
                 });
             const {uri} = await Print.printToFileAsync({html: html});
             await FileSystem.getContentUriAsync(uri)
                 .then(cUri => {
-                    if (Platform.OS === 'android') {
-                        navigation.navigate("HTML Preview",
-                            {htmlContent: html,
-                                handler: createAndSavePDF,
-                                object: data});
-                    } else {
-                        setPreviewMode(true);
-                        setView(true);
-                        setShowLoading(false);
-                    }
+                    setPreviewMode(true);
+                    setView(true);
+                    setShowLoading(false);f
                 })
         } catch (err) {
             console.log(err);
@@ -90,6 +97,8 @@ const ResumeGeneratorScreen = ({navigation}) => {
             </View>
             {view ?
                 (<View style={styles.containerModal}>
+
+                    {console.log(html)}
                     <HTMLScreen visible={isPreviewMode}
                                 htmlContent={html}
                                 handler={createAndSavePDF}

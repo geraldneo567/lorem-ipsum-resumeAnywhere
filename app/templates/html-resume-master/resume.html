@@ -12,8 +12,15 @@
         <h1 id="testHeader">{{fullName}}</h1>
       </header>
       <section class="main-block">
+
+        </body>
         <h2>
-          <i class="fa fa-suitcase"></i> Experiences
+          Profile
+        </h2>
+        <p>{{personalProfile}}</p>
+
+        <h2>
+           Experiences
         </h2>
         <section class="blocks">
           <div class="decorator">
@@ -37,14 +44,14 @@
           </div>
           <div class="details">
             <header>
-              <h3>{{jobPosition2}}</h3>
-              <span class="place">{{jobDescription2}}</span>
+              <h3>{{companyName2}}</h3>
+              <div class="date">
+                <span>{{startDate2}} TO {{endDate2}}</span>
+              </div>
+              <span class="place">{{jobPosition2}}</span>
             </header>
             <div>
-              <p>{{jobDetails2}}</p>
-            </div>
-            <div class="date">
-              <span>{{startDate2}}</span><span>{{endDate2}}</span>
+              <p>{{description2}}</p>
             </div>
           </div>
         </section>
@@ -53,14 +60,14 @@
           </div>
           <div class="details">
             <header>
-              <h3>{{jobPosition3}}</h3>
-              <span class="place">{{jobDescription3}}</span>
+              <h3>{{companyName3}}</h3>
+              <div class="date">
+                <span>{{startDate3}} TO {{endDate3}}</span>
+              </div>
+              <span class="place">{{jobPosition3}}</span>
             </header>
             <div>
-              <p>{{jobDetails3}}</p>
-            </div>
-            <div class="date">
-              <span>{{startDate3}}</span><span>{{endDate3}}</span>
+              <p>{{description3}}</p>
             </div>
           </div>
         </section>
@@ -88,10 +95,8 @@
           Contact Info
         </h1>
         <ul>
-          <li><i class="fa fa-globe"></i> johndoe.gtld</li>
-          <li><i class="fa fa-linkedin"></i> linkedin.com/in/john</li>
-          <li><i class="fa fa-envelope"></i> me@johndoe.gtld</li>
-          <li><i class="fa fa-phone"></i> 800.000.0000</li>
+          <li>Phone Number: {{phoneNumber}}</li>
+          <li>Email: {{email}}</li>
         </ul>
       </div>
       <div class="side-block" id="skills">
