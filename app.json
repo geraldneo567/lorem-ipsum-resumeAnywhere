@@ -18,7 +18,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "io.expo.client"
+      "bundleIdentifier": "io.expo.client",
+      "usesIcloudStorage": true
     },
     "android": {
       "adaptiveIcon": {
