@@ -86,7 +86,8 @@ const HTMLScreen = (props) => {
             } else {
                 const permission = await MediaLibrary.requestPermissionsAsync();
                 if (permission.granted) {
-                    await MediaLibrary.createAssetAsync(uri);
+                    const asset = await MediaLibrary.createAssetAsync(uri);
+                    await MediaLibrary.createAlbumAsync("Download", asset, false);
                 }
             }
         } catch (err) {

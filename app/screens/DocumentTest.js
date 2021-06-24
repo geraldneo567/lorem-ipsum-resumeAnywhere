@@ -5,7 +5,7 @@ import {
     View,
     Platform,
     FlatList,
-    TouchableOpacity, ScrollView
+    TouchableOpacity
 } from 'react-native';
 import {FAB, Icon} from "react-native-elements";
 
@@ -21,14 +21,14 @@ const DocumentTest = ({navigation}) => {
     const [fileURI, setFileURI] = useState('');
     const [fileName, setFileName] = useState('');
     const [files, setFiles] = useState([]);
-    const [uris, setUris] = useState([])
 
     const loadFiles = async () => {
         let docRef = db.collection("Files").doc(auth.currentUser.uid)
         await docRef.get().then(async (doc) => {
             if (doc.exists) {
-                await setFiles(doc.data().files);
-                await setUris(doc.data().fileUris);
+                const data = doc.data().files;
+                const removeDuplicates = new Set(data);
+                setFiles([...removeDuplicates]);
             }
             return () => console.log("Done")
         })
@@ -37,46 +37,42 @@ const DocumentTest = ({navigation}) => {
     useEffect(() => {(async() => loadFiles())()}, []);
 
     const file = {
-        id: files.length,
         fileName,
         fileURI
     }
 
     const updateResponse = async (response) => {
-        if (response.type === 'success') {
-            await FileSystem.getContentUriAsync(response.uri)
-                .then(cUri => console.log(cUri))
-
-            setFileName(response.name);
-            if (uris.includes(fileURI)) {
-                console.log("File already exists");
-                return false;
+        try {
+            if (response.type === 'success') {
+                await FileSystem.getContentUriAsync(response.uri)
+                    .then(cUri => {setFileURI(cUri);})
+                setFileName(response.name);
+                if (file.fileURI !== undefined) {
+                    setFiles(files => [...files, file])
+                }
             } else {
-                setUris(uris => [...uris, fileURI])
-                setFiles(files => [...files, file])
-                return true;
+                return false;
             }
-        } else {
-            return false;
+        } catch (e) {
+            console.log(e);
         }
     }
 
     const updateDatabase = async () => {
-        if (file.fileURI !== "") {
-            await db.collection('Files')
-                .doc(auth.currentUser.uid)
-                .set({
-                    files,
-                    fileUris: uris
-                }).then(() => {
-                });
-        }
+        await db.collection('Files')
+            .doc(auth.currentUser.uid)
+            .set({
+                files
+            }).then(() => {
+                setFileURI("")
+                setFileName("")
+            });
     }
 
     const upload = async () => {
         try {
             const resp = await DocumentPicker
-                .getDocumentAsync({type: 'application/pdf'})
+                .getDocumentAsync({type: '*/*'})
             const exist = updateResponse(resp);
             if (exist && fileURI !== "") {
                 await updateDatabase();
@@ -86,15 +82,15 @@ const DocumentTest = ({navigation}) => {
         }
     };
 
-    const preview = async (id) => {
+    const preview = async (uri) => {
         try {
             if (Platform.OS === 'android') {
                 await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-                    data: uris[id],
+                    data: uri,
                     flags: 1,
                 });
             } else {
-                navigation.navigate('PDF Preview', {id: id});
+                navigation.navigate('PDF Preview', {fileUri: uri});
             }
         } catch (e) {
             console.log(e);
@@ -105,10 +101,11 @@ const DocumentTest = ({navigation}) => {
             <View style={styles.container}>
                 <FlatList data={files}
                           extraData={files}
+                          keyExtractor={item => item.fileURI}
                           renderItem={({item}) => {
                               return(
                                   <View>
-                                      <TouchableOpacity onPress={() => preview(item.id)}>
+                                      <TouchableOpacity onPress={() => preview(item.fileURI)}>
                                           <Text>{item.fileName}</Text>
                                       </TouchableOpacity>
                                   </View>
