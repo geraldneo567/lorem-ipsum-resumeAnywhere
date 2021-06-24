@@ -1,11 +1,21 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, Button, Text, Image, View, Platform, FlatList, TouchableOpacity} from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Platform,
+    FlatList,
+    TouchableOpacity, ScrollView
+} from 'react-native';
+import {FAB, Icon} from "react-native-elements";
 
 import DocumentPicker from "expo-document-picker/src/ExpoDocumentPicker";
 import * as FileSystem from 'expo-file-system';
-import {db, auth, fb} from '../config/Database';
+
+import {db, auth} from '../config/Database';
+import Colors from '../config/colors';
 import * as IntentLauncher from "expo-intent-launcher";
-import {Touchable} from "react-native-web";
+
 
 const DocumentTest = ({navigation}) => {
     const [fileURI, setFileURI] = useState('');
@@ -15,63 +25,76 @@ const DocumentTest = ({navigation}) => {
 
     const loadFiles = async () => {
         let docRef = db.collection("Files").doc(auth.currentUser.uid)
-        await docRef.get().then(doc => {
+        await docRef.get().then(async (doc) => {
             if (doc.exists) {
-                setFiles(doc.data().files);
-                setFiles(files.filter(x => x !== ``));
+                await setFiles(doc.data().files);
+                await setUris(doc.data().fileUris);
             }
             return () => console.log("Done")
         })
     }
 
-    useCallback(() => {(async () => loadFiles())()},
-        []);
+    useEffect(() => {(async() => loadFiles())()}, []);
 
     const file = {
-        key: fileURI + files.length,
+        id: files.length,
         fileName,
         fileURI
     }
 
     const updateResponse = async (response) => {
         if (response.type === 'success') {
-            setFileName(response.name);
-            setUris([...uris, response.uri])
             await FileSystem.getContentUriAsync(response.uri)
-                .then(cUri => setFileURI(cUri));
+                .then(cUri => console.log(cUri))
+
+            setFileName(response.name);
+            if (uris.includes(fileURI)) {
+                console.log("File already exists");
+                return false;
+            } else {
+                setUris(uris => [...uris, fileURI])
+                setFiles(files => [...files, file])
+                return true;
+            }
+        } else {
+            return false;
         }
     }
 
-    const onPress = async () => {
-        try {
-            await DocumentPicker
-                .getDocumentAsync({type: 'application/pdf'})
-                .then(resp => updateResponse(resp));
-
-            setFiles([...files, file])
-
+    const updateDatabase = async () => {
+        if (file.fileURI !== "") {
             await db.collection('Files')
                 .doc(auth.currentUser.uid)
                 .set({
-                    files
+                    files,
+                    fileUris: uris
                 }).then(() => {
-                    console.log(files);
                 });
+        }
+    }
+
+    const upload = async () => {
+        try {
+            const resp = await DocumentPicker
+                .getDocumentAsync({type: 'application/pdf'})
+            const exist = updateResponse(resp);
+            if (exist && fileURI !== "") {
+                await updateDatabase();
+            }
         } catch (err) {
             console.log(err);
         }
     };
 
-    const preview = async () => {
+    const preview = async (id) => {
         try {
             if (Platform.OS === 'android') {
                 await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-                    data: fileURI,
+                    data: uris[id],
                     flags: 1,
                 });
             } else {
-                console.log(files)
-                //navigation.navigate('PDF Preview', {fileURI: fileURI});
+                navigation.navigate('PDF Preview', {id: id});
             }
         } catch (e) {
             console.log(e);
@@ -81,18 +104,24 @@ const DocumentTest = ({navigation}) => {
     return (
             <View style={styles.container}>
                 <FlatList data={files}
-                          extraData={file}
+                          extraData={files}
                           renderItem={({item}) => {
                               return(
                                   <View>
-                                      <TouchableOpacity>
+                                      <TouchableOpacity onPress={() => preview(item.id)}>
                                           <Text>{item.fileName}</Text>
                                       </TouchableOpacity>
                                   </View>
                               )
                           }} />
-                <Button onPress={onPress} title="Pick PDF File" />
-                <Button onPress={preview} title={"Show File"} />
+                <FAB onPress={upload}
+                     icon={<Icon name='plus'
+                            type='material-community'
+                            size={20}
+                            color={Colors.white}/>}
+                     placement="right"
+                     color={Colors.placeholderColor}
+                />
             </View>
     );
 };
@@ -104,6 +133,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20,
+        padding: 20
     }
 });

@@ -4,28 +4,29 @@ import {View} from "react-native";
 import AppButton from "../container/AppButton";
 import {useNavigation} from "@react-navigation/native";
 import {auth, db} from "../config/Database";
+import {FileSystem} from "react-native-unimodules";
 
 const PDFPreview = (props) => {
-    const [fileURI, setFileURI] = useState('');
+    const [uri, setUri] = useState('');
     const navigation = useNavigation();
 
-    const loadURI = async () => {
+    const loadUri = async () => {
         let docRef = db.collection("Files").doc(auth.currentUser.uid)
-        await docRef.get().then(doc => {
+        await docRef.get().then(async (doc) => {
             if (doc.exists) {
-                console.log(doc.data());
-                setFileURI(doc.data().files[0])
+                await FileSystem.getContentUriAsync(doc.data.fileUris[props.id])
+                    .then(cUri => setUri(cUri))
             }
             return () => console.log("Done")
         })
+        console.log(uri);
     }
 
-    useEffect(() => {(async () => loadURI())()},
-        []);
+    useEffect(() => {(async() => loadUri())()}, []);
 
     return (
         <View style={{flex: 1}}>
-            <PDFReader source={{uri: fileURI}}/>
+            <PDFReader source={{uri: uri}}/>
             <AppButton title={"Done"} handler={() => navigation.navigate("Documents")} />
         </View>
     )

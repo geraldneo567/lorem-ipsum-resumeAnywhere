@@ -3,7 +3,7 @@ import "firebase/firestore";
 import "firebase/auth";
 
 require("firebase/firestore");
-require("firebase/firebase-storage");
+//require("firebase/firebase-storage");
 
 const firebaseConfig = {
     apiKey: "AIzaSyBGy4cVSHSDfs-WcSEdzWh4FxwUFujZ-bQ",
