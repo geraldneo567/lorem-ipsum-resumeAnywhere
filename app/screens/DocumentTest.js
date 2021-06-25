@@ -22,34 +22,32 @@ const DocumentTest = ({navigation}) => {
     const [fileName, setFileName] = useState('');
     const [files, setFiles] = useState([]);
 
-    const loadFiles = async () => {
+    const loadFiles = () => {
         let docRef = db.collection("Files").doc(auth.currentUser.uid)
-        await docRef.get().then(async (doc) => {
+        docRef.onSnapshot(async (doc) => {
             if (doc.exists) {
                 const data = doc.data().files;
-                const removeDuplicates = new Set(data);
-                setFiles([...removeDuplicates]);
+                setFiles(data);
             }
             return () => console.log("Done")
         })
     }
-
-    useEffect(() => {(async() => loadFiles())()}, []);
 
     const file = {
         fileName,
         fileURI
     }
 
+    useEffect(() => loadFiles(), []);
+
     const updateResponse = async (response) => {
         try {
             if (response.type === 'success') {
-                await FileSystem.getContentUriAsync(response.uri)
-                    .then(cUri => {setFileURI(cUri);})
+                const cUri = await FileSystem.getContentUriAsync(response.uri);
+                setFileURI(cUri);
                 setFileName(response.name);
-                if (file.fileURI !== undefined) {
-                    setFiles(files => [...files, file])
-                }
+                setFiles([...files, file]);
+                return true;
             } else {
                 return false;
             }
@@ -63,10 +61,7 @@ const DocumentTest = ({navigation}) => {
             .doc(auth.currentUser.uid)
             .set({
                 files
-            }).then(() => {
-                setFileURI("")
-                setFileName("")
-            });
+            }).then(() => {});
     }
 
     const upload = async () => {
@@ -74,7 +69,7 @@ const DocumentTest = ({navigation}) => {
             const resp = await DocumentPicker
                 .getDocumentAsync({type: '*/*'})
             const exist = updateResponse(resp);
-            if (exist && fileURI !== "") {
+            if (exist) {
                 await updateDatabase();
             }
         } catch (err) {
@@ -101,7 +96,7 @@ const DocumentTest = ({navigation}) => {
             <View style={styles.container}>
                 <FlatList data={files}
                           extraData={files}
-                          keyExtractor={item => item.fileURI}
+                          keyExtractor={item => Math.random() + item.fileURI}
                           renderItem={({item}) => {
                               return(
                                   <View>

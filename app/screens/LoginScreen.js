@@ -3,7 +3,6 @@ import {
     Platform,
     StatusBar,
     StyleSheet,
-    SafeAreaView,
     View,
     Text,
     TouchableOpacity, ImageBackground,
@@ -106,8 +105,11 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     content: {
-      marginHorizontal: 15,
-      top: 80
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 15,
+        top: 80
     },
     logo: {
         height: 200,

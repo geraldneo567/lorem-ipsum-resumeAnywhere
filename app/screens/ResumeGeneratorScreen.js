@@ -4,7 +4,6 @@ import {View, StyleSheet, Platform, StatusBar} from 'react-native';
 import * as Print from 'expo-print';
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
-import * as IntentLauncher from 'expo-intent-launcher';
 import * as Sharing from 'expo-sharing';
 import loadLocalResource from 'react-native-local-resource';
 import AppButton from "../container/AppButton";
@@ -22,7 +21,6 @@ const ResumeGeneratorScreen = ({navigation}) => {
 
     useEffect(() => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
-<<<<<<< HEAD
 
         loadLocalResource(require('../templates/html-resume-master/test.html'))
             .then((content) => {
@@ -34,22 +32,16 @@ const ResumeGeneratorScreen = ({navigation}) => {
                 setData(snapshot.data());
             }
         })
-       }, [])
-=======
-        docRef.get().then(doc => {
-            if (doc.exists) {
-                setData(doc.data());
-            }
-        })}, [])
->>>>>>> 2d756d5 (Revert "Merge 2 branches on document tests")
+    }, [])
 
     const togglePreviewHandler = () => {
         setPreviewMode(!isPreviewMode);
     }
 
     const createAndSavePDF = async () => {
+        console.log(html);
         try {
-            await loadLocalResource(require("../templates/html-resume-master/resume.html"))
+            await loadLocalResource(require("../templates/html-resume-master/test.html"))
                 .then((content) => {
                     setHtml(content);
                 });
@@ -70,16 +62,16 @@ const ResumeGeneratorScreen = ({navigation}) => {
     const viewFile = async () => {
         setShowLoading(true);
         try {
-            await loadLocalResource(require('../templates/html-resume-master/resume.html'))
+            await loadLocalResource(require('../templates/html-resume-master/test.html'))
                 .then((content) => {
                     setHtml(content);
                 });
             const {uri} = await Print.printToFileAsync({html: html});
             await FileSystem.getContentUriAsync(uri)
                 .then(cUri => {
-                        setPreviewMode(true);
-                        setView(true);
-                        setShowLoading(false);
+                    setPreviewMode(true);
+                    setView(true);
+                    setShowLoading(false);f
                 })
         } catch (err) {
             console.log(err);

@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 8,
         paddingHorizontal: 10,
-        elevation: 5,
         marginTop: 10
     },
     label: {

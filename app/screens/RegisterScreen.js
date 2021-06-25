@@ -1,14 +1,11 @@
 import React, {useState} from 'react';
-import {Image, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
 import {Button, Input} from "react-native-elements";
 
 import Colors from '../config/colors';
 import { auth } from "../config/Database";
 
-
-
 const RegisterScreen = ({navigation}) => {
-
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("");
@@ -16,8 +13,8 @@ const RegisterScreen = ({navigation}) => {
 
     const handleRegistration = () => {
         auth.createUserWithEmailAndPassword(email, password)
-            .then((authUser) => {
-                authUser.user.updateProfile({
+            .then(async (authUser) => {
+                await authUser.user.updateProfile({
                     displayName: firstName + " " + lastName
                 })
             })
@@ -27,61 +24,59 @@ const RegisterScreen = ({navigation}) => {
         }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.containerImage}>
-                <Image style={styles.logo} source={require('../assets/logo.jpg')} />
+        <ImageBackground source={require("../assets/loginPageBackground.png")}
+                         style={styles.containerImage}>
+            <View style={styles.container}>
+                <Input inputContainerStyle={styles.containerInput}
+                       style={{marginVertical:0}}
+                       placeholder='First name'
+                       placeholderTextColor={Colors.grey}
+                       onChangeText={(text) => setFirstName(text)}
+                       value={firstName}
+                />
+                <Input inputContainerStyle={styles.containerInput}
+                       placeholder={"Last name"}
+                       placeholderTextColor={Colors.grey}
+                       onChangeText={text => setLastName(text)}
+                       value={lastName} />
+                <Input inputContainerStyle={styles.containerInput}
+                       placeholder='Email'
+                       placeholderTextColor={Colors.grey}
+                       textContentType={'emailAddress'}
+                       keyboardType='email-address'
+                       onChangeText={text => setEmail(text)}
+                       value={email} />
+                <Input inputContainerStyle={styles.containerInput}
+                       placeholder='Password'
+                       secureTextEntry
+                       placeholderTextColor={Colors.grey}
+                       onChangeText={(text) => setPassword(text)}
+                       value={password}/>
+                <Button title={'Register'}
+                        onPress={handleRegistration} />
+                <View style={styles.containerLogin}>
+                    <Text>Already have an account? </Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                        <Text style={styles.text}>Log in</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <Input inputContainerStyle={styles.containerInput}
-                   style={{marginVertical:0}}
-                   placeholder='First name'
-                   placeholderTextColor={Colors.grey}
-                   onChangeText={(text) => setFirstName(text)}
-                   value={firstName}
-            />
-            <Input inputContainerStyle={styles.containerInput}
-                   placeholder={"Last name"}
-                   placeholderTextColor={Colors.grey}
-                   onChangeText={text => setLastName(text)}
-                   value={lastName} />
-            <Input inputContainerStyle={styles.containerInput}
-                   placeholder='Email'
-                   placeholderTextColor={Colors.grey}
-                   textContentType={'emailAddress'}
-                   keyboardType='email-address'
-                   onChangeText={text => setEmail(text)}
-                   value={email} />
-            <Input inputContainerStyle={styles.containerInput}
-                   placeholder='Password'
-                   secureTextEntry
-                   placeholderTextColor={Colors.grey}
-                   onChangeText={(text) => setPassword(text)}
-                   value={password}/>
-            <Button title={'Register'}
-                    onPress={handleRegistration} />
-            <View style={styles.containerLogin}>
-                <Text>Already have an account? </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                    <Text style={styles.text}>Log in</Text>
-                </TouchableOpacity>
-            </View>
-
-        </View>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: 'column',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 15,
-        marginVertical: 0
+        top: 120
     },
     containerImage: {
-        alignSelf: 'center',
+        flex: 1,
         resizeMode: 'cover',
-        marginVertical: 60
+        justifyContent: 'center'
     },
     containerInput: {
         borderStyle: 'solid',
@@ -98,7 +93,7 @@ const styles = StyleSheet.create({
         width: 200
     },
     text: {
-        color: Colors.menu,
+        color: Colors.textColor,
         fontSize: 15 ,
     },
 });
