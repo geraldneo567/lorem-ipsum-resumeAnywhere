@@ -4,7 +4,6 @@ import {View, StyleSheet, Platform, StatusBar} from 'react-native';
 import * as Print from 'expo-print';
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
-import * as IntentLauncher from 'expo-intent-launcher';
 import * as Sharing from 'expo-sharing';
 import loadLocalResource from 'react-native-local-resource';
 import AppButton from "../container/AppButton";
@@ -33,7 +32,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
                 setData(snapshot.data());
             }
         })
-       }, [])
+    }, [])
 
     const togglePreviewHandler = () => {
         setPreviewMode(!isPreviewMode);

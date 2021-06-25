@@ -3,10 +3,9 @@ import {
     Platform,
     StatusBar,
     StyleSheet,
-    SafeAreaView,
     View,
     Text,
-    Image, TouchableOpacity,
+    TouchableOpacity, ImageBackground,
 } from 'react-native';
 import { Icon, Input} from "react-native-elements";
 
@@ -14,7 +13,6 @@ import AppButton from "../container/AppButton";
 import Colors from '../config/colors';
 
 import { auth } from "../config/Database";
-
 
 export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState("");
@@ -38,37 +36,40 @@ export default function LoginScreen({navigation}) {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.containerImage}>
-                <Image style={styles.logo} source={require('../assets/logo.jpg')}/>
-            </View>
-            <View style={styles.containerEntries}>
-                <Input inputContainerStyle={styles.containerInput}
-                       placeholder='Email'
-                       placeholderTextColor={Colors.grey}
-                       leftIcon={<Icon name='account'
-                                       type='material-community' />}
-                       textContentType={'emailAddress'}
-                       keyboardType='email-address'
-                       onChangeText={text => setEmail(text)}
-                       value={email} />
-                <Input inputContainerStyle={styles.containerInput}
-                       placeholder='Password'
-                       secureTextEntry
-                       placeholderTextColor={Colors.grey}
-                       leftIcon={<Icon name='lock'
-                                       type='material-community' />}
-                       onChangeText={(text) => setPassword(text)}
-                       value={password}/>
-            </View>
-            <AppButton title='Login' handler={handleLogin}/>
-            <View style={styles.containerRegister}>
-                <Text>Don't have an account? </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                    <Text style={styles.text}>Register</Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
+
+            <ImageBackground source={require("../assets/loginPageBackground.png")}
+                             style={styles.containerImage}>
+                <View style={styles.content}>
+                    <View style={styles.containerEntries}>
+                        <Input inputContainerStyle={styles.containerInput}
+                               placeholder='Email'
+                               placeholderTextColor={Colors.grey}
+                               leftIcon={<Icon name='account'
+                                               type='material-community' />}
+                               textContentType={'emailAddress'}
+                               keyboardType='email-address'
+                               onChangeText={text => setEmail(text)}
+                               value={email} />
+                        <Input inputContainerStyle={styles.containerInput}
+                               placeholder='Password'
+                               secureTextEntry
+                               placeholderTextColor={Colors.grey}
+                               leftIcon={<Icon name='lock'
+                                               type='material-community' />}
+                               onChangeText={(text) => setPassword(text)}
+                               value={password}/>
+                    </View>
+                    <AppButton title='Login' handler={handleLogin}/>
+                    <View style={styles.containerRegister}>
+                        <Text>Don't have an account? </Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                            <Text style={styles.text}>Register</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+            </ImageBackground>
+
     );
 }
 
@@ -88,9 +89,9 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     containerImage: {
-        marginVertical: 50,
-        alignSelf: 'center',
-        resizeMode: 'cover'
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'center'
     },
     containerInput: {
         borderStyle: 'solid',
@@ -100,14 +101,22 @@ const styles = StyleSheet.create({
     },
     containerRegister: {
         flexDirection: 'row',
+        justifyContent: 'center',
         marginTop: 10
+    },
+    content: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 15,
+        top: 80
     },
     logo: {
         height: 200,
         width: 200
     },
     text: {
-        color: Colors.menu,
+        color: Colors.textColor,
         fontSize: 15
     }
 })

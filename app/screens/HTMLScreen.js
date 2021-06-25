@@ -1,16 +1,15 @@
 import React, {useEffect, useState, useRef, useCallback} from 'react'
 import {Modal, Platform, SafeAreaView, ScrollView, StyleSheet, useWindowDimensions} from "react-native";
-import {Button, Header, Icon} from "react-native-elements";
+import {Header, Icon} from "react-native-elements";
 
 import RenderHtml, {domNodeToHTMLString} from 'react-native-render-html';
 import * as Sharing from 'expo-sharing';
 import * as Print from "expo-print";
 import * as MediaLibrary from "expo-media-library";
 import Colors from '../config/colors';
-import {db, auth} from "../config/Database";
+import {auth} from "../config/Database";
 
 
-// This screen is for IOS app users
 const HTMLScreen = (props) => {
     const src = props.htmlContent;
 
@@ -163,4 +162,3 @@ const styles = StyleSheet.create({
 });
 
 export default HTMLScreen;
-

@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 8,
         padding: 10,
-        marginTop: 10
+        marginTop: 10,
+        width: '100%'
     },
     containerDate: {
         height: 50,

@@ -16,7 +16,7 @@ const EducationScreen = (props) => {
     useEffect(() => {
 
     }, [startDate, endDate]);
-    
+
 
     const onStartDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || startDate;
@@ -140,4 +140,3 @@ const styles = StyleSheet.create({
 })
 
 export default EducationScreen;
-

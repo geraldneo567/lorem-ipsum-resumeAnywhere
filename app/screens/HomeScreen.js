@@ -1,11 +1,9 @@
 import React, {useLayoutEffect, useState} from 'react';
 import {
     StyleSheet,
-    SafeAreaView,
-    ImageBackground,
     Platform,
     StatusBar,
-    Button, TouchableOpacity, FlatList, View, Text, Image
+    TouchableOpacity, FlatList, View, Text, Image, SafeAreaView
 } from 'react-native';
 import {auth} from "../config/Database"
 
@@ -22,14 +20,14 @@ export default function HomeScreen({navigation}) {
     ])
 
     useLayoutEffect(() =>
-        navigation.setOptions({
-            headerTitle: "Welcome " + auth.currentUser.displayName
-        })
-    , [])
+            navigation.setOptions({
+                headerTitle: "Welcome " + auth.currentUser.displayName
+            })
+        , [])
 
 
     return (
-        <View>
+        <SafeAreaView>
             <FlatList contentContainerStyle={{alignItems: "center", height: '85%'}}
                       data={data}
                       horizontal={false}
@@ -57,20 +55,7 @@ export default function HomeScreen({navigation}) {
                 <Text style={{alignSelf: "center"}}> {'\u00A9'} Orbital 2021</Text>
             </View>
 
-        </View>
-
-        
-        /*
-        <ImageBackground style={styles.background}
-                         source={require('../assets/background.jpg')}
-                         opacity={0.3}
-                         blurRadius={8} >
-            <SafeAreaView style={styles.container}>
-                <TouchableOpacity style={styles.card} title={"Resume Generator"}
-                        onPress={() => navigation.navigate("Information Page", {screen: 'Resume Generator'})}/>
-            </SafeAreaView>
-        </ImageBackground>
-         */
+        </SafeAreaView>
     );
 }
 
@@ -104,7 +89,6 @@ const styles = StyleSheet.create({
         marginVertical: 20,
         marginHorizontal: 20,
         backgroundColor:"#e2e2e2",
-        //flexBasis: '42%',
         width:140,
         height:140,
         borderRadius:60,
