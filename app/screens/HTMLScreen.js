@@ -131,6 +131,7 @@ const HTMLScreen = (props) => {
                 <ScrollView contentContainerStyle={styles.container}>
                     <ScrollView horizontal={true}>
                         <RenderHtml source={{html: src}}
+                                    defaultViewProps={{style: {flex: 1}}}
                                     domVisitors={domVisitors}
                                     enableCSSInlineProcessing={true}
                                     contentWidth={width}

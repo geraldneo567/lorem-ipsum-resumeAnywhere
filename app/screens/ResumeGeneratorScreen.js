@@ -71,7 +71,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
                 .then(cUri => {
                     setPreviewMode(true);
                     setView(true);
-                    setShowLoading(false);f
+                    setShowLoading(false);
                 })
         } catch (err) {
             console.log(err);
