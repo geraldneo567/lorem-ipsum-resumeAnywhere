@@ -1,112 +1,117 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="dep/normalize.css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="dep/Font-Awesome/css/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
-  </head>
-  <body lang="en">
-    <section id="main">
-      <header id="title">
-        <h1 id="testHeader">{{fullName}}</h1>
-      </header>
-      <section class="main-block">
-        <h2>
-          <i class="fa fa-suitcase"></i> Experiences
-        </h2>
-        <section class="blocks">
-          <div class="decorator">
-          </div>
-          <div class="details">
-            <header>
-              <h3>{{companyName1}}</h3>
-              <div class="date">
-                <span>{{startDate1}} TO {{endDate1}}</span>
-              </div>
-              <span class="place">{{jobPosition1}}</span>
-            </header>
-            <div>
-              <p>{{description1}}</p>
-              </div>
-          </div>
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="dep/normalize.css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="dep/Font-Awesome/css/font-awesome.css" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body lang="en">
+<section id="main">
+  <header id="title">
+    <h1 id="testHeader">{{fullName}}</h1>
+  </header>
+  <section class="main-block">
 
-        </section>
-        <section class="blocks">
-          <div class="decorator">
-          </div>
-          <div class="details">
-            <header>
-              <h3>{{jobPosition2}}</h3>
-              <span class="place">{{jobDescription2}}</span>
-            </header>
-            <div>
-              <p>{{jobDetails2}}</p>
-            </div>
-            <div class="date">
-              <span>{{startDate2}}</span><span>{{endDate2}}</span>
-            </div>
-          </div>
-        </section>
-        <section class="blocks">
-          <div class="decorator">
-          </div>
-          <div class="details">
-            <header>
-              <h3>{{jobPosition3}}</h3>
-              <span class="place">{{jobDescription3}}</span>
-            </header>
-            <div>
-              <p>{{jobDetails3}}</p>
-            </div>
-            <div class="date">
-              <span>{{startDate3}}</span><span>{{endDate3}}</span>
-            </div>
-          </div>
-        </section>
-      </section>
-      <section class="main-block concise">
-        <h2>
-          <i class="fa fa-graduation-cap"></i> Education
-        </h2>
-        <section class="blocks">
-          <div class="date">
-            <span>{{educationStartDate1}} to </span><span>{{educationEndDate1}}</span>
-          </div>
-          <div class="decorator">
-          </div>
-          <div class="details">
-            <header>
-              <h3>{{schoolName1}}</h3>
-            </header>
-          </div>
-        </section>
-    </section>
-    <aside id="sidebar">
-      <div class="side-block" id="contact">
-        <h1>
-          Contact Info
-        </h1>
-        <ul>
-          <li><i class="fa fa-globe"></i> johndoe.gtld</li>
-          <li><i class="fa fa-linkedin"></i> linkedin.com/in/john</li>
-          <li><i class="fa fa-envelope"></i> me@johndoe.gtld</li>
-          <li><i class="fa fa-phone"></i> 800.000.0000</li>
-        </ul>
+</body>
+<h2>
+  Profile
+</h2>
+<p>{{personalProfile}}</p>
+
+<h2>
+  Experiences
+</h2>
+<section class="blocks">
+  <div class="decorator">
+  </div>
+  <div class="details">
+    <header>
+      <h3>{{companyName1}}</h3>
+      <div class="date">
+        <span>{{startDate1}} TO {{endDate1}}</span>
       </div>
-      <div class="side-block" id="skills">
-        <h1>
-          Skills
-        </h1>
-        <ul>
-          <li>{{skill1}}</li>
-          <li>{{skill2}}</li>
-          <li>{{skill3}}</li>
-        </ul>
+      <span class="place">{{jobPosition1}}</span>
+    </header>
+    <div>
+      <p>{{description1}}</p>
+    </div>
+  </div>
+
+</section>
+<section class="blocks">
+  <div class="decorator">
+  </div>
+  <div class="details">
+    <header>
+      <h3>{{companyName2}}</h3>
+      <div class="date">
+        <span>{{startDate2}} TO {{endDate2}}</span>
       </div>
-      <div class="side-block" id="disclaimer">
-        This r&eacute;sum&eacute; was wholly typeset with HTML/CSS &mdash; see <code>git.io/vVSYL</code>
+      <span class="place">{{jobPosition2}}</span>
+    </header>
+    <div>
+      <p>{{description2}}</p>
+    </div>
+  </div>
+</section>
+<section class="blocks">
+  <div class="decorator">
+  </div>
+  <div class="details">
+    <header>
+      <h3>{{companyName3}}</h3>
+      <div class="date">
+        <span>{{startDate3}} TO {{endDate3}}</span>
       </div>
-    </aside>
-  </body>
+      <span class="place">{{jobPosition3}}</span>
+    </header>
+    <div>
+      <p>{{description3}}</p>
+    </div>
+  </div>
+</section>
+</section>
+<section class="main-block concise">
+  <h2>
+    <i class="fa fa-graduation-cap"></i> Education
+  </h2>
+  <section class="blocks">
+    <div class="date">
+      <span>{{educationStartDate1}} to </span><span>{{educationEndDate1}}</span>
+    </div>
+    <div class="decorator">
+    </div>
+    <div class="details">
+      <header>
+        <h3>{{schoolName1}}</h3>
+      </header>
+    </div>
+  </section>
+</section>
+<aside id="sidebar">
+  <div class="side-block" id="contact">
+    <h1>
+      Contact Info
+    </h1>
+    <ul>
+      <li>Phone Number: {{phoneNumber}}</li>
+      <li>Email: {{email}}</li>
+    </ul>
+  </div>
+  <div class="side-block" id="skills">
+    <h1>
+      Skills
+    </h1>
+    <ul>
+      <li>{{skill1}}</li>
+      <li>{{skill2}}</li>
+      <li>{{skill3}}</li>
+    </ul>
+  </div>
+  <div class="side-block" id="disclaimer">
+    This r&eacute;sum&eacute; was wholly typeset with HTML/CSS &mdash; see <code>git.io/vVSYL</code>
+  </div>
+</aside>
+</body>
 </html>
