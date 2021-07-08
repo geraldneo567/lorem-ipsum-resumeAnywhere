@@ -15,7 +15,7 @@ const AppButton = (props) => {
 
 const styles = StyleSheet.create({
     button: {
-        color: Colors.placeholderColor,
+        backgroundColor: Colors.placeholderColor,
     }
 })
 

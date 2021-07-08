@@ -2,8 +2,6 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 
-// Will be removed later on
-import TestHomeScreen from "./app/screens/TestHomeScreen";
 import DocumentTest from "./app/screens/DocumentTest";
 import PDFPreview from "./app/screens/PDFPreview";
 
@@ -15,6 +13,7 @@ import LoginScreen from './app/screens/LoginScreen';
 import LogoutScreen from "./app/screens/LogoutScreen";
 import DocumentsScreen from "./app/screens/DocumentsScreen";
 import CameraScreen from "./app/screens/CameraScreen";
+import TipsScreen from "./app/screens/TipsScreen";
 import ResumeGeneratorScreen from "./app/screens/ResumeGeneratorScreen";
 import UserProfileScreen from "./app/screens/UserProfileScreen";
 import Colors from './app/config/colors';
@@ -159,6 +158,14 @@ const MenuScreen = () => {
                                              color={Colors.placeholderColor} />
                                    )
                                )}} />
+            <Drawer.Screen name="Tips"
+                           component={TipsScreen}
+                           options={{drawerIcon: (() => (
+                                       <Icon name='lightbulb-on-outline'
+                                             type='material-community'
+                                             color={Colors.placeholderColor} />
+                                   )
+                               )}} />
             <Drawer.Screen name="Documents"
                            component={DocumentStackScreen}
                            options={{
@@ -174,7 +181,7 @@ const MenuScreen = () => {
                            options={{
                                title: "Personal Information",
                                drawerIcon: (() => (
-                                       <Icon name='file-document-outline'
+                                       <Icon name='square-edit-outline'
                                              type='material-community'
                                              color={Colors.placeholderColor} />
                                    )
@@ -184,7 +191,7 @@ const MenuScreen = () => {
                            options={() => ({
                                title: "Resume Generator",
                                drawerIcon: (() => (
-                                       <Icon name='file-document-outline'
+                                       <Icon name='file-account-outline'
                                              type='material-community'
                                              color={Colors.placeholderColor} />
                                    ))

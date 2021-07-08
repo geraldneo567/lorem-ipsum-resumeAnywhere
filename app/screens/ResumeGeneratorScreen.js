@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet, Platform, StatusBar} from 'react-native';
 
 import * as Print from 'expo-print';
@@ -64,15 +64,12 @@ const ResumeGeneratorScreen = ({navigation}) => {
         try {
             await loadLocalResource(require('../templates/html-resume-master/test.html'))
                 .then((content) => {
+                    console.log(content);
                     setHtml(content);
                 });
-            const {uri} = await Print.printToFileAsync({html: html});
-            await FileSystem.getContentUriAsync(uri)
-                .then(cUri => {
-                    setPreviewMode(true);
-                    setView(true);
-                    setShowLoading(false);f
-                })
+            setPreviewMode(true);
+            setView(true);
+            setShowLoading(false);
         } catch (err) {
             console.log(err);
         }
@@ -83,8 +80,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
             {showLoading ? <LinearProgress color="primary"/> : <View/> }
             <View style={styles.containerButtons}>
                 <AppButton title={"Edit information"}
-                           handler={() => navigation.navigate("Personal Information",
-                               {previous: "Resume Generator"})} />
+                           handler={() => navigation.navigate("Personal Information")} />
                 <AppButton title={"Choose Template"} handler={() => {}} />
                 <AppButton title={"Preview & Download"} handler={viewFile} />
             </View>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react'
+import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react'
 import {Modal, Platform, SafeAreaView, ScrollView, StyleSheet, useWindowDimensions} from "react-native";
 import {Header, Icon} from "react-native-elements";
 
@@ -131,6 +131,7 @@ const HTMLScreen = (props) => {
                 <ScrollView contentContainerStyle={styles.container}>
                     <ScrollView horizontal={true}>
                         <RenderHtml source={{html: src}}
+                                    defaultViewProps={{style: {flex: 1}}}
                                     domVisitors={domVisitors}
                                     enableCSSInlineProcessing={true}
                                     contentWidth={width}

@@ -19,9 +19,10 @@ function InfoTooltip(props) {
 
 const styles = StyleSheet.create({
     containerTooltip: {
+        flexWrap: "wrap",
         backgroundColor: Colors.tooltipBackground,
         width: 200,
-        height: 80
+        height: 80,
     }
 })
 
