@@ -55,7 +55,7 @@ const WorkExperience = (props) => {
                 <ScrollView>
                     <Input placeholder="Name of Company"
                            placeholderTextColor={Colors.grey}
-                           inputContainerStyle={styles.containerDescription}
+                           inputContainerStyle={styles.containerNormal}
                            onChangeText={name => setCompanyName(name)}
                            value={companyName}
                     />
@@ -79,7 +79,7 @@ const WorkExperience = (props) => {
                     </View>
                     <Input placeholder='Job Position'
                            placeholderTextColor={Colors.grey}
-                           inputContainerStyle={styles.containerDescription}
+                           inputContainerStyle={styles.containerNormal}
                            onChangeText={job => setJobPosition(job)}
                            value={jobPosition} />
                     <Input inputContainerStyle={styles.containerDescription}
@@ -120,13 +120,23 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         width: '50%'
     },
-    containerDescription: {
+    containerNormal: {
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 8,
         paddingHorizontal: 10,
         elevation: 5,
         marginTop: 10
+    },
+    containerDescription: {
+        flexWrap: "wrap",
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        elevation: 5,
+        marginTop: 10,
+        height: 100,
     },
     label: {
         paddingBottom: 5,

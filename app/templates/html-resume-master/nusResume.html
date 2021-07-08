@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <style>
+    <!--
+    /* Font Definitions */
+    @font-face
+    {font-family:Wingdings;
+      panose-1:5 0 0 0 0 0 0 0 0 0;}
+    @font-face
+    {font-family:"Cambria Math";
+      panose-1:2 4 5 3 5 4 6 3 2 4;}
+    @font-face
+    {font-family:Calibri;
+      panose-1:2 15 5 2 2 2 4 3 2 4;}
+    @font-face
+    {font-family:Cambria;
+      panose-1:2 4 5 3 5 4 6 3 2 4;}
+    /* Style Definitions */
+    p.MsoNormal, li.MsoNormal, div.MsoNormal
+    {
+      margin: 0 0 10.0pt;
+      line-height:115%;
+      font-size:11.0pt;
+      font-family:"Calibri",sans-serif;}
+    a:link
+    {color:blue;
+      text-decoration:underline;}
+    p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+    {
+      margin: 0 0 10.0pt 36.0pt;
+      line-height:115%;
+      font-size:11.0pt;
+      font-family:"Calibri",sans-serif;}
+    p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+    {
+      margin: 0 0 0 36.0pt;
+      line-height:115%;
+      font-size:11.0pt;
+      font-family:"Calibri",sans-serif;}
+    p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+    {
+      margin: 0 0 10.0pt 36.0pt;
+      line-height:115%;
+      font-size:11.0pt;
+      font-family:"Calibri",sans-serif;}
+    @page WordSection1
+    {size:595.3pt 841.9pt;
+      margin:40.5pt 64.3pt 9.0pt 72.0pt;}
+    div.WordSection1
+    {page:WordSection1;}
+    /* List Definitions */
+    ol
+    {margin-bottom:0;}
+    ul
+    {margin-bottom:0;}
+    -->
+  </style>
+  <title>Resume</title>
+</head>
+
+<body lang=EN-US style='word-wrap:break-word'>
+
+<div class=WordSection1>
+
+  <p class=MsoNormal style='margin-bottom:0;line-height:normal'>
+    <b>
+    <span lang=EN-SG style='font-size:16.0pt;font-family:"Arial",sans-serif'>{{fullName}} </span>
+    </b>
+    <span lang=EN-SG>Mobile: {{phoneNumber}} Email: </span>
+    <span lang=EN-SG>
+      <a href="mailto:rachel.lim@nus.edu.sg">
+        <span style='color:black;text-decoration:none'>{{email}}</span>
+      </a>
+    </span>
+  </p>
+
+  <p class=MsoNormal style='margin: 12.0pt 0 0;line-height:normal;background:silver'>
+    <b>
+      <span lang=EN-SG style='color:black'>EDUCATION</span>
+    </b>
+  </p>
+
+  <p class=MsoNormal style='margin-bottom:0;line-height:normal'><b>
+    <span lang=EN-SG>{{schoolName1}}</span>
+    </b>
+    <span lang=EN-SG>
+      <b>{{educationStartDate1}} – {{educationEndDate1}}</b>
+    </span>
+  </p>
+
+  <p class=MsoListParagraphCxSpFirst style='margin: 0 0 0 18.0pt;text-indent:-18.0pt;line-height:normal'>
+    <span lang=EN-SG style='font-size:12.0pt;font-family:Symbol,sans-serif'>·<span style='font:7.0pt "Times New Roman"'>
+</span></span><span lang=EN-SG>{{educationLevel1}}</span></p>
+
+  <p class=MsoListParagraphCxSpLast style='margin: 0 0 0 18.0pt;text-indent:-18.0pt;line-height:normal'><span
+          lang=EN-SG style='font-size:12.0pt;font-family:Symbol,sans-serif'>·<span style='font:7.0pt "Times New Roman"'>
+</span></span><span lang=EN-SG>CAP: 4.2 ( 2<sup>nd</sup> Upper Class Honours)</span></p>
+
+  <p class=MsoNormal style='margin: 0 0 0 18.0pt;text-indent:-18.0pt;line-height:normal'><span lang=EN-SG></span></p>
+
+  <p class=MsoNormal style='margin: 0 0 0 18.0pt;text-indent:-18.0pt;line-height:normal'><b><span lang=EN-SG>Shanghai
+Jiao Tong University</span></b><span lang=EN-SG>, Student Exchange Programme <b>Jan
+16 – May 16</b></span></p>
+
+  <p class=MsoListParagraph style='margin: 0 0 0 18.0pt;text-indent:-18.0pt;line-height:normal'><span
+          lang=EN-SG style='font-size:12.0pt;font-family:Symbol,sans-serif'>·<span style='font:7.0pt "Times New Roman"'>
+</span></span><span lang=EN-SG>Gained insights into Chinese culture through
+active participation in project meetings and networking sessions with business
+leaders.</span></p>
+
+  <p class=MsoNormal style='margin: 12.0pt 0 0;line-height:normal;background:silver'>
+    <b>
+      <span lang=EN-SG style='color:black'>WORK EXPERIENCE</span>
+    </b>
+  </p>
+
+  <p class=MsoNormal style='margin-bottom:0;line-height:normal'>
+    <b>
+      <span lang=EN-SG>{{companyName1}}, {{jobPosition1}}</span>
+    </b>
+    <b>
+      <span lang=EN-SG>{{startDate1}} – {{endDate1}} </span>
+    </b>
+  </p>
+
+  <p class=MsoListParagraphCxSpFirst style='margin: 0 0 0 18.0pt;text-indent:-18.0pt;line-height:normal'>
+    <span lang=EN-SG style='font-family:Symbol,sans-serif'>·
+      <span style='font:7.0pt "Times New Roman"'></span>
+    </span>
+    <span lang=EN-SG>{{description1}}</span>
+  </p>
+
+  <p class=MsoNormal style='margin-bottom:0;line-height:normal'><b><span
+          lang=EN-SG></span></b></p>
+
+  <p class=MsoNormal style='margin-bottom:0;line-height:normal'>
+    <b>
+      <span lang=EN-SG>{{companyName2}}, {{jobPosition2}}</span>
+    </b>
+    <b>
+      <span lang=EN-SG>{{startDate2}} – {{endDate2}} </span>
+    </b>
+  </p>
+
+  <p class=MsoListParagraphCxSpFirst style='margin: 0 0 0 18.0pt;text-indent:-18.0pt;line-height:normal'>
+    <span lang=EN-SG style='font-family:Symbol,sans-serif'>·
+      <span style='font:7.0pt "Times New Roman"'></span>
+    </span>
+    <span lang=EN-SG>{{description2}}</span>
+  </p>
+
+  <p class=MsoNormal style='margin-bottom:0;line-height:normal'><b><span
+          lang=EN-SG></span></b></p>
+
+  <p class=MsoNormal style='margin-bottom:0;line-height:normal'>
+    <b>
+      <span lang=EN-SG>{{companyName3}}, {{jobPosition3}}</span>
+    </b>
+    <b>
+      <span lang=EN-SG>{{startDate3}} – {{endDate3}} </span>
+    </b>
+  </p>
+
+  <p class=MsoListParagraphCxSpFirst style='margin: 0 0 0 18.0pt;text-indent:-18.0pt;line-height:normal'>
+    <span lang=EN-SG style='font-family:Symbol,sans-serif'>·
+      <span style='font:7.0pt "Times New Roman"'></span>
+    </span>
+    <span lang=EN-SG>{{description3}}</span>
+  </p>
+
+  <p class=MsoNormal style='margin-bottom:0;line-height:normal'><b><span
+          lang=EN-SG></span></b></p>
+
+  <p class=MsoNormal style='margin-bottom:0;line-height:normal;background:silver'><b><span
+          lang=EN-SG style='color:black'>CO-CURRICULAR ACTIVITIES</span></b></p>
+
+  <p class=MsoNormal style='margin-bottom:0;line-height:normal'>
+    <b>
+      <span lang=EN-SG>Sponsorship Team Member, NUS Giving Society</span>
+    </b>
+    <b>
+      <span lang=EN-SG>Jul 16 – Jul 17</span>
+    </b>
+  </p>
+
+  <p class=MsoNormal style='margin: 12.0pt 0 0;line-height:normal;background:silver'>
+    <b>
+      <span lang=EN-SG style='color:black'>ADDITIONAL INFORMATION</span>
+    </b>
+  </p>
+  <p class=MsoListParagraphCxSpFirst style='margin: 0 0 0 18.0pt;text-align:justify;text-justify:inter-ideograph;
+  text-indent:-18.0pt;line-height:normal'>
+    <span lang=EN-SG style='font-size:12.0pt; font-family:Symbol,sans-serif'>·
+      <span style='font:7.0pt "Times New Roman"'></span>
+    </span>
+    <span lang=EN-SG>Proficient in Microsoft Office, Ulead Video Studio, Adobe Premiere Pro, </span>
+  </p>
+
+  <p class=MsoListParagraphCxSpLast style='margin: 0 0 0 18.0pt;text-align:justify;text-justify:inter-ideograph;
+  text-indent:-18.0pt;line-height:normal'>
+    <span lang=EN-SG style='font-family:Symbol,sans-serif'>·
+      <span style='font:7.0pt "Times New Roman"'></span>
+    </span>
+    <span lang=EN-SG>
+      Fluent in {{language1}}, {{language2}}, {{language3}} (both spoken and written)
+      Skills: {{skill1}}, {{skill2}}, {{skill3}}, {{skill4}}, {{skill5}}
+    </span>
+  </p>
+
+  <p class=MsoNormal style='margin: 0 -45.0pt 0 18.0pt;text-align:justify;text-justify:inter-ideograph;
+  text-indent:-18.0pt;line-height:normal'>
+    <span lang=EN-SG style='font-family:Symbol,sans-serif'>·
+      <span style='font:7.0pt "Times New Roman"'></span>
+    </span>
+    <span lang=EN-SG>{{personalProfile}}</span>
+  </p>
+
+  <p class=MsoNormal style='margin-bottom:0'><span lang=EN-SG></span></p>
+
+</div>
+
+</body>
+
+</html>

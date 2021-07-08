@@ -2,6 +2,8 @@ import React from 'react';
 import {StyleSheet, Text, View} from "react-native";
 import {Icon} from "react-native-elements";
 
+import Colors from '../config/colors';
+
 const DescriptionContainer = (props) => {
     return (
             <View style={styles.container}>
@@ -18,6 +20,9 @@ const DescriptionContainer = (props) => {
                         From {props.startDate} to {props.endDate}
                     </Text>
                 </View>
+                <View style={styles.description}>
+                    <Text>{props.description}</Text>
+                </View>
                 <Icon name="delete"
                       type="material-community"
                       onPress={() => props.remove(props.toRemove)} />
@@ -28,6 +33,7 @@ const DescriptionContainer = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 0,
+        backgroundColor: Colors.offwhite,
         borderStyle: 'solid',
         borderColor: 'rgba(158, 150, 150, 0.5)',
         borderWidth: 1,
@@ -59,6 +65,9 @@ const styles = StyleSheet.create({
     info: {
         fontSize: 15,
         fontWeight: 'bold'
+    },
+    description: {
+        fontSize: 15
     }
 })
 

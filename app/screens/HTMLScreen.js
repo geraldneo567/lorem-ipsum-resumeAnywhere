@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react'
+import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react'
 import {Modal, Platform, SafeAreaView, ScrollView, StyleSheet, useWindowDimensions} from "react-native";
 import {Header, Icon} from "react-native-elements";
 

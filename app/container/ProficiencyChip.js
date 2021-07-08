@@ -13,7 +13,7 @@ function ProficiencyChip(props) {
                     name: "close",
                     type: "font-awesome",
                     size: 20,
-                    color: 'pink',
+                    color: Colors.menu,
                     onPress: () => props.remove(props.toRemove)
                 }}
                 iconRight

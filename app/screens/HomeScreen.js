@@ -29,9 +29,10 @@ export default function HomeScreen({navigation}) {
 
     return (
         <ImageBackground source={require('../assets/ImageBackground.png')}
+                         imageStyle={{opacity: 0.75}}
                          style={styles.containerImage}>
             <SafeAreaView>
-                <FlatList contentContainerStyle={{alignItems: "center", height: '85%'}}
+                <FlatList contentContainerStyle={{alignItems: "center", height: '90%'}}
                           data={data}
                           horizontal={false}
                           numColumns={2}
@@ -63,37 +64,27 @@ export default function HomeScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
-    logo: {
-        alignSelf: 'center',
-        height: 50,
-        width: 50,
-    },
-    background: {
-        width: '100%',
-        height: '100%'
-    },
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
-
     card:{
         shadowColor: Colors.grey,
         shadowOffset: {
-            width: 0,
-            height: 6,
+            width: 5,
+            height: 10,
         },
-        shadowOpacity: 0.37,
-        shadowRadius: 7.49,
-        elevation: 12,
+        shadowOpacity: 0.40,
+        shadowRadius: 7.5,
+        elevation: 15,
         marginVertical: 20,
         marginHorizontal: 20,
         backgroundColor:"#e2e2e2",
         width:140,
         height:140,
-        borderRadius:60,
+        borderRadius: 20,
         alignItems:'center',
         justifyContent:'center'
     },

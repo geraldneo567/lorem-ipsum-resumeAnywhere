@@ -7,7 +7,8 @@ import {
     ScrollView,
     SafeAreaView,
     Platform,
-    StatusBar} from 'react-native';
+    StatusBar, ImageBackground
+} from 'react-native';
 import {Icon, Input} from "react-native-elements";
 import {auth , db} from "../config/Database"
 
@@ -96,6 +97,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
     const updateWorkExperiences = (work) => {
         setWorkExperiences([...workExperiences, work]);
     }
+
     const updateEducation = (edu) => {
         setEducation([...education, edu]);
     }
@@ -116,194 +118,199 @@ const PersonalInformationScreen =  ( {navigation} ) => {
         setEducation(education.filter(x => x !== edu));
     }
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <View style={styles.label}>
-                    <Text style={styles.text}>Proficiency</Text>
-                    <InfoTooltip input={"skills or languages"}/>
-                </View>
-                <View>
+        <ImageBackground source={require('../assets/ImageBackground.png')}
+                         style={styles.containerImage}
+                         imageStyle={styles.image}>
+            <SafeAreaView style={styles.container}>
+                <ScrollView>
+                    <View style={styles.label}>
+                        <Text style={styles.text}>Proficiency</Text>
+                        <InfoTooltip input={"skills or languages"}/>
+                    </View>
+
+                    <View>
+                        <Input inputContainerStyle={styles.containerInput}
+                               style={styles.input}
+                               placeholder='Skills'
+                               placeholderTextColor={Colors.placeholderColor}
+                               leftIcon={<Icon name='tools'
+                                               type='material-community' />}
+                               multiline={true}
+                               onChangeText={text => setSkillInput(text)}
+                               onEndEditing={() => {
+                                   if (skillInput !== "" && !skills.includes(skillInput)) {
+                                       setSkills([...skills, skillInput])
+                                   }
+                                   setSkillInput("")
+                               }}
+                               value={skillInput}
+                        />
+                    </View>
                     <Input inputContainerStyle={styles.containerInput}
                            style={styles.input}
-                           placeholder='Skills'
+                           placeholder='Languages'
                            placeholderTextColor={Colors.placeholderColor}
-                           leftIcon={<Icon name='tools'
+                           leftIcon={<Icon name='translate'
                                            type='material-community' />}
                            multiline={true}
-                           onChangeText={text => setSkillInput(text)}
+                           onChangeText={text => setLanguageInput(text)}
                            onEndEditing={() => {
-                               if (skillInput !== "" && !skills.includes(skillInput)) {
-                                   setSkills([...skills, skillInput])
+                               if (languageInput !== "" && !languages.includes(languageInput)) {
+                                   setLanguages([...languages, languageInput])
                                }
-                               setSkillInput("")
+                               setLanguageInput("")
                            }}
-                           value={skillInput}
-                    />
-                </View>
-                <Input inputContainerStyle={styles.containerInput}
-                       style={styles.input}
-                       placeholder='Languages'
-                       placeholderTextColor={Colors.placeholderColor}
-                       leftIcon={<Icon name='translate'
-                                       type='material-community' />}
-                       multiline={true}
-                       onChangeText={text => setLanguageInput(text)}
-                       onEndEditing={() => {
-                           if (languageInput !== "" && !languages.includes(languageInput)) {
-                               setLanguages([...languages, languageInput])
-                           }
-                           setLanguageInput("")
-                       }}
-                       value={languageInput}/>
+                           value={languageInput}/>
 
-                <View style={styles.label}>
-                    <Text style={styles.text}>Contact Information</Text>
-                </View>
-                <Input inputContainerStyle={styles.containerInput}
-                       style={styles.input}
-                       placeholder='Phone Number'
-                       placeholderTextColor={Colors.placeholderColor}
-                       keyboardType={'numeric'}
-                       leftIcon={<Icon name='phone'
-                                       type='material-community' />}
-                       onChangeText={(text) => setPhoneNumber(text)}
-                       value={phoneNumber}/>
+                    <View style={styles.label}>
+                        <Text style={styles.text}>Contact Information</Text>
+                    </View>
+                    <Input inputContainerStyle={styles.containerInput}
+                           style={styles.input}
+                           placeholder='Phone Number'
+                           placeholderTextColor={Colors.placeholderColor}
+                           keyboardType={'numeric'}
+                           leftIcon={<Icon name='phone'
+                                           type='material-community' />}
+                           onChangeText={(text) => setPhoneNumber(text)}
+                           value={phoneNumber}/>
 
-                <View style={styles.label}>
-                    <Text style={styles.text}>Personal Profile</Text>
-                </View>
-                <Input inputContainerStyle={styles.containerInputBig}
-                       placeholder='A short description about you'
-                       placeholderTextColor={Colors.placeholderColor}
-                       keyboardType={'text'}
-                       leftIcon={<Icon name='account'
-                                       type='material-community' />}
-                       onChangeText={(text) => setPersonalProfile(text)}
-                       value={personalProfile}/>
+                    <View style={styles.label}>
+                        <Text style={styles.text}>Personal Profile</Text>
+                    </View>
+                    <Input inputContainerStyle={styles.containerInputBig}
+                           inputStyle={styles.input}
+                           multiline={true}
+                           placeholder='A short description about you'
+                           placeholderTextColor={Colors.placeholderColor}
+                           keyboardType={'text'}
+                           leftIcon={<Icon name='account'
+                                           type='material-community' />}
+                           onChangeText={(text) => setPersonalProfile(text)}
+                           value={personalProfile}/>
 
-                <View style={styles.label}>
-                    <Text style={styles.text}>Added Skills</Text>
-                </View>
-                <View style={styles.containerChip}>
-                    {skills.map(skill => {
-                        return (
-                            <ProficiencyChip title={skill}
-                                             toRemove={skill}
-                                             remove={removeSkill} />
-                        )
-                    })}
-                </View>
+                    <View style={styles.label}>
+                        <Text style={styles.text}>Added Skills</Text>
+                    </View>
+                    <View style={styles.containerChip}>
+                        {skills.map(skill => {
+                            return (
+                                <ProficiencyChip title={skill}
+                                                 toRemove={skill}
+                                                 remove={removeSkill} />
+                            )
+                        })}
+                    </View>
 
-                <View style={styles.label}>
-                    <Text style={styles.text}>Languages</Text>
-                </View>
-                <View style={styles.containerChip}>
-                    {languages.map(language => {
-                        return (
-                            <ProficiencyChip title={language}
-                                             toRemove={language}
-                                             remove={removeLanguage} />
-                        )
-                    })}
-                </View>
+                    <View style={styles.label}>
+                        <Text style={styles.text}>Languages</Text>
+                    </View>
+                    <View style={styles.containerChip}>
+                        {languages.map(language => {
+                            return (
+                                <ProficiencyChip title={language}
+                                                 toRemove={language}
+                                                 remove={removeLanguage} />
+                            )
+                        })}
+                    </View>
 
-                <View style={styles.label}>
-                    <Text style={styles.text}>Education</Text>
-                    <View style={styles.addButton}>
+                    <View style={styles.label}>
+                        <Text style={styles.text}>Education</Text>
+                        <View style={styles.addButton}>
+                            <Icon
+                                reverse
+                                name='plus'
+                                type='material-community'
+                                size={15}
+                                color={Colors.placeholderColor}
+                                onPress={toggleEducationHandler} />
+                        </View>
+                    </View>
+
+                    <View style={styles.containerChip}>
+                        {education.map(edu => {
+                            if (edu) {
+                                const schoolName = edu.schoolName;
+                                const level = edu.educationLevel;
+                                const start = new Date(edu.startDate.seconds * 1000);
+                                const end = new Date(edu.endDate.seconds * 1000);
+
+                                const startDate = isNaN(start.getMonth()) ? edu.startDate.toString() : start.getMonth().toString() + "/" + start.getFullYear().toString();
+                                const endDate = isNaN(end.getMonth()) ?  edu.endDate.toString() : end.getMonth().toString() + "/" + end.getFullYear().toString();
+
+
+                                return (
+                                    <DescriptionContainer title={schoolName}
+                                                          startDate={startDate}
+                                                          endDate={endDate}
+                                                          additional={level}
+                                                          description={''}
+                                                          toRemove={edu}
+                                                          remove={removeEducation} />
+                                )
+                            }
+                        })}
+                    </View>
+
+
+                    <View style={styles.containerModal}>
+                        <EducationScreen visible={isEducationMode}
+                                         onDone={toggleEducationHandler}
+                                         handler={updateEducation}/>
+                    </View>
+
+                    <View style={styles.label}>
+                        <Text style={styles.text}>Work Experiences</Text>
                         <Icon
                             reverse
                             name='plus'
                             type='material-community'
                             size={15}
                             color={Colors.placeholderColor}
-                            onPress={toggleEducationHandler} />
+                            onPress={toggleWorkExperienceHandler} />
                     </View>
-                </View>
-
-                <View style={styles.containerChip}>
-                    {education.map(edu => {
-                        if (edu) {
-                            console.log(edu);
-                            const schoolName = edu.schoolName;
-                            const level = edu.educationLevel;
-                            const start = new Date(edu.startDate.seconds * 1000);
-                            const end = new Date(edu.endDate.seconds * 1000);
-
-                            const startDate = isNaN(start.getMonth()) ? edu.startDate.toString() : start.getMonth().toString() + "/" + start.getFullYear().toString();
-                            const endDate = isNaN(end.getMonth()) ?  edu.endDate.toString() : end.getMonth().toString() + "/" + end.getFullYear().toString();
 
 
+                    <View style={styles.containerChip}>
+                        {workExperiences.map(workExperience => {
+                            const companyName = workExperience.companyName;
+                            const description = workExperience.description;
+                            const jobPosition = workExperience.jobPosition;
+
+                            const start = new Date(workExperience.startDate.seconds * 1000);
+                            const end = new Date(workExperience.endDate.seconds * 1000);
+
+                            const startDate = isNaN(start.getMonth()) ? workExperience.startDate.toString() : start.getMonth().toString() + "/" + start.getFullYear().toString();
+                            const endDate = isNaN(end.getMonth()) ?  workExperience.endDate.toString() : end.getMonth().toString() + "/" + end.getFullYear().toString();
                             return (
-                                <DescriptionContainer title={schoolName}
+
+                                <DescriptionContainer title={companyName}
                                                       startDate={startDate}
                                                       endDate={endDate}
-                                                      additional={level}
-                                                      description={''}
-                                                      toRemove={edu}
-                                                      remove={removeEducation} />
+                                                      additional={jobPosition}
+                                                      description={description}
+                                                      toRemove={workExperience}
+                                                      remove={removeWorkExperience} />
                             )
-                        }
-                    })}
-                </View>
+                        })}
+                    </View>
+                    <View style={styles.containerModal}>
+                        <WorkExperience visible={isAddWorkExperienceMode}
+                                        onDone={toggleWorkExperienceHandler}
+                                        handler={updateWorkExperiences}/>
+                    </View>
+                    <View style={styles.addButton}>
+
+                    </View>
 
 
-                <View style={styles.containerModal}>
-                    <EducationScreen visible={isEducationMode}
-                                     onDone={toggleEducationHandler}
-                                     handler={updateEducation}/>
-                </View>
-
-                <View style={styles.label}>
-                    <Text style={styles.text}>Work Experiences</Text>
-                    <Icon
-                        reverse
-                        name='plus'
-                        type='material-community'
-                        size={15}
-                        color={Colors.placeholderColor}
-                        onPress={toggleWorkExperienceHandler} />
-                </View>
-
-
-                <View style={styles.containerChip}>
-                    {workExperiences.map(workExperience => {
-                        const string = JSON.stringify(workExperience,null,'\t')
-                        const companyName = workExperience.companyName;
-                        const description = workExperience.description;
-                        const jobPosition = workExperience.jobPosition;
-
-                        const start = new Date(workExperience.startDate.seconds * 1000);
-                        const end = new Date(workExperience.endDate.seconds * 1000);
-
-                        const startDate = isNaN(start.getMonth()) ? workExperience.startDate.toString() : start.getMonth().toString() + "/" + start.getFullYear().toString();
-                        const endDate = isNaN(end.getMonth()) ?  workExperience.endDate.toString() : end.getMonth().toString() + "/" + end.getFullYear().toString();
-                        return (
-
-                            <DescriptionContainer title={companyName}
-                                                  startDate={startDate}
-                                                  endDate={endDate}
-                                                  additional={jobPosition}
-                                                  description={''}
-                                                  toRemove={workExperience}
-                                                  remove={removeWorkExperience} />
-                        )
-                    })}
-                </View>
-                <View style={styles.containerModal}>
-                    <WorkExperience visible={isAddWorkExperienceMode}
-                                    onDone={toggleWorkExperienceHandler}
-                                    handler={updateWorkExperiences}/>
-                </View>
-                <View style={styles.addButton}>
-
-                </View>
-
-
-                <View style={styles.containerButton}>
-                    <AppButton title={"Save"} handler={add} />
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                    <View style={styles.containerButton}>
+                        <AppButton title={"Save"} handler={add} />
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+        </ImageBackground>
     );
 }
 
@@ -328,17 +335,25 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap'
     },
     containerInput: {
+        backgroundColor: Colors.offwhite,
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 20,
         paddingHorizontal: 10
     },
     containerInputBig: {
+        flexWrap: "wrap",
+        backgroundColor: Colors.offwhite,
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 20,
-        paddingHorizontal: 10,
+        padding: 10,
         height: 100,
+    },
+    containerImage: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'center',
     },
     containerModal: {
         flex: 1,
@@ -348,17 +363,20 @@ const styles = StyleSheet.create({
         marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
     },
     input: {
-        padding: 5,
+        padding: 5
+    },
+    image: {
+        opacity: 0.6
     },
     label: {
         flexDirection: 'row',
         marginVertical: 5,
-        marginHorizontal: 15,
-
+        marginHorizontal: 20,
+        paddingHorizontal: 5
     },
     text: {
         fontSize: 20,
-        paddingTop: 10,
+        paddingTop: 10
     }
 });
 
