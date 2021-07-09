@@ -28,7 +28,6 @@ import {Icon} from "react-native-elements";
 
 import {auth} from "./app/config/Database"
 
-
 const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
 const Drawer = createDrawerNavigator();

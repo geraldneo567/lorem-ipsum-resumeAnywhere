@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     Alert,
     View,
@@ -13,12 +13,14 @@ import {Icon, Input} from "react-native-elements";
 import {auth , db} from "../config/Database"
 
 import Colors from '../config/colors';
+import CallingCodes from '../config/CountryCodes';
 import WorkExperience from './WorkExperience';
 import AppButton from "../container/AppButton";
 import ProficiencyChip from "../container/ProficiencyChip"
 import InfoTooltip from "../container/InfoTooltip";
 import EducationScreen from "./EducationScreen";
 import DescriptionContainer from "../container/DescriptionContainer";
+import {Picker} from "@react-native-picker/picker";
 
 const PersonalInformationScreen =  ( {navigation} ) => {
     const [isAddWorkExperienceMode, setWorkExperienceMode] = useState(false);
@@ -31,8 +33,10 @@ const PersonalInformationScreen =  ( {navigation} ) => {
     const [education, setEducation] = useState([]);
     const [personalProfile, setPersonalProfile] = useState('');
     const [workExperiences, setWorkExperiences] = useState([])
+    const [callCode, setCallCode] = useState("+");
 
     const loadExistingInformation = async () => {
+
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
         await docRef.get().then(doc => {
             if (doc.exists) {
@@ -84,7 +88,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
             .doc(auth.currentUser.uid)
             .set({
                 displayName: auth.currentUser.displayName,
-                phoneNumber,
+                phoneNumber: callCode + " " + phoneNumber,
                 skills,
                 languages,
                 education,
@@ -93,6 +97,8 @@ const PersonalInformationScreen =  ( {navigation} ) => {
             }).then(alertMessage)
             .catch(error => alert(error))
     }
+
+    const pickerRef = useRef();
 
     const updateWorkExperiences = (work) => {
         setWorkExperiences([...workExperiences, work]);
@@ -165,6 +171,23 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                     <View style={styles.label}>
                         <Text style={styles.text}>Contact Information</Text>
                     </View>
+                    <View style={styles.containerCountry}>
+                        <Text style={styles.countryLabel}>Country</Text>
+                        <Picker style={styles.picker}
+                                itemStyle={styles.countryName}
+                                selectedValue={callCode}
+                                mode="dropdown"
+                                ref={pickerRef}
+                                onValueChange={(itemValue) => setCallCode(itemValue)}>
+                            {CallingCodes.map(country => {
+                                return (
+                                    <Picker.Item label={country.name + " " + country.dial_code}
+                                                 value={country.dial_code}/>
+                                )
+                            })}
+                        </Picker>
+                    </View>
+
                     <Input inputContainerStyle={styles.containerInput}
                            style={styles.input}
                            placeholder='Phone Number'
@@ -315,9 +338,6 @@ const PersonalInformationScreen =  ( {navigation} ) => {
 }
 
 const styles = StyleSheet.create({
-    addButton: {
-
-    },
     container: {
         flex: 1,
         marginVertical: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
@@ -333,6 +353,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         flexDirection: 'row',
         flexWrap: 'wrap'
+    },
+    containerCountry: {
+        alignItems: "center",
     },
     containerInput: {
         backgroundColor: Colors.offwhite,
@@ -362,6 +385,17 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
     },
+    countryLabel: {
+        marginHorizontal: 20,
+        padding: 10,
+        fontSize: 18,
+        color: Colors.grey,
+        alignSelf: "flex-start",
+        fontWeight: 'bold'
+    },
+    countryName: {
+        fontSize: 20,
+    },
     input: {
         padding: 5
     },
@@ -373,6 +407,9 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         marginHorizontal: 20,
         paddingHorizontal: 5
+    },
+    picker: {
+       width: '100%'
     },
     text: {
         fontSize: 20,

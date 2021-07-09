@@ -3,6 +3,7 @@ export default {
     textColor: '#0e225c',
     white: '#fff',
     offwhite: 'rgba(255,255,255,0.89)',
+    profileHeader: "#e8e4da",
     black: '#000',
     menu: '#5271ff',
     grey: '#666464',

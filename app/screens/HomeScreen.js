@@ -10,7 +10,6 @@ import Colors from '../config/colors'
 
 export default function HomeScreen({navigation}) {
 
-
     const [data, setData] = useState(     [
         {id:1, title: "Resume Generator", image:"https://img.icons8.com/color/70/000000/resume.png",
             screenContainer: "Information Page", screenName: "Resume Generator"},

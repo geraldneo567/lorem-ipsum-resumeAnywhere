@@ -15,7 +15,7 @@ const RegisterScreen = ({navigation}) => {
         auth.createUserWithEmailAndPassword(email, password)
             .then(async (authUser) => {
                 await authUser.user.updateProfile({
-                    displayName: firstName + " " + lastName
+                    displayName: firstName + " " + lastName,
                 })
             })
             .catch((error) => {
