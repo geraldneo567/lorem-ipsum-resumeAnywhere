@@ -13,7 +13,7 @@ const CarouselCardItem = ({item, index}) => {
             <Text style={styles.header}>{item.title}</Text>
             <Text style={styles.body}>{item.body}</Text>
             <View style={styles.acknowledgement}>
-                <Text> {'\u00A9'}NUS Centre for Future-ready Graduates</Text>
+                <Text> {'\u00A9'} NUS Centre for Future-ready Graduates</Text>
             </View>
         </View>
     );

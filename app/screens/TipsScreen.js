@@ -14,26 +14,26 @@ const TipsScreen = () => {
         <ImageBackground source={require('../assets/ImageBackground.png')}
                          style={styles.containerImage}
                          imageStyle={styles.image}>
-        <SafeAreaView style={styles.container}>
-            <Carousel data={tips}
-                      renderItem={CarouselCardItem}
-                      layout="stack"
-                      layoutCardOffset={9}
-                      ref={isCarousel}
-                      sliderWidth={SLIDER_WIDTH}
-                      itemWidth={ITEM_WIDTH}
-                      inactiveSlideShift={0}
-                      onSnapToItem={(ind) => setIndex(ind)}
-                      useScrollView={true} />
+            <SafeAreaView style={styles.container}>
+                <Carousel data={tips}
+                          renderItem={CarouselCardItem}
+                          layout="stack"
+                          layoutCardOffset={9}
+                          ref={isCarousel}
+                          sliderWidth={SLIDER_WIDTH}
+                          itemWidth={ITEM_WIDTH}
+                          inactiveSlideShift={0}
+                          onSnapToItem={(ind) => setIndex(ind)}
+                          useScrollView={true} />
 
-            <Pagination dotsLength={tips.length}
-                        activeDotIndex={index}
-                        carouselRef={isCarousel}
-                        dotStyle={styles.dots}
-                        inactiveDotOpacity={0.4}
-                        inactiveDotScale={0.6}
-                        tappableDots={true} />
-        </SafeAreaView>
+                <Pagination dotsLength={tips.length}
+                            activeDotIndex={index}
+                            carouselRef={isCarousel}
+                            dotStyle={styles.dots}
+                            inactiveDotOpacity={0.50}
+                            inactiveDotScale={0.75}
+                            tappableDots={true} />
+            </SafeAreaView>
         </ImageBackground>
     )
 }

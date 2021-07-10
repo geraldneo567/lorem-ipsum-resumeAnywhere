@@ -181,7 +181,8 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                                 onValueChange={(itemValue) => setCallCode(itemValue)}>
                             {CallingCodes.map(country => {
                                 return (
-                                    <Picker.Item label={country.name + " " + country.dial_code}
+                                    <Picker.Item key={country.code}
+                                                 label={country.name + " " + country.dial_code}
                                                  value={country.dial_code}/>
                                 )
                             })}
@@ -206,7 +207,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                            multiline={true}
                            placeholder='A short description about you'
                            placeholderTextColor={Colors.placeholderColor}
-                           keyboardType={'text'}
+                           keyboardType={'default'}
                            leftIcon={<Icon name='account'
                                            type='material-community' />}
                            onChangeText={(text) => setPersonalProfile(text)}

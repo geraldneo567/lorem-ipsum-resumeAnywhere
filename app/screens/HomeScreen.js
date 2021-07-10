@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
-    card:{
+    card: {
         shadowColor: Colors.grey,
         shadowOffset: {
             width: 5,

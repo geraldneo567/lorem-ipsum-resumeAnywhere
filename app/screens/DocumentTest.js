@@ -1,30 +1,29 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     StyleSheet,
-    Text,
     View,
     Platform,
     FlatList,
-    TouchableOpacity
+    ImageBackground
 } from 'react-native';
 import {FAB, Icon} from "react-native-elements";
 
 import DocumentPicker from "expo-document-picker/src/ExpoDocumentPicker";
 import * as FileSystem from 'expo-file-system';
+import * as IntentLauncher from "expo-intent-launcher";
 
 import {db, auth} from '../config/Database';
 import Colors from '../config/colors';
-import * as IntentLauncher from "expo-intent-launcher";
-
+import FileCard from '../container/FileCard'
 
 const DocumentTest = ({navigation}) => {
     const [fileURI, setFileURI] = useState('');
     const [fileName, setFileName] = useState('');
     const [files, setFiles] = useState([]);
 
-    const loadFiles = () => {
+    const loadFiles = async () => {
         let docRef = db.collection("Files").doc(auth.currentUser.uid)
-        docRef.onSnapshot(async (doc) => {
+        await docRef.onSnapshot(async (doc) => {
             if (doc.exists) {
                 const data = doc.data().files;
                 setFiles(data);
@@ -38,7 +37,7 @@ const DocumentTest = ({navigation}) => {
         fileURI
     }
 
-    useEffect(() => loadFiles(), []);
+    useEffect(() => {(async () => loadFiles())()}, []);
 
     const updateResponse = async (response) => {
         try {
@@ -59,7 +58,7 @@ const DocumentTest = ({navigation}) => {
     const updateDatabase = async () => {
         await db.collection('Files')
             .doc(auth.currentUser.uid)
-            .set({
+            .update({
                 files
             }).then(() => {});
     }
@@ -71,6 +70,7 @@ const DocumentTest = ({navigation}) => {
             const exist = updateResponse(resp);
             if (exist) {
                 await updateDatabase();
+                setTimeout(() => {}, 1500);
             }
         } catch (err) {
             console.log(err);
@@ -93,17 +93,18 @@ const DocumentTest = ({navigation}) => {
     }
 
     return (
+        <ImageBackground source={require('../assets/ImageBackground.png')}
+                         style={styles.containerImage}
+                         imageStyle={styles.image}>
             <View style={styles.container}>
                 <FlatList data={files}
-                          extraData={files}
+                          horizontal={false}
+                          numColumns={2}
                           keyExtractor={item => Math.random() + item.fileURI}
                           renderItem={({item}) => {
                               return(
-                                  <View>
-                                      <TouchableOpacity onPress={() => preview(item.fileURI)}>
-                                          <Text>{item.fileName}</Text>
-                                      </TouchableOpacity>
-                                  </View>
+                                  <FileCard fileName={item.fileName}
+                                            handler={() => preview(item.fileURI)}/>
                               )
                           }} />
                 <FAB onPress={upload}
@@ -115,6 +116,7 @@ const DocumentTest = ({navigation}) => {
                      color={Colors.placeholderColor}
                 />
             </View>
+        </ImageBackground>
     );
 };
 
@@ -126,5 +128,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20
-    }
+    },
+    containerImage: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'center',
+    },
+    image: {
+        opacity: 0.80
+    },
 });

@@ -16,7 +16,6 @@ export default function UserProfile() {
     const [imgUrl, setImgUrl] = useState("https://picsum.photos/id/1025/200");
 
     const loadProfileInformation = async () => {
-
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
         await docRef.get().then(doc => {
             if (doc.exists) {
@@ -24,7 +23,9 @@ export default function UserProfile() {
                 setPersonalProfile(doc.data().personalProfile);
                 setEmail(auth.currentUser.email);
                 setName(auth.currentUser.displayName);
-                setImgUrl(doc.data().imgUrl || imgUrl);
+                if (doc.data().imgUrl) {
+                    setImgUrl(doc.data().imgUrl);
+                }
             }
             return () => {}
         })
@@ -104,10 +105,17 @@ export default function UserProfile() {
                 <Icon name="email-outline"
                       size={45}
                       type="material-community" />
-                <View style={styles.containerInfo}>
-                    <Text style={styles.info}>{email || "email"}</Text>
-                    <Text style={styles.label}>Email</Text>
+                <View style={{flexDirection: "row"}}>
+                    <View style={styles.containerInfo}>
+                        <Text style={styles.info}>{email || "email"}</Text>
+                        <Text style={styles.label}>Email</Text>
+                    </View>
+                    <Icon style={styles.edit}
+                          name="pencil"
+                          type="material-community" />
                 </View>
+
+
             </View>
             <View style={styles.containerInfoWithImg}>
                 <Icon name="phone-outline"
@@ -146,12 +154,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     containerInfo: {
-      marginHorizontal: 20
+        marginHorizontal: 20,
+        width: "75%"
     },
     containerInfoWithImg: {
         flexDirection: "row",
         marginHorizontal: 20,
         marginTop: 15
+    },
+    edit: {
+      alignSelf: "flex-end"
     },
     header: {
         flex: 0,
