@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     },
     body: {
         color: Colors.grey,
-        fontSize: 18,
+        fontSize: 14.5,
         paddingHorizontal: 20,
         paddingTop: 20
     }

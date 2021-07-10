@@ -21,7 +21,10 @@ export default function LoginScreen({navigation}) {
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
             if (authUser) {
-                navigation.replace("Home")
+                setTimeout(() => {
+                    navigation.replace("Home")
+                }, 1500);
+                //navigation.replace("Home")
             }
         });
 
