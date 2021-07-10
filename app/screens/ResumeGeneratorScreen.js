@@ -22,7 +22,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
     useEffect(() => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
 
-        loadLocalResource(require('../templates/html-resume-master/test.html'))
+        loadLocalResource(require('../templates/html-resume-master/nusResume.html'))
             .then((content) => {
                 setHtml(content);
             });
@@ -41,7 +41,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
     const createAndSavePDF = async () => {
         console.log(html);
         try {
-            await loadLocalResource(require("../templates/html-resume-master/test.html"))
+            await loadLocalResource(require("../templates/html-resume-master/nusResume.html"))
                 .then((content) => {
                     setHtml(content);
                 });
@@ -62,7 +62,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
     const viewFile = async () => {
         setShowLoading(true);
         try {
-            await loadLocalResource(require('../templates/html-resume-master/test.html'))
+            await loadLocalResource(require('../templates/html-resume-master/nusResume.html'))
                 .then((content) => {
                     console.log(content);
                     setHtml(content);
