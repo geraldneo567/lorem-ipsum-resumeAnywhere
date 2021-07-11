@@ -33,10 +33,9 @@ const PersonalInformationScreen =  ( {navigation} ) => {
     const [education, setEducation] = useState([]);
     const [personalProfile, setPersonalProfile] = useState('');
     const [workExperiences, setWorkExperiences] = useState([])
-    const [callCode, setCallCode] = useState("+");
+    const [callCode, setCallCode] = useState('');
 
     const loadExistingInformation = async () => {
-
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
         await docRef.get().then(doc => {
             if (doc.exists) {

@@ -27,6 +27,7 @@ import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemLi
 import {Icon} from "react-native-elements";
 
 import {auth} from "./app/config/Database"
+import PSHelperScreen from "./app/screens/PSHelperScreen";
 
 const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -195,6 +196,16 @@ const MenuScreen = () => {
                                              color={Colors.placeholderColor} />
                                    ))
                            })} />
+            <Drawer.Screen name="PS Helper"
+                           component={PSHelperScreen}
+                           options={{
+                               title: "PS Helper",
+                               drawerIcon: (() => (
+                                       <Icon name='square-edit-outline'
+                                             type='material-community'
+                                             color={Colors.placeholderColor} />
+                                   )
+                               )}} />
             <Drawer.Screen name="User Profile"
                            component={UserProfileScreen}
                            options={{title: "User Profile"}} />

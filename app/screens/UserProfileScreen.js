@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {Image, ImageBackground, Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import {Icon} from 'react-native-elements'
 import {auth, db, fb} from "../config/Database";
 import Colors from "../config/colors";
 
-
 import * as ImagePicker from 'expo-image-picker';
+import InfoListItem from "../container/InfoListItem";
 
 export default function UserProfile() {
     const [hasPermission, setHasPermission] = useState(false);
@@ -101,32 +100,8 @@ export default function UserProfile() {
                 </View>
             </View>
             </ImageBackground>
-            <View style={styles.containerInfoWithImg}>
-                <Icon name="email-outline"
-                      size={45}
-                      type="material-community" />
-                <View style={{flexDirection: "row"}}>
-                    <View style={styles.containerInfo}>
-                        <Text style={styles.info}>{email || "email"}</Text>
-                        <Text style={styles.label}>Email</Text>
-                    </View>
-                    <Icon style={styles.edit}
-                          name="pencil"
-                          type="material-community" />
-                </View>
-
-
-            </View>
-            <View style={styles.containerInfoWithImg}>
-                <Icon name="phone-outline"
-                      size={45}
-                      type="material-community" />
-                <View style={styles.containerInfo}>
-                    <Text style={styles.info}>{phoneNumber || ""}</Text>
-                    <Text style={styles.label}>Mobile</Text>
-                </View>
-            </View>
-
+            <InfoListItem title="Email" data={email} iconName={"email-outline"} />
+            <InfoListItem title="Mobile" data={phoneNumber} iconName={"phone-outline"} />
         </SafeAreaView>
     )
 }
@@ -153,18 +128,6 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         justifyContent: 'center'
     },
-    containerInfo: {
-        marginHorizontal: 20,
-        width: "75%"
-    },
-    containerInfoWithImg: {
-        flexDirection: "row",
-        marginHorizontal: 20,
-        marginTop: 15
-    },
-    edit: {
-      alignSelf: "flex-end"
-    },
     header: {
         flex: 0,
         height: 60,
@@ -177,15 +140,6 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         borderColor: Colors.placeholderColor,
         borderWidth: 5
-    },
-    info: {
-      fontSize: 22
-    },
-    label: {
-        fontSize: 16,
-        paddingVertical: 8,
-        color: Colors.grey,
-        fontWeight: '400'
     },
     name: {
         fontSize: 24,
