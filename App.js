@@ -23,13 +23,16 @@ import {
     useNavigation,
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
 import {Icon} from "react-native-elements";
 
 import {auth} from "./app/config/Database"
 import PSHelperScreen from "./app/screens/PSHelperScreen";
+import PSHelperInfographicScreen from "./app/screens/PSHelperInfographicScreen";
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 const MainStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -70,6 +73,32 @@ const DocumentStackScreen = () => {
                               title: 'Camera'
                           }}/>
         </Stack.Navigator>
+    )
+}
+
+const PSHelperTab = () => {
+    return (
+        <Tab.Navigator initialRouteName="PS Infographic"
+                        tabBarOptions={{
+                            inactiveTintColor: Colors.textColor,
+                            inactiveBackgroundColor: Colors.profileHeader,
+                            tabStyle: styles.tab,
+                        }}>
+            <Tab.Screen name="PS Infographic"
+                        options={{tabBarIcon:(() =>
+                                <Icon name="head-lightbulb-outline"
+                                      size={40}
+                                      color={Colors.placeholderColor}
+                                      type="material-community"/>)}}
+                        component={PSHelperInfographicScreen} />
+            <Tab.Screen name="PS Helper"
+                        options={{tabBarIcon:(() =>
+                                <Icon name="handshake"
+                                      size={40}
+                                      color={Colors.placeholderColor}
+                                      type="material-community"/>)}}
+                        component={PSHelperScreen} />
+        </Tab.Navigator>
     )
 }
 
@@ -197,7 +226,7 @@ const MenuScreen = () => {
                                    ))
                            })} />
             <Drawer.Screen name="PS Helper"
-                           component={PSHelperScreen}
+                           component={PSHelperTab}
                            options={{
                                title: "PS Helper",
                                drawerIcon: (() => (
@@ -234,5 +263,11 @@ export default function App() {
 const styles = StyleSheet.create({
     headerRight: {
         marginHorizontal: 20
+    },
+    tab: {
+        alignItems: "center",
+        justifyContent: "center",
+        height: 80,
+        paddingBottom: 10
     }
 });
