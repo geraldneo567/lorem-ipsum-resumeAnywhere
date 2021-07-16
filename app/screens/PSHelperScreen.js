@@ -10,7 +10,6 @@ const PSHelperScreen = () => {
 
     return (
         <SafeAreaView>
-
             <View style={styles.containerCourse}>
                 <Text style={styles.courseLabel}>Choose your course</Text>
                 <Picker style={styles.picker}
@@ -18,8 +17,8 @@ const PSHelperScreen = () => {
                         selectedValue={course}
                         mode="dropdown"
                         onValueChange={(itemValue,itemIndex) => {
-                            setCourse(itemValue);
-                            setIndex(itemIndex);
+                            setCourse(itemValue || course);
+                            setIndex(itemIndex || index);
                         }}>
                     {Courses.map(course => {
                         return (
@@ -30,27 +29,28 @@ const PSHelperScreen = () => {
                     })}
                 </Picker>
             </View>
-
-            <View style={styles.label}>
-                <Text style={styles.text}>Relevant Skills</Text>
+            <View style={styles.info}>
+                <View style={styles.label}>
+                    <Text style={styles.text}>Relevant Skills</Text>
+                </View>
+                {!(course === "") && (<View style={styles.listItems}>
+                    {Courses[index].details.skillsToHave.map((skill, ind) => {
+                        return (
+                            <Text key={skill + ind}>{skill}</Text>
+                        )
+                    })}
+                </View>)}
+                <View style={styles.label}>
+                    <Text style={styles.text}>Relevant Work Experience</Text>
+                </View>
+                {!(course === "") && (<View style={styles.listItems}>
+                    {Courses[index].details.relevantWorkExperience.map((work, ind) => {
+                        return (
+                            <Text key={work + ind}>{work}</Text>
+                        )
+                    })}
+                </View>)}
             </View>
-            {(!course.localeCompare("")) && (<View style={{flex: 0}}>
-                {Courses[index].details.skillsToHave.map(skill => {
-                    return (
-                        <Text>{skill}</Text>
-                    )
-                })}
-            </View>)}
-            <View style={styles.label}>
-                <Text style={styles.text}>Relevant Work Experience</Text>
-            </View>
-            {(!course.localeCompare("")) && (<View style={{flex: 0}}>
-                {Courses[index].details.relevantWorkExperience.map(work => {
-                    return (
-                        <Text>{work}</Text>
-                    )
-                })}
-            </View>)}
         </SafeAreaView>
     )
 }
@@ -59,6 +59,7 @@ export default PSHelperScreen;
 
 const styles = StyleSheet.create({
     containerCourse: {
+        margin: 20,
         alignItems: "center",
     },
     courseLabel: {
@@ -72,11 +73,17 @@ const styles = StyleSheet.create({
     courseName: {
         fontSize: 20,
     },
+    info: {
+        marginHorizontal: 20,
+        alignItems: "flex-start",
+        justifyContent: "center"
+    },
     label: {
         flexDirection: 'row',
         marginVertical: 5,
-        marginHorizontal: 20,
-        paddingHorizontal: 5
+    },
+    listItems: {
+
     },
     picker: {
         width: '100%'

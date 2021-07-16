@@ -13,7 +13,7 @@ const InfoListItem = (props) => {
     }
 
     const toggleEditAndSaveInfo = async () => {
-        if (props.title.localeCompare("Email")) {
+        if (props.title === "Email") {
             await auth.currentUser.updateEmail(change.toString() || props.data)
                 .then(toggleEdit);
         } else {

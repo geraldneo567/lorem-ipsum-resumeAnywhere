@@ -23,6 +23,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: Colors.placeholderColor,
+        borderWidth: 0.73,
+        borderColor: Colors.white,
         borderRadius: 8,
         shadowColor: Colors.black,
         shadowOffset: {
