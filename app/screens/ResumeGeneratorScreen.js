@@ -1,5 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, StyleSheet, Platform, StatusBar} from 'react-native';
+import {View, StyleSheet, Platform, StatusBar, Modal, ScrollView, Button, TouchableOpacity, Text} from 'react-native';
+import nusResume from '../templates/html-resume-master/nusResume.html'
+import test from '../templates/html-resume-master/test.html'
 
 import * as Print from 'expo-print';
 import * as MediaLibrary from 'expo-media-library';
@@ -11,6 +13,8 @@ import HTMLScreen from "./HTMLScreen";
 
 import {auth, db} from "../config/Database";
 import {LinearProgress} from "react-native-elements";
+import Colors from "../config/colors";
+
 
 const ResumeGeneratorScreen = ({navigation}) => {
     const [isPreviewMode, setPreviewMode] = useState(false);
@@ -18,11 +22,14 @@ const ResumeGeneratorScreen = ({navigation}) => {
     const [data, setData] = useState(null);
     const [view, setView] = useState(false);
     const [showLoading, setShowLoading] = useState(false);
+    const [templateVisible, setTemplateVisible] = useState(false);
+    const [selectedResume, setSelectedResume] = useState(nusResume);
+    const [selectedResumeName, setSelectedResumeName] = useState('')
 
     useEffect(() => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
 
-        loadLocalResource(require('../templates/html-resume-master/nusResume.html'))
+        loadLocalResource(selectedResume)
             .then((content) => {
                 setHtml(content);
             });
@@ -32,7 +39,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
                 setData(snapshot.data());
             }
         })
-    }, [])
+    }, [selectedResume])
 
     const togglePreviewHandler = () => {
         setPreviewMode(!isPreviewMode);
@@ -41,7 +48,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
     const createAndSavePDF = async () => {
         console.log(html);
         try {
-            await loadLocalResource(require("../templates/html-resume-master/nusResume.html"))
+            await loadLocalResource(selectedResume)
                 .then((content) => {
                     setHtml(content);
                 });
@@ -62,7 +69,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
     const viewFile = async () => {
         setShowLoading(true);
         try {
-            await loadLocalResource(require('../templates/html-resume-master/nusResume.html'))
+            await loadLocalResource(selectedResume)
                 .then((content) => {
                     console.log(content);
                     setHtml(content);
@@ -77,12 +84,23 @@ const ResumeGeneratorScreen = ({navigation}) => {
 
     return (
         <View>
+            <Modal visible={templateVisible}>
+                <ScrollView>
+                    <TouchableOpacity style={styles.card} onPress={() => {setSelectedResumeName("nusResume"); setSelectedResume(nusResume); setTemplateVisible(false)}}>
+                        <Text>nusResume</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.card} onPress={() => {setSelectedResumeName("test");setSelectedResume(test); setTemplateVisible(false)}}>
+                        <Text>test</Text>
+                    </TouchableOpacity>
+                </ScrollView>
+            </Modal>
             {showLoading ? <LinearProgress color="primary"/> : <View/> }
             <View style={styles.containerButtons}>
                 <AppButton title={"Edit information"}
                            handler={() => navigation.navigate("Personal Information")} />
-                <AppButton title={"Choose Template"} handler={() => {}} />
+                <AppButton title={"Choose Template"} handler={() => {setTemplateVisible(true)}} />
                 <AppButton title={"Preview & Download"} handler={viewFile} />
+                <Text>Selected Resume: {selectedResumeName}</Text>
             </View>
             {view ?
                 (<View style={styles.containerModal}>
@@ -108,6 +126,24 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-start',
         marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+    },
+    card:{
+        shadowColor: Colors.grey,
+        shadowOffset: {
+            width: 5,
+            height: 10,
+        },
+        shadowOpacity: 0.40,
+        shadowRadius: 7.5,
+        elevation: 15,
+        marginVertical: 20,
+        marginHorizontal: 20,
+        backgroundColor:"#e2e2e2",
+        width:140,
+        height:140,
+        borderRadius: 20,
+        alignItems:'center',
+        justifyContent:'center'
     },
 })
 
