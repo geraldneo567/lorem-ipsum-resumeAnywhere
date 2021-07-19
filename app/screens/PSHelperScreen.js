@@ -1,57 +1,62 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import Courses from "../config/courses";
 import {Picker} from "@react-native-picker/picker";
 import Colors from "../config/colors";
+import PSHelperListItem from "../container/PSHelperListItem";
 
 const PSHelperScreen = () => {
     const [course, setCourse] = useState('');
     const [index, setIndex] = useState(0);
 
     return (
-        <SafeAreaView>
-            <View style={styles.containerCourse}>
-                <Text style={styles.courseLabel}>Choose your course</Text>
-                <Picker style={styles.picker}
-                        itemStyle={styles.courseName}
-                        selectedValue={course}
-                        mode="dropdown"
-                        onValueChange={(itemValue,itemIndex) => {
-                            setCourse(itemValue || course);
-                            setIndex(itemIndex || index);
-                        }}>
-                    {Courses.map(course => {
-                        return (
-                            <Picker.Item key={course.courseName}
-                                         label={course.courseName}
-                                         value={course.courseName}/>
-                        )
-                    })}
-                </Picker>
-            </View>
-            <View style={styles.info}>
-                <View style={styles.label}>
-                    <Text style={styles.text}>Relevant Skills</Text>
+        <ImageBackground source={require('../assets/ImageBackground.png')}
+                         imageStyle={{opacity: 0.75}}
+                         style={styles.containerImage}>
+            <SafeAreaView>
+                <View style={styles.containerCourse}>
+                    <Text style={styles.courseLabel}>Choose your course</Text>
+                    <Picker style={styles.picker}
+                            itemStyle={styles.courseName}
+                            selectedValue={course}
+                            mode="dropdown"
+                            onValueChange={(itemValue,itemIndex) => {
+                                setCourse(itemValue || course);
+                                setIndex(itemIndex || index);
+                            }}>
+                        {Courses.map(course => {
+                            return (
+                                <Picker.Item key={course.courseName}
+                                             label={course.courseName}
+                                             value={course.courseName}/>
+                            )
+                        })}
+                    </Picker>
                 </View>
-                {!(course === "") && (<View style={styles.listItems}>
-                    {Courses[index].details.skillsToHave.map((skill, ind) => {
-                        return (
-                            <Text key={skill + ind}>{skill}</Text>
-                        )
-                    })}
-                </View>)}
-                <View style={styles.label}>
-                    <Text style={styles.text}>Relevant Work Experience</Text>
+                <View style={styles.info}>
+                    <View style={styles.label}>
+                        <Text style={styles.text}>Relevant Skills</Text>
+                    </View>
+                    {!(course === "") && (<View style={styles.listItems}>
+                        {Courses[index].details.skillsToHave.map((skill, ind) => {
+                            return (
+                                <PSHelperListItem key={skill + ind} item={skill}/>
+                            )
+                        })}
+                    </View>)}
+                    <View style={styles.label}>
+                        <Text style={styles.text}>Relevant Work Experience</Text>
+                    </View>
+                    {!(course === "") && (<View style={styles.listItems}>
+                        {Courses[index].details.relevantWorkExperience.map((work, ind) => {
+                            return (
+                                <PSHelperListItem key={work + ind} item={work}/>
+                            )
+                        })}
+                    </View>)}
                 </View>
-                {!(course === "") && (<View style={styles.listItems}>
-                    {Courses[index].details.relevantWorkExperience.map((work, ind) => {
-                        return (
-                            <Text key={work + ind}>{work}</Text>
-                        )
-                    })}
-                </View>)}
-            </View>
-        </SafeAreaView>
+            </SafeAreaView>
+        </ImageBackground>
     )
 }
 
@@ -62,8 +67,11 @@ const styles = StyleSheet.create({
         margin: 20,
         alignItems: "center",
     },
+    containerImage: {
+        flex: 1,
+        resizeMode: 'cover',
+    },
     courseLabel: {
-        marginHorizontal: 20,
         padding: 10,
         fontSize: 18,
         color: Colors.grey,
@@ -72,6 +80,9 @@ const styles = StyleSheet.create({
     },
     courseName: {
         fontSize: 20,
+        borderRadius: 15,
+        borderWidth: 0.4,
+        borderColor: Colors.placeholderColor
     },
     info: {
         marginHorizontal: 20,
@@ -83,13 +94,17 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     listItems: {
-
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "flex-start"
     },
     picker: {
         width: '100%'
     },
     text: {
         fontSize: 20,
-        paddingTop: 10
+        paddingTop: 10,
+        fontWeight: "600"
     }
 });

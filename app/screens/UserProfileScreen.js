@@ -9,6 +9,7 @@ import InfoListItem from "../container/InfoListItem";
 export default function UserProfile() {
     const [hasPermission, setHasPermission] = useState(false);
     const [name, setName] = useState("");
+    const [callCode, setCallCode] = useState("+––")
     const [phoneNumber, setPhoneNumber] = useState("");
     const [personalProfile, setPersonalProfile] = useState("");
     const [email, setEmail] = useState("");
@@ -18,6 +19,7 @@ export default function UserProfile() {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
         await docRef.get().then(doc => {
             if (doc.exists) {
+                setCallCode(doc.data().callCode);
                 setPhoneNumber(doc.data().phoneNumber);
                 setPersonalProfile(doc.data().personalProfile);
                 setEmail(auth.currentUser.email);
@@ -100,8 +102,12 @@ export default function UserProfile() {
                 </View>
             </View>
             </ImageBackground>
-            <InfoListItem title="Email" data={email} iconName={"email-outline"} />
-            <InfoListItem title="Mobile" data={phoneNumber} iconName={"phone-outline"} />
+            <InfoListItem title="Email"
+                          data={email}
+                          iconName={"email-outline"} />
+            <InfoListItem title="Mobile"
+                          data={callCode + " " + phoneNumber}
+                          iconName={"phone-outline"} />
         </SafeAreaView>
     )
 }

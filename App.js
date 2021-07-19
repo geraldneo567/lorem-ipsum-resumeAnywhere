@@ -118,6 +118,11 @@ const InformationStackScreen = () => {
                           options={{
                               title: "Resume Generator"
                           }} />
+            <Stack.Screen name='PDF Preview'
+                          component={PDFPreview}
+                          options={{
+                              title: 'Preview'
+                          }}/>
             <Stack.Screen name="HTML Preview"
                           component={HTMLScreen}/>
         </Stack.Navigator>

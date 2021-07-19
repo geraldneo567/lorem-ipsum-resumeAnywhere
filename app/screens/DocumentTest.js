@@ -85,7 +85,7 @@ const DocumentTest = ({navigation}) => {
                     flags: 1,
                 });
             } else {
-                navigation.navigate('PDF Preview', {fileUri: uri});
+                navigation.navigate('PDF Preview', {fileUri: uri, screenName: "Documents"});
             }
         } catch (e) {
             console.log(e);
