@@ -69,5 +69,35 @@ export default [
                 "Any form of work in relevant industry for the major (e.g. job shadowing)"
             ]
         }
+    },
+    {
+        courseName: "Medicine",
+        details: {
+            skillsToHave: [
+                "Passion for treating patients",
+                "Proficient in Chemistry & Biology",
+                "Steady hands",
+            ],
+            relevantWorkExperience: [
+                "Medic in National Service",
+                "Pharmacist",
+                "Volunteer (eg SJAB)"
+            ]
+        }
+    },
+    {
+        courseName: "Mathematics",
+        details: {
+            skillsToHave: [
+                "Critical Thinking",
+                "Logical Thinking",
+                "Thinking out of the box"
+            ],
+            relevantWorkExperience: [
+                "Math Olympiad",
+                "Any data-analysis related jobs",
+                "Teaching Assistant/Math tutor"
+            ]
+        }
     }
 ]
