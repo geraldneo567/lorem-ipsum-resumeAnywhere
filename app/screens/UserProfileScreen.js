@@ -1,10 +1,25 @@
 import React, {useEffect, useState} from 'react'
-import {Image, ImageBackground, Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import {auth, db, fb} from "../config/Database";
+import {
+    Image,
+    ImageBackground,
+    Platform,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Modal,
+    TextInput
+} from 'react-native'
+import {auth, db, fb,} from "../config/Database";
 import Colors from "../config/colors";
+import AppButton from "../container/AppButton";
 
 import * as ImagePicker from 'expo-image-picker';
 import InfoListItem from "../container/InfoListItem";
+import {Input} from "react-native-elements";
+
+
 
 export default function UserProfile() {
     const [hasPermission, setHasPermission] = useState(false);
@@ -14,6 +29,31 @@ export default function UserProfile() {
     const [personalProfile, setPersonalProfile] = useState("");
     const [email, setEmail] = useState("");
     const [imgUrl, setImgUrl] = useState("https://picsum.photos/id/1025/200");
+    const [passwordDialogVisible, setPasswordDialogVisible] = useState(false);
+    const [password, setPassword] = useState('')
+    const [reEnterPassword, setReEnterPassword] = useState('')
+
+
+    const changePasswordHandler = () => {
+        setPasswordDialogVisible(true);
+    }
+
+
+    const submitPasswordHandler = () => {
+        if (password === reEnterPassword) {
+            const user = auth.currentUser;
+            user.updatePassword(password).then(() => {
+                setPassword('');
+                setReEnterPassword('');
+                setPasswordDialogVisible(false)
+                alert("Password changed successfully.")
+            }).catch((error) => {
+                alert(error);
+            });
+        } else {
+            alert("Passwords do not match.")
+        }
+    }
 
     const loadProfileInformation = async () => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
@@ -87,6 +127,15 @@ export default function UserProfile() {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Modal visible={passwordDialogVisible}>
+                <Text style={styles.passwordHeader}>
+                    Change Password
+                </Text>
+                <Input textContentType={"password"} secureTextEntry={true} placeholder={"Enter password"} onChangeText={text => setPassword(text)}/>
+                <Input textContentType={"password"} secureTextEntry={true} placeholder={"Re-Enter password"} onChangeText={text => setReEnterPassword(text)}/>
+                <AppButton title={"Confirm Change Password"} handler={submitPasswordHandler}></AppButton>
+
+            </Modal>
             <ImageBackground source={require('../assets/ImageBackground.png')}
                              imageStyle={{opacity: 0.80}}
                              style={styles.containerImage}>
@@ -108,11 +157,21 @@ export default function UserProfile() {
             <InfoListItem title="Mobile"
                           data={callCode + " " + phoneNumber}
                           iconName={"phone-outline"} />
+            <View style={styles.button}>
+                <AppButton title={"Change Password"} handler={changePasswordHandler}/>
+            </View>
+
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
+    button: {
+        alignItems: "center",
+        justifyContent: 'center',
+      width: '100%',
+      height: 120
+    },
     contact: {
         alignItems: "center",
         marginHorizontal: 30,
@@ -147,6 +206,11 @@ const styles = StyleSheet.create({
         borderColor: Colors.placeholderColor,
         borderWidth: 5
     },
+    passwordHeader: {
+      fontSize: 24,
+      fontWeight: "400",
+      alignSelf: 'center'
+    },
     name: {
         fontSize: 24,
         fontWeight: "400"
@@ -155,5 +219,9 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: Colors.grey,
         paddingTop: 15
+    },
+    input: {
+        height: 100,
+        width: 100
     }
 })
