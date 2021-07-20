@@ -5,7 +5,7 @@ import {
     StyleSheet,
     View,
     Text,
-    TouchableOpacity, ImageBackground,
+    TouchableOpacity, ImageBackground, Alert,
 } from 'react-native';
 import { Icon, Input} from "react-native-elements";
 
@@ -34,7 +34,7 @@ export default function LoginScreen({navigation}) {
     const handleLogin = () => {
         auth.signInWithEmailAndPassword(email, password)
             .catch((error) => {
-                console.log(error)
+                Alert.alert("Unable to login", JSON.stringify(error.message));
             })
     }
 

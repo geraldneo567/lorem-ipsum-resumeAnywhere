@@ -7,5 +7,6 @@ export default {
     black: '#000',
     menu: '#5271ff',
     grey: '#666464',
-    tooltipBackground: '#c5cbd2'
+    tooltipBackground: '#c5cbd2',
+    lightgrey: '#e2e2e2'
 }

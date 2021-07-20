@@ -33,7 +33,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
     const [education, setEducation] = useState([]);
     const [personalProfile, setPersonalProfile] = useState('');
     const [workExperiences, setWorkExperiences] = useState([])
-    const [callCode, setCallCode] = useState('');
+    const [callCode, setCallCode] = useState('+––');
 
     const loadExistingInformation = async () => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
@@ -87,7 +87,8 @@ const PersonalInformationScreen =  ( {navigation} ) => {
             .doc(auth.currentUser.uid)
             .set({
                 displayName: auth.currentUser.displayName,
-                phoneNumber: callCode + " " + phoneNumber,
+                callCode,
+                phoneNumber,
                 skills,
                 languages,
                 education,
@@ -188,15 +189,22 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                         </Picker>
                     </View>
 
-                    <Input inputContainerStyle={styles.containerInput}
-                           style={styles.input}
-                           placeholder='Phone Number'
-                           placeholderTextColor={Colors.placeholderColor}
-                           keyboardType={'numeric'}
-                           leftIcon={<Icon name='phone'
-                                           type='material-community' />}
-                           onChangeText={(text) => setPhoneNumber(text)}
-                           value={phoneNumber}/>
+                    <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                        <Input disabled={true}
+                               inputContainerStyle={styles.containerCallCode}
+                               style={styles.containerCallCode}
+                               value={callCode}/>
+                        <Input inputContainerStyle={styles.containerInput}
+                               style={styles.input}
+                               placeholder='Phone Number'
+                               placeholderTextColor={Colors.placeholderColor}
+                               keyboardType={'numeric'}
+                               leftIcon={<Icon name='phone'
+                                               type='material-community' />}
+                               onChangeText={(text) => setPhoneNumber(text)}
+                               value={phoneNumber}/>
+                    </View>
+
 
                     <View style={styles.label}>
                         <Text style={styles.text}>Personal Profile</Text>
@@ -349,6 +357,9 @@ const styles = StyleSheet.create({
         marginBottom: 100,
         justifyContent: "flex-end"
     },
+    containerCallCode: {
+      width: '15%'
+    },
     containerChip: {
         marginHorizontal: 15,
         flexDirection: 'row',
@@ -362,7 +373,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 20,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
     },
     containerInputBig: {
         flexWrap: "wrap",
@@ -397,7 +408,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     input: {
-        padding: 5
+        padding: 5,
     },
     image: {
         opacity: 0.6

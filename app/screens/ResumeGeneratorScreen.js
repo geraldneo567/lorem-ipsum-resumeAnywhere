@@ -1,11 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {View, StyleSheet, Platform, StatusBar, Modal, ScrollView, Button, TouchableOpacity, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, Platform, StatusBar, Modal, ScrollView, TouchableOpacity, Text, Image} from 'react-native';
 import nusResume from '../templates/html-resume-master/nusResume.html'
 import test from '../templates/html-resume-master/test.html'
 
 import * as Print from 'expo-print';
 import * as MediaLibrary from 'expo-media-library';
-import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import loadLocalResource from 'react-native-local-resource';
 import AppButton from "../container/AppButton";
@@ -14,7 +13,7 @@ import HTMLScreen from "./HTMLScreen";
 import {auth, db} from "../config/Database";
 import {LinearProgress} from "react-native-elements";
 import Colors from "../config/colors";
-
+import * as IntentLauncher from "expo-intent-launcher";
 
 const ResumeGeneratorScreen = ({navigation}) => {
     const [isPreviewMode, setPreviewMode] = useState(false);
@@ -46,7 +45,6 @@ const ResumeGeneratorScreen = ({navigation}) => {
     }
 
     const createAndSavePDF = async () => {
-        console.log(html);
         try {
             await loadLocalResource(selectedResume)
                 .then((content) => {
@@ -71,7 +69,6 @@ const ResumeGeneratorScreen = ({navigation}) => {
         try {
             await loadLocalResource(selectedResume)
                 .then((content) => {
-                    console.log(content);
                     setHtml(content);
                 });
             setPreviewMode(true);
@@ -82,15 +79,49 @@ const ResumeGeneratorScreen = ({navigation}) => {
         }
     }
 
+    const selectTemplate = (name, template) => {
+        setSelectedResumeName(name);
+        setSelectedResume(template);
+        setTemplateVisible(!templateVisible);
+    }
+
+    const previewAndSelectTemplate = async (name, resume) => {
+        try {
+            let htmlString;
+            await loadLocalResource(resume)
+                .then(async (content) => {
+                    htmlString=content;
+                });
+            console.log(htmlString);
+            const template = await Print.printToFileAsync({html: htmlString});
+            selectTemplate(name, resume);
+            if (Platform.OS === 'android') {
+                await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+                    data: template.uri,
+                    flags: 1,
+                });
+            } else {
+                navigation.navigate('PDF Preview',
+                    {fileUri: template.uri,
+                    screenName: "Resume Generator"});
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <View>
             <Modal visible={templateVisible}>
                 <ScrollView>
-                    <TouchableOpacity style={styles.card} onPress={() => {setSelectedResumeName("nusResume"); setSelectedResume(nusResume); setTemplateVisible(false)}}>
+                    <TouchableOpacity style={styles.card}
+                                      onPress={() => previewAndSelectTemplate("nusResume", nusResume)}>
                         <Text>nusResume</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.card} onPress={() => {setSelectedResumeName("test");setSelectedResume(test); setTemplateVisible(false)}}>
-                        <Text>test</Text>
+                    <TouchableOpacity style={styles.card}
+                                      onPress={() => previewAndSelectTemplate("test", test)}>
+                        <Text style={{width: 50, height: 50}}>test</Text>
+                        <Image style={{width: 200, height: 250}} source={require('../assets/test.jpg')} />
                     </TouchableOpacity>
                 </ScrollView>
             </Modal>
@@ -138,12 +169,13 @@ const styles = StyleSheet.create({
         elevation: 15,
         marginVertical: 20,
         marginHorizontal: 20,
-        backgroundColor:"#e2e2e2",
-        width:140,
-        height:140,
+        backgroundColor:'rgba(87,187,213,0.98)',
+        width:300,
+        height:300,
         borderRadius: 20,
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        flexDirection: 'row',
     },
 })
 
