@@ -95,7 +95,8 @@ export default [
             ],
             relevantWorkExperience: [
                 "Math Olympiad",
-                "Any data-analaysis related jobs"
+                "Any data-analysis related jobs",
+                "Teaching Assistant/Math tutor"
             ]
         }
     }
