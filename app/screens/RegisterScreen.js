@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ImageBackground, Alert} from 'react-native';
 import {Button, Input} from "react-native-elements";
 
 import Colors from '../config/colors';
@@ -19,7 +19,7 @@ const RegisterScreen = ({navigation}) => {
                 })
             })
             .catch((error) => {
-                console.log(error)
+                Alert.alert("Unable to register", JSON.stringify(error.message));
             });
         }
 

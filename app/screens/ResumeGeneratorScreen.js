@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Platform, StatusBar, Modal, ScrollView, TouchableOpacity, Text} from 'react-native';
+import {View, StyleSheet, Platform, StatusBar, Modal, ScrollView, TouchableOpacity, Text, Image} from 'react-native';
 import nusResume from '../templates/html-resume-master/nusResume.html'
 import test from '../templates/html-resume-master/test.html'
 
@@ -92,6 +92,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
                 .then(async (content) => {
                     htmlString=content;
                 });
+            console.log(htmlString);
             const template = await Print.printToFileAsync({html: htmlString});
             selectTemplate(name, resume);
             if (Platform.OS === 'android') {
@@ -119,7 +120,8 @@ const ResumeGeneratorScreen = ({navigation}) => {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card}
                                       onPress={() => previewAndSelectTemplate("test", test)}>
-                        <Text>test</Text>
+                        <Text style={{width: 50, height: 50}}>test</Text>
+                        <Image style={{width: 200, height: 250}} source={require('../assets/test.jpg')} />
                     </TouchableOpacity>
                 </ScrollView>
             </Modal>
@@ -167,12 +169,13 @@ const styles = StyleSheet.create({
         elevation: 15,
         marginVertical: 20,
         marginHorizontal: 20,
-        backgroundColor:"#e2e2e2",
-        width:140,
-        height:140,
+        backgroundColor:'rgba(87,187,213,0.98)',
+        width:300,
+        height:300,
         borderRadius: 20,
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        flexDirection: 'row',
     },
 })
 
