@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Platform, StatusBar, Modal, ScrollView, TouchableOpacity, Text} from 'react-native';
 import nusResume from '../templates/html-resume-master/nusResume.html'
 import test from '../templates/html-resume-master/test.html'
+import resumeTemplate2 from '../templates/html-resume-master/resumeTemplate2.html';
 
 import * as Print from 'expo-print';
 import * as MediaLibrary from 'expo-media-library';
@@ -120,6 +121,10 @@ const ResumeGeneratorScreen = ({navigation}) => {
                     <TouchableOpacity style={styles.card}
                                       onPress={() => previewAndSelectTemplate("test", test)}>
                         <Text>test</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.card}
+                                      onPress={() => previewAndSelectTemplate("resumeTemplate2", resumeTemplate2)}>
+                        <Text>resumeTemplate2</Text>
                     </TouchableOpacity>
                 </ScrollView>
             </Modal>
