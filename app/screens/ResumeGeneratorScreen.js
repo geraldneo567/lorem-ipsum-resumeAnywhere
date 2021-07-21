@@ -93,7 +93,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
                 .then(async (content) => {
                     htmlString=content;
                 });
-            console.log(htmlString);
+
             const template = await Print.printToFileAsync({html: htmlString});
             selectTemplate(name, resume);
             if (Platform.OS === 'android') {
