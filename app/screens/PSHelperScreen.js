@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import Courses from "../config/courses";
 import {Picker} from "@react-native-picker/picker";
@@ -9,6 +9,8 @@ const PSHelperScreen = () => {
     const [course, setCourse] = useState('');
     const [index, setIndex] = useState(0);
 
+    const pickerRef = useRef();
+
     return (
         <ImageBackground source={require('../assets/ImageBackground.png')}
                          imageStyle={{opacity: 0.75}}
@@ -17,6 +19,8 @@ const PSHelperScreen = () => {
                 <View style={styles.containerCourse}>
                     <Text style={styles.courseLabel}>Choose your course</Text>
                     <Picker style={styles.picker}
+                            ref={pickerRef}
+                            enabled={true}
                             itemStyle={styles.courseName}
                             selectedValue={course}
                             mode="dropdown"
@@ -64,6 +68,7 @@ export default PSHelperScreen;
 
 const styles = StyleSheet.create({
     containerCourse: {
+        flex: 0,
         margin: 20,
         alignItems: "center",
     },
@@ -100,7 +105,10 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start"
     },
     picker: {
-        width: '100%'
+        width: '100%',
+        height: 50,
+        borderWidth: 1,
+        borderColor: Colors.profileHeader
     },
     text: {
         fontSize: 20,

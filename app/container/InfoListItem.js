@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from "react-native";
+import {KeyboardAvoidingView, StyleSheet, Text, View} from "react-native";
 import {Icon, Input} from "react-native-elements";
 import Colors from "../config/colors";
 import {auth, db} from "../config/Database";
@@ -14,8 +14,9 @@ const InfoListItem = (props) => {
 
     const toggleEditAndSaveInfo = async () => {
         if (props.title === "Email") {
-            await auth.currentUser.updateEmail(change.toString() || props.data)
-                .then(toggleEdit);
+            await auth.currentUser.updateEmail(change.toString())
+                .then(toggleEdit)
+                .catch(e => alert(e));
         } else {
             await db.collection("User Profiles")
                 .doc(auth.currentUser.uid)
@@ -26,7 +27,7 @@ const InfoListItem = (props) => {
     }
 
     return (
-        <View style={styles.containerInfoWithImg}>
+        <KeyboardAvoidingView style={styles.containerInfoWithImg}>
             <Icon name={props.iconName}
                   size={45}
                   type="material-community" />
@@ -48,7 +49,7 @@ const InfoListItem = (props) => {
                             type="material-community"
                             onPress={toggleEditAndSaveInfo} /> }
             </View>
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 

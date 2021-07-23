@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
     View,
     Modal,
-    TextInput
+    ScrollView
 } from 'react-native'
 import {auth, db, fb,} from "../config/Database";
 import Colors from "../config/colors";
@@ -17,21 +17,23 @@ import AppButton from "../container/AppButton";
 
 import * as ImagePicker from 'expo-image-picker';
 import InfoListItem from "../container/InfoListItem";
-import {Input} from "react-native-elements";
+import {Icon, Input} from "react-native-elements";
 
 
 
 export default function UserProfile() {
     const [hasPermission, setHasPermission] = useState(false);
     const [name, setName] = useState("");
-    const [callCode, setCallCode] = useState("+––")
+    const [callCode, setCallCode] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("");
     const [personalProfile, setPersonalProfile] = useState("");
     const [email, setEmail] = useState("");
+    const [country, setCountry] = useState("");
     const [imgUrl, setImgUrl] = useState("https://picsum.photos/id/1025/200");
     const [passwordDialogVisible, setPasswordDialogVisible] = useState(false);
     const [password, setPassword] = useState('')
     const [reEnterPassword, setReEnterPassword] = useState('')
+    const [changeName, setChangeName] = useState(false);
 
 
     const changePasswordHandler = () => {
@@ -55,11 +57,22 @@ export default function UserProfile() {
         }
     }
 
+    const toggleChangeName = () => {
+        setChangeName(!changeName);
+    }
+
+    const changeDisplayName = async () => {
+        await auth.currentUser.updateProfile({
+            displayName: name
+        }).then(toggleChangeName);
+    }
+
     const loadProfileInformation = async () => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
         await docRef.get().then(doc => {
             if (doc.exists) {
                 setCallCode(doc.data().callCode);
+                setCountry(doc.data().country);
                 setPhoneNumber(doc.data().phoneNumber);
                 setPersonalProfile(doc.data().personalProfile);
                 setEmail(auth.currentUser.email);
@@ -83,7 +96,7 @@ export default function UserProfile() {
                 }
             })();
         },
-        []);
+        [email, phoneNumber]);
 
     async function uploadImageAsync(uri) {
         const blob = await new Promise((resolve, reject) => {
@@ -127,40 +140,59 @@ export default function UserProfile() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Modal visible={passwordDialogVisible}>
-                <Text style={styles.passwordHeader}>
-                    Change Password
-                </Text>
-                <Input textContentType={"password"} secureTextEntry={true} placeholder={"Enter password"} onChangeText={text => setPassword(text)}/>
-                <Input textContentType={"password"} secureTextEntry={true} placeholder={"Re-Enter password"} onChangeText={text => setReEnterPassword(text)}/>
-                <AppButton title={"Confirm Change Password"} handler={submitPasswordHandler}></AppButton>
+            <ScrollView>
+                <Modal visible={passwordDialogVisible}>
+                    <Text style={styles.passwordHeader}>
+                        Change Password
+                    </Text>
+                    <Input textContentType={"password"} secureTextEntry={true} placeholder={"Enter password"} onChangeText={text => setPassword(text)}/>
+                    <Input textContentType={"password"} secureTextEntry={true} placeholder={"Re-Enter password"} onChangeText={text => setReEnterPassword(text)}/>
+                    <AppButton title={"Confirm Change Password"} handler={submitPasswordHandler}/>
 
-            </Modal>
-            <ImageBackground source={require('../assets/ImageBackground.png')}
-                             imageStyle={{opacity: 0.80}}
-                             style={styles.containerImage}>
-            <View style={styles.containerContact}>
-                <TouchableOpacity onPress={chooseImage}>
-                    <Image style={styles.image}
-                           source={{uri: imgUrl}}/>
-                </TouchableOpacity>
+                </Modal>
+                <ImageBackground source={require('../assets/ImageBackground.png')}
+                                 imageStyle={{opacity: 0.80}}
+                                 style={styles.containerImage}>
+                <View style={styles.containerContact}>
+                    <TouchableOpacity onPress={chooseImage}>
+                        <Image style={styles.image}
+                               source={{uri: imgUrl}}/>
+                    </TouchableOpacity>
 
-                <View style={styles.contact}>
-                    <Text style={styles.name}>{name || "Test User"}</Text>
-                    <Text style={styles.text}>{personalProfile || ""}</Text>
+                    <View style={styles.contact}>
+                        {!changeName ?
+                            (<View style={styles.containerChangeName}>
+                                <Text style={styles.name}>{name || "Test User"}</Text>
+                                <Icon style={styles.edit}
+                                      name="pencil"
+                                      type="material-community"
+                                      onPress={toggleChangeName} />
+                        </View>)
+                            : (<View style={styles.containerChangeName}>
+                                <Input style={styles.name}
+                                       value={name}
+                                       onChangeText={text => setName(text)}/>
+                                <Icon name="check"
+                                      type="material-community"
+                                      onPress={changeDisplayName} />
+                            </View>) }
+                        <Text style={styles.text}>{personalProfile || ""}</Text>
+                    </View>
                 </View>
-            </View>
-            </ImageBackground>
-            <InfoListItem title="Email"
-                          data={email}
-                          iconName={"email-outline"} />
-            <InfoListItem title="Mobile"
-                          data={callCode + " " + phoneNumber}
-                          iconName={"phone-outline"} />
-            <View style={styles.button}>
-                <AppButton title={"Change Password"} handler={changePasswordHandler}/>
-            </View>
-
+                </ImageBackground>
+                <InfoListItem title="Email"
+                              data={email}
+                              iconName={"email-outline"} />
+                <InfoListItem title="Mobile"
+                              data={phoneNumber}
+                              iconName={"phone-outline"} />
+                <InfoListItem title="Country"
+                              data={country}
+                              iconName={"earth"} />
+                <View style={styles.button}>
+                    <AppButton title={"Change Password"} handler={changePasswordHandler}/>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -169,8 +201,8 @@ const styles = StyleSheet.create({
     button: {
         alignItems: "center",
         justifyContent: 'center',
-      width: '100%',
-      height: 120
+        width: '100%',
+        height: 120
     },
     contact: {
         alignItems: "center",
@@ -181,6 +213,14 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
+    },
+    containerChangeName: {
+        flex: 0,
+        flexDirection: "row",
+        width: 200,
+        justifyContent: "center",
+        alignItems: "center",
+        marginVertical: 0
     },
     containerContact: {
         flex: 0,
