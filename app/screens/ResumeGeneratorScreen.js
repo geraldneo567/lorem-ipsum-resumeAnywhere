@@ -96,8 +96,9 @@ const ResumeGeneratorScreen = ({navigation}) => {
             const template = await Print.printToFileAsync({html: htmlPreview});
             selectTemplate(name, resume);
             navigation.navigate('PDF Preview',
-                {fileUri: template.uri,
+                    {fileUri: template.uri,
                     screenName: "Resume Generator"});
+
         } catch (err) {
             console.log(err);
         }
@@ -110,15 +111,17 @@ const ResumeGeneratorScreen = ({navigation}) => {
                     <TouchableOpacity style={styles.card}
                                       onPress={() => previewAndSelectTemplate("nusResume", nusResume)}>
                         <Text>nusResume</Text>
+                        <Image style={{width: 150, height: 250, resizeMode: "contain"}} source={require('../assets/nusResume.jpg')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card}
                                       onPress={() => previewAndSelectTemplate("test", test)}>
                         <Text style={{width: 50, height: 50}}>test</Text>
-                        <Image style={{width: 200, height: 250}} source={require('../assets/test.jpg')} />
+                        <Image style={{width: 150, height: 250, resizeMode: "contain"}} source={require('../assets/test.jpg')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card}
                                       onPress={() => previewAndSelectTemplate("resumeTemplate2", resumeTemplate2)}>
                         <Text>resumeTemplate2</Text>
+                        <Image style={{width: 150, height: 250, resizeMode: "contain"}} source={require('../assets/resumeTemplate2.jpg')} />
                     </TouchableOpacity>
                 </ScrollView>
             </Modal>

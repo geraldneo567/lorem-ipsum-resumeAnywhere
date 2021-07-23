@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react'
-import {Modal, Platform, SafeAreaView, ScrollView, StyleSheet, useWindowDimensions} from "react-native";
+import {Modal, Platform, SafeAreaView, ScrollView, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import {Header, Icon} from "react-native-elements";
 
 import RenderHtml, {domNodeToHTMLString} from 'react-native-render-html';
@@ -130,12 +130,16 @@ const HTMLScreen = (props) => {
                                           onPress={createAndSavePDF} />} />
                 <ScrollView contentContainerStyle={styles.container}>
                     <ScrollView horizontal={true}>
-                        <RenderHtml source={{html: src}}
-                                    defaultViewProps={{style: {width: width, alignItems: "flex-start", justifyContent: "flex-start"}}}
-                                    domVisitors={domVisitors}
-                                    enableCSSInlineProcessing={true}
-                                    contentWidth={width}
-                                    onTTreeChange={updateTTree} />
+                        <Text>Press the button on top right to download!</Text>
+                        <View style={{height: 0}}>
+                            <RenderHtml source={{html: src}}
+                                        defaultViewProps={{style: {width: width, alignItems: "flex-start", justifyContent: "flex-start"}}}
+                                        domVisitors={domVisitors}
+                                        enableCSSInlineProcessing={true}
+                                        contentWidth={width}
+                                        onTTreeChange={updateTTree} />
+                        </View>
+
                     </ScrollView>
                 </ScrollView>
             </SafeAreaView>
