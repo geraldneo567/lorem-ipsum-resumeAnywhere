@@ -1,5 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Platform, StatusBar, Modal, ScrollView, TouchableOpacity, Text, Image} from 'react-native';
+import {
+    View,
+    StyleSheet,
+    Platform,
+    StatusBar,
+    Modal,
+    ScrollView,
+    TouchableOpacity,
+    Text,
+    Image,
+    ImageBackground
+} from 'react-native';
 import nusResume from '../templates/html-resume-master/nusResume.html'
 import test from '../templates/html-resume-master/test.html'
 import resumeTemplate2 from '../templates/html-resume-master/resumeTemplate2.html';
@@ -8,12 +19,12 @@ import * as Print from 'expo-print';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import loadLocalResource from 'react-native-local-resource';
-import AppButton from "../container/AppButton";
 import HTMLScreen from "./HTMLScreen";
 
 import {auth, db} from "../config/Database";
-import {LinearProgress} from "react-native-elements";
+import {Divider, LinearProgress} from "react-native-elements";
 import Colors from "../config/colors";
+import GeneratorCard from "../container/GeneratorCard";
 
 const ResumeGeneratorScreen = ({navigation}) => {
     const [isPreviewMode, setPreviewMode] = useState(false);
@@ -90,10 +101,12 @@ const ResumeGeneratorScreen = ({navigation}) => {
     }
 
     return (
+        <ImageBackground source={require('../assets/ImageBackground.png')}
+                         style={styles.containerImage}
+                         imageStyle={{opacity: 0.7}}>
         <View>
             <Modal visible={templateVisible}>
                 <ScrollView horizontal>
-
                     <TouchableOpacity style={styles.card}
                                       onPress={() => previewAndSelectTemplate("Template 1", nusResume)}>
                         <Text style={styles.text}>Template 1</Text>
@@ -113,11 +126,19 @@ const ResumeGeneratorScreen = ({navigation}) => {
             </Modal>
             {showLoading ? <LinearProgress color="primary"/> : <View/> }
             <View style={styles.containerButtons}>
-                <AppButton title={"Edit Information"}
-                           handler={() => navigation.navigate("Personal Information")} />
-                <AppButton title={"Choose Template"} handler={() => {setTemplateVisible(true)}} />
-                <AppButton title={"Download as PDF"} handler={viewFile} />
-                <Text>Selected Resume: {selectedResumeName}</Text>
+                <GeneratorCard handler={() => navigation.navigate("Personal Information")}
+                               title={"Edit Information"}
+                               imgUrl={require("../assets/editInfo.png")}/>
+                <View style={[styles.line, {borderColor: Colors.yellow}]} />
+                <GeneratorCard handler={() => {setTemplateVisible(true)}}
+                               title={"Choose Template"}
+                               imgUrl={require("../assets/choosing.png")}/>
+                <View style={[styles.line, {borderColor: Colors.lightpink}]} />
+                <GeneratorCard handler={viewFile}
+                               title={"Download Resume"}
+                               imgUrl={require("../assets/downloadCircle.png")}/>
+
+                <Text style={styles.text}>Selected Resume: {selectedResumeName}</Text>
             </View>
             {view ?
                 (<View style={styles.containerModal}>
@@ -127,6 +148,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
                                 onDone={togglePreviewHandler}/>
                 </View>) : <View/>}
         </View>
+        </ImageBackground>
     )
 }
 
@@ -136,12 +158,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    containerImage: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'flex-start',
+    },
     image: {
         width: 300, height: 350, resizeMode: "contain", marginTop: 40
     },
     text: {
-      fontSize: 30,
-      fontWeight: "bold"
+        fontSize: 18,
+        fontWeight: "700",
+        letterSpacing: 3,
+        color: Colors.textColor
     },
     containerModal: {
         flex: 1,
@@ -159,7 +188,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.40,
         shadowRadius: 7.5,
         elevation: 15,
-        marginVertical: 20,
         marginHorizontal: 20,
         backgroundColor:'rgba(87,187,213,0.98)',
         width:300,
@@ -169,6 +197,12 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         flexDirection: 'column',
     },
+    line: {
+        height: 50,
+        borderWidth: 3,
+        borderStyle: "dashed",
+        marginVertical: 2
+    }
 })
 
 export default ResumeGeneratorScreen;

@@ -194,7 +194,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                         </Picker>
                     </View>
 
-                    <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                    <View style={{flex: 0}}>
                         <Input disabled={true}
                                inputContainerStyle={styles.containerCallCode}
                                style={styles.containerCallCode}
@@ -418,8 +418,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5
     },
     picker: {
-       width: '100%',
-        height: 50
+        width: '100%',
+        height: Platform.OS === 'android' ? 50 : 200
     },
     text: {
         fontSize: 20,
