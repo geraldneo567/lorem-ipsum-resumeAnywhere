@@ -16,13 +16,11 @@ import test from '../templates/html-resume-master/test.html'
 import resumeTemplate2 from '../templates/html-resume-master/resumeTemplate2.html';
 
 import * as Print from 'expo-print';
-import * as MediaLibrary from 'expo-media-library';
-import * as Sharing from 'expo-sharing';
 import loadLocalResource from 'react-native-local-resource';
 import HTMLScreen from "./HTMLScreen";
 
 import {auth, db} from "../config/Database";
-import {Divider, LinearProgress} from "react-native-elements";
+import {LinearProgress} from "react-native-elements";
 import Colors from "../config/colors";
 import GeneratorCard from "../container/GeneratorCard";
 
@@ -84,7 +82,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
     const previewAndSelectTemplate = async (name, resume) => {
         try {
             await loadLocalResource(resume)
-                .then(async (content) => {
+                .then((content) => {
                     setHtml(content);
                     setHtmlPreview(content);
                 });
@@ -106,19 +104,19 @@ const ResumeGeneratorScreen = ({navigation}) => {
                          imageStyle={{opacity: 0.7}}>
         <View>
             <Modal visible={templateVisible}>
-                <ScrollView horizontal>
+                <ScrollView contentContainerStyle={styles.containerScrollView} horizontal={true}>
                     <TouchableOpacity style={styles.card}
                                       onPress={() => previewAndSelectTemplate("Template 1", nusResume)}>
                         <Text style={styles.text}>Template 1</Text>
                         <Image style={styles.image} source={require('../assets/nusResume.jpg')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card}
-                                      onPress={() => previewAndSelectTemplate("Template 2", test)}>
+                                      onPress={() => previewAndSelectTemplate("Template 2", resumeTemplate2)}>
                         <Text style={styles.text}>Template 2</Text>
                         <Image style={styles.image} source={require('../assets/resumeTemplate2.jpg')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card}
-                                      onPress={() => previewAndSelectTemplate("Template 3", resumeTemplate2)}>
+                                      onPress={() => previewAndSelectTemplate("Template 3", test)}>
                         <Text style={styles.text}>Template 3</Text>
                         <Image style={styles.image} source={require('../assets/test.jpg')} />
                     </TouchableOpacity>
@@ -153,6 +151,24 @@ const ResumeGeneratorScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+    card:{
+        shadowColor: Colors.grey,
+        shadowOffset: {
+            width: 5,
+            height: 10,
+        },
+        shadowOpacity: 0.40,
+        shadowRadius: 7.5,
+        elevation: 15,
+        flex: 0,
+        height: 500,
+        marginHorizontal: 20,
+        backgroundColor: Colors.placeholderColor,
+        borderRadius: 20,
+        alignItems:'center',
+        justifyContent:'center',
+        flexDirection: 'column',
+    },
     containerButtons: {
         marginVertical: 20,
         justifyContent: 'center',
@@ -163,15 +179,6 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         justifyContent: 'flex-start',
     },
-    image: {
-        width: 300, height: 350, resizeMode: "contain", marginTop: 40
-    },
-    text: {
-        fontSize: 18,
-        fontWeight: "700",
-        letterSpacing: 3,
-        color: Colors.textColor
-    },
     containerModal: {
         flex: 1,
         flexDirection: 'column',
@@ -179,7 +186,18 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
     },
-    card:{
+    containerScrollView: {
+        backgroundColor: Colors.placeholderColor,
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        flex: 0,
+        flexDirection: "row"
+    },
+    image: {
+        width: 300,
+        height: 350,
+        resizeMode: "contain",
+        marginTop: 40,
         shadowColor: Colors.grey,
         shadowOffset: {
             width: 5,
@@ -187,21 +205,19 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.40,
         shadowRadius: 7.5,
-        elevation: 15,
-        marginHorizontal: 20,
-        backgroundColor:'rgba(87,187,213,0.98)',
-        width:300,
-        height:'90%',
-        borderRadius: 20,
-        alignItems:'center',
-        justifyContent:'center',
-        flexDirection: 'column',
+        elevation: 15
     },
     line: {
         height: 50,
         borderWidth: 3,
         borderStyle: "dashed",
         marginVertical: 2
+    },
+    text: {
+        fontSize: 18,
+        fontWeight: "700",
+        letterSpacing: 3,
+        color: Colors.textColor
     }
 })
 

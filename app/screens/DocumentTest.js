@@ -92,6 +92,11 @@ const DocumentTest = ({navigation}) => {
         }
     }
 
+    const removeFile = async (file) => {
+        setFiles(files.filter(x => x !== file));
+        await updateDatabase();
+    }
+
     return (
         <ImageBackground source={require('../assets/ImageBackground.png')}
                          style={styles.containerImage}
@@ -104,6 +109,7 @@ const DocumentTest = ({navigation}) => {
                           renderItem={({item}) => {
                               return(
                                   <FileCard fileName={item.fileName}
+                                            remove={async () => await removeFile(item)}
                                             handler={() => preview(item.fileURI)}/>
                               )
                           }} />
