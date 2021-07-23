@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {ImageBackground, Platform, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import Courses from "../config/courses";
 import {Picker} from "@react-native-picker/picker";
 import Colors from "../config/colors";
@@ -106,9 +106,7 @@ const styles = StyleSheet.create({
     },
     picker: {
         width: '100%',
-        height: 50,
-        borderWidth: 1,
-        borderColor: Colors.profileHeader
+        height: Platform.OS === "android" ? 50 : 200,
     },
     text: {
         fontSize: 20,

@@ -8,5 +8,7 @@ export default {
     menu: '#5271ff',
     grey: '#666464',
     tooltipBackground: '#c5cbd2',
-    lightgrey: '#e2e2e2'
+    lightgrey: '#e2e2e2',
+    lightpink: '#faa3da',
+    yellow: '#fffd26'
 }
