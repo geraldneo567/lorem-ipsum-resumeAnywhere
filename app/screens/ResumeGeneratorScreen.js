@@ -41,28 +41,12 @@ const ResumeGeneratorScreen = ({navigation}) => {
         })
     }, [selectedResume])
 
+    useEffect(() => {
+
+    }, [html, htmlPreview])
+
     const togglePreviewHandler = () => {
         setPreviewMode(!isPreviewMode);
-    }
-
-    const createAndSavePDF = async () => {
-        try {
-            await loadLocalResource(selectedResume)
-                .then((content) => {
-                    setHtml(content);
-                });
-            const {uri} = await Print.printToFileAsync({html: html});
-            if (Platform.OS==='ios') {
-                await Sharing.shareAsync(uri);
-            } else {
-                const permission = await MediaLibrary.requestPermissionsAsync();
-                if (permission.granted) {
-                    await MediaLibrary.createAssetAsync(uri);
-                }
-            }
-        } catch (err) {
-            console.log(err);
-        }
     }
 
     const viewFile = async () => {
@@ -90,6 +74,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
         try {
             await loadLocalResource(resume)
                 .then(async (content) => {
+                    setHtml(content);
                     setHtmlPreview(content);
                 });
 
@@ -107,37 +92,37 @@ const ResumeGeneratorScreen = ({navigation}) => {
     return (
         <View>
             <Modal visible={templateVisible}>
-                <ScrollView>
+                <ScrollView horizontal>
+
                     <TouchableOpacity style={styles.card}
-                                      onPress={() => previewAndSelectTemplate("nusResume", nusResume)}>
-                        <Text>nusResume</Text>
-                        <Image style={{width: 150, height: 250, resizeMode: "contain"}} source={require('../assets/nusResume.jpg')} />
+                                      onPress={() => previewAndSelectTemplate("Template 1", nusResume)}>
+                        <Text style={styles.text}>Template 1</Text>
+                        <Image style={styles.image} source={require('../assets/nusResume.jpg')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card}
-                                      onPress={() => previewAndSelectTemplate("test", test)}>
-                        <Text style={{width: 50, height: 50}}>test</Text>
-                        <Image style={{width: 150, height: 250, resizeMode: "contain"}} source={require('../assets/test.jpg')} />
+                                      onPress={() => previewAndSelectTemplate("Template 2", test)}>
+                        <Text style={styles.text}>Template 2</Text>
+                        <Image style={styles.image} source={require('../assets/resumeTemplate2.jpg')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card}
-                                      onPress={() => previewAndSelectTemplate("resumeTemplate2", resumeTemplate2)}>
-                        <Text>resumeTemplate2</Text>
-                        <Image style={{width: 150, height: 250, resizeMode: "contain"}} source={require('../assets/resumeTemplate2.jpg')} />
+                                      onPress={() => previewAndSelectTemplate("Template 3", resumeTemplate2)}>
+                        <Text style={styles.text}>Template 3</Text>
+                        <Image style={styles.image} source={require('../assets/test.jpg')} />
                     </TouchableOpacity>
                 </ScrollView>
             </Modal>
             {showLoading ? <LinearProgress color="primary"/> : <View/> }
             <View style={styles.containerButtons}>
-                <AppButton title={"Edit information"}
+                <AppButton title={"Edit Information"}
                            handler={() => navigation.navigate("Personal Information")} />
                 <AppButton title={"Choose Template"} handler={() => {setTemplateVisible(true)}} />
-                <AppButton title={"Preview & Download"} handler={viewFile} />
+                <AppButton title={"Download as PDF"} handler={viewFile} />
                 <Text>Selected Resume: {selectedResumeName}</Text>
             </View>
             {view ?
                 (<View style={styles.containerModal}>
                     <HTMLScreen visible={isPreviewMode}
                                 htmlContent={html}
-                                handler={createAndSavePDF}
                                 object={data}
                                 onDone={togglePreviewHandler}/>
                 </View>) : <View/>}
@@ -150,6 +135,13 @@ const styles = StyleSheet.create({
         marginVertical: 20,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    image: {
+        width: 300, height: 350, resizeMode: "contain", marginTop: 40
+    },
+    text: {
+      fontSize: 30,
+      fontWeight: "bold"
     },
     containerModal: {
         flex: 1,
@@ -171,11 +163,11 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         backgroundColor:'rgba(87,187,213,0.98)',
         width:300,
-        height:300,
+        height:'90%',
         borderRadius: 20,
         alignItems:'center',
         justifyContent:'center',
-        flexDirection: 'row',
+        flexDirection: 'column',
     },
 })
 
