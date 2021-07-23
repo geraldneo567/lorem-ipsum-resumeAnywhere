@@ -34,6 +34,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
     const [personalProfile, setPersonalProfile] = useState('');
     const [workExperiences, setWorkExperiences] = useState([])
     const [callCode, setCallCode] = useState('+––');
+    const [country, setCountry] = useState("");
 
     const loadExistingInformation = async () => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
@@ -88,6 +89,7 @@ const PersonalInformationScreen =  ( {navigation} ) => {
             .set({
                 displayName: auth.currentUser.displayName,
                 callCode,
+                country,
                 phoneNumber,
                 skills,
                 languages,
@@ -178,7 +180,10 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                                 selectedValue={callCode}
                                 mode="dropdown"
                                 ref={pickerRef}
-                                onValueChange={(itemValue) => setCallCode(itemValue)}>
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setCallCode(itemValue);
+                                    setCountry(CallingCodes[itemIndex].name);
+                                }}>
                             {CallingCodes.map(country => {
                                 return (
                                     <Picker.Item key={country.code}
@@ -248,15 +253,13 @@ const PersonalInformationScreen =  ( {navigation} ) => {
 
                     <View style={styles.label}>
                         <Text style={styles.text}>Education</Text>
-                        <View style={styles.addButton}>
-                            <Icon
-                                reverse
-                                name='plus'
-                                type='material-community'
-                                size={15}
-                                color={Colors.placeholderColor}
-                                onPress={toggleEducationHandler} />
-                        </View>
+                        <Icon
+                            reverse
+                            name='plus'
+                            type='material-community'
+                            size={15}
+                            color={Colors.placeholderColor}
+                            onPress={toggleEducationHandler} />
                     </View>
 
                     <View style={styles.containerChip}>
@@ -331,11 +334,6 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                                         onDone={toggleWorkExperienceHandler}
                                         handler={updateWorkExperiences}/>
                     </View>
-                    <View style={styles.addButton}>
-
-                    </View>
-
-
                     <View style={styles.containerButton}>
                         <AppButton title={"Save"} handler={add} />
                     </View>
@@ -420,7 +418,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5
     },
     picker: {
-       width: '100%'
+       width: '100%',
+        height: 50
     },
     text: {
         fontSize: 20,

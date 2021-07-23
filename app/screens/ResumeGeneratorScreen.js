@@ -14,11 +14,11 @@ import HTMLScreen from "./HTMLScreen";
 import {auth, db} from "../config/Database";
 import {LinearProgress} from "react-native-elements";
 import Colors from "../config/colors";
-import * as IntentLauncher from "expo-intent-launcher";
 
 const ResumeGeneratorScreen = ({navigation}) => {
     const [isPreviewMode, setPreviewMode] = useState(false);
     const [html, setHtml] = useState('');
+    const [htmlPreview, setHtmlPreview] = useState('');
     const [data, setData] = useState(null);
     const [view, setView] = useState(false);
     const [showLoading, setShowLoading] = useState(false);
@@ -88,16 +88,14 @@ const ResumeGeneratorScreen = ({navigation}) => {
 
     const previewAndSelectTemplate = async (name, resume) => {
         try {
-            let htmlString;
             await loadLocalResource(resume)
                 .then(async (content) => {
-                    htmlString=content;
+                    setHtmlPreview(content);
                 });
 
-            const template = await Print.printToFileAsync({html: htmlString});
+            const template = await Print.printToFileAsync({html: htmlPreview});
             selectTemplate(name, resume);
-
-                navigation.navigate('PDF Preview',
+            navigation.navigate('PDF Preview',
                     {fileUri: template.uri,
                     screenName: "Resume Generator"});
 
