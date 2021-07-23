@@ -124,14 +124,14 @@ const HTMLScreen = (props) => {
                     leftComponent={<Icon name={"closecircleo"}
                                          type={"antdesign"}
                                          onPress={props.onDone}/>}
-                    centerComponent={{text: 'Preview', style: styles.headerTitle}}
+                    centerComponent={{text: 'Download', style: styles.headerTitle}}
                     rightComponent={<Icon name={'export-variant'}
                                           type={'material-community'}
                                           onPress={createAndSavePDF} />} />
                 <ScrollView contentContainerStyle={styles.container}>
                     <ScrollView horizontal={true}>
                         <Text>Press the button on top right to download!</Text>
-                        <View style={{height: 0}}>
+                        <View style={{height: 0, width: 0}}>
                             <RenderHtml source={{html: src}}
                                         defaultViewProps={{style: {width: width, alignItems: "flex-start", justifyContent: "flex-start"}}}
                                         domVisitors={domVisitors}
@@ -139,7 +139,6 @@ const HTMLScreen = (props) => {
                                         contentWidth={width}
                                         onTTreeChange={updateTTree} />
                         </View>
-
                     </ScrollView>
                 </ScrollView>
             </SafeAreaView>
