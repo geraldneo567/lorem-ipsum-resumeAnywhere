@@ -17,7 +17,7 @@ import AppButton from "../container/AppButton";
 
 import * as ImagePicker from 'expo-image-picker';
 import InfoListItem from "../container/InfoListItem";
-import {Icon, Input} from "react-native-elements";
+import {Header, Icon, Input} from "react-native-elements";
 
 
 
@@ -142,12 +142,21 @@ export default function UserProfile() {
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <Modal visible={passwordDialogVisible}>
-                    <Text style={styles.passwordHeader}>
-                        Change Password
-                    </Text>
-                    <Input textContentType={"password"} secureTextEntry={true} placeholder={"Enter password"} onChangeText={text => setPassword(text)}/>
-                    <Input textContentType={"password"} secureTextEntry={true} placeholder={"Re-Enter password"} onChangeText={text => setReEnterPassword(text)}/>
-                    <AppButton title={"Confirm Change Password"} handler={submitPasswordHandler}/>
+
+                    <Header
+                        leftComponent={<Icon name={"closecircleo"}
+                                             type={"antdesign"}
+                                             onPress={() => setPasswordDialogVisible(false)}/>}
+                        centerComponent={{text: 'Change Password', style: styles.headerTitle}} />
+                    <Image source={require('../assets/passwordlock.jpg')} style={{marginTop: 20, height: 300, width: 300, alignSelf: 'center'}}>
+
+                    </Image>
+                        <View style={{marginTop: 40}}>
+                            <Input textContentType={"password"} secureTextEntry={true} placeholder={"Enter new password"} onChangeText={text => setPassword(text)}/>
+                            <Input textContentType={"password"} secureTextEntry={true} placeholder={"Re-enter password"} onChangeText={text => setReEnterPassword(text)}/>
+                            <AppButton title={"Confirm Change Password"} handler={submitPasswordHandler}/>
+                        </View>
+
 
                 </Modal>
                 <ImageBackground source={require('../assets/ImageBackground.png')}
@@ -204,6 +213,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 120
     },
+
     contact: {
         alignItems: "center",
         marginHorizontal: 30,
@@ -263,5 +273,9 @@ const styles = StyleSheet.create({
     input: {
         height: 100,
         width: 100
+    },
+    headerTitle: {
+        fontSize: 20,
+        color: Colors.white
     }
 })
