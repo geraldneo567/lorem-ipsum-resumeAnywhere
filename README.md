@@ -4,21 +4,21 @@ A one-stop pocket résumé companion for iOS and Android created using React Nat
 
 ## Features 
 
-* *Login/Registration* 
+* Login/Registration 
 
-* *Change Password* 
+* Change Password 
 
 * *Forget Password* 
 
 * *Create/Edit/Delete Your Résumé /CV (curriculum vitæ)* 
 
-* *Export created documents as PDF* 
+* Export created documents as PDF 
 
 * *Scan in documents to be saved and stored* 
 
 * *Rank work experiences/achievements to be included in the resume* 
 
-* *Suggestions for local university personal statements based on courses* 
+* Suggestions for local university personal statements based on courses 
 
 * *SMART automated feedback on phrasing in resume* 
 
