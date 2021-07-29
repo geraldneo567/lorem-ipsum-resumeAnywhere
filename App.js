@@ -12,6 +12,7 @@ import RegisterScreen from './app/screens/RegisterScreen';
 import LoginScreen from './app/screens/LoginScreen';
 import LogoutScreen from "./app/screens/LogoutScreen";
 import DocumentsScreen from "./app/screens/DocumentsScreen";
+import EditAccount from "./app/container/EditAccount";
 import CameraScreen from "./app/screens/CameraScreen";
 import TipsScreen from "./app/screens/TipsScreen";
 import ResumeGeneratorScreen from "./app/screens/ResumeGeneratorScreen";
@@ -129,6 +130,29 @@ const InformationStackScreen = () => {
     )
 }
 
+const UserProfileStack = () => {
+    return (
+        <Stack.Navigator initialRouteName="User Profile"
+                         screenOptions={{
+                             headerShown: false,
+                             headerStyle: {
+                                 backgroundColor: Colors.placeholderColor
+                             },
+                             headerTitleStyle: {color: Colors.white},
+                             headerBackTitleStyle: {color: Colors.white}
+                         }}>
+            <Stack.Screen name='User Profile'
+                          component={UserProfileScreen}
+                          options={{
+                              title: 'User Profile'
+                          }}/>
+            <Stack.Screen name="Settings"
+                          component={EditAccount}
+                          options={{title: "Settings"}}/>
+        </Stack.Navigator>
+    )
+}
+
 const MenuScreen = () => {
     const navigation = useNavigation();
 
@@ -241,7 +265,7 @@ const MenuScreen = () => {
                                    )
                                )}} />
             <Drawer.Screen name="User Profile"
-                           component={UserProfileScreen}
+                           component={UserProfileStack}
                            options={{title: "User Profile"}} />
             <Drawer.Screen name="Logout"
                            component={LogoutScreen}

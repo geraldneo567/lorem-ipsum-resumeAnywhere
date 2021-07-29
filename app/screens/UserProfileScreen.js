@@ -8,20 +8,16 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Modal,
     ScrollView
 } from 'react-native'
 import {auth, db, fb,} from "../config/Database";
 import Colors from "../config/colors";
-import AppButton from "../container/AppButton";
 
 import * as ImagePicker from 'expo-image-picker';
 import InfoListItem from "../container/InfoListItem";
-import {Header, Icon, Input} from "react-native-elements";
+import {Icon, Input} from "react-native-elements";
 
-
-
-export default function UserProfile() {
+export default function UserProfile({navigation}) {
     const [hasPermission, setHasPermission] = useState(false);
     const [name, setName] = useState("");
     const [callCode, setCallCode] = useState("")
@@ -30,32 +26,7 @@ export default function UserProfile() {
     const [email, setEmail] = useState("");
     const [country, setCountry] = useState("");
     const [imgUrl, setImgUrl] = useState("https://picsum.photos/id/1025/200");
-    const [passwordDialogVisible, setPasswordDialogVisible] = useState(false);
-    const [password, setPassword] = useState('')
-    const [reEnterPassword, setReEnterPassword] = useState('')
     const [changeName, setChangeName] = useState(false);
-
-
-    const changePasswordHandler = () => {
-        setPasswordDialogVisible(true);
-    }
-
-
-    const submitPasswordHandler = () => {
-        if (password === reEnterPassword) {
-            const user = auth.currentUser;
-            user.updatePassword(password).then(() => {
-                setPassword('');
-                setReEnterPassword('');
-                setPasswordDialogVisible(false)
-                alert("Password changed successfully.")
-            }).catch((error) => {
-                alert(error);
-            });
-        } else {
-            alert("Passwords do not match.")
-        }
-    }
 
     const toggleChangeName = () => {
         setChangeName(!changeName);
@@ -141,24 +112,6 @@ export default function UserProfile() {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
-                <Modal visible={passwordDialogVisible}>
-
-                    <Header
-                        leftComponent={<Icon name={"closecircleo"}
-                                             type={"antdesign"}
-                                             onPress={() => setPasswordDialogVisible(false)}/>}
-                        centerComponent={{text: 'Change Password', style: styles.headerTitle}} />
-                    <Image source={require('../assets/passwordlock.jpg')} style={{marginTop: 20, height: 300, width: 300, alignSelf: 'center'}}>
-
-                    </Image>
-                        <View style={{marginTop: 40}}>
-                            <Input textContentType={"password"} secureTextEntry={true} placeholder={"Enter new password"} onChangeText={text => setPassword(text)}/>
-                            <Input textContentType={"password"} secureTextEntry={true} placeholder={"Re-enter password"} onChangeText={text => setReEnterPassword(text)}/>
-                            <AppButton title={"Confirm Change Password"} handler={submitPasswordHandler}/>
-                        </View>
-
-
-                </Modal>
                 <ImageBackground source={require('../assets/ImageBackground.png')}
                                  imageStyle={{opacity: 0.80}}
                                  style={styles.containerImage}>
@@ -198,9 +151,10 @@ export default function UserProfile() {
                 <InfoListItem title="Country"
                               data={country}
                               iconName={"earth"} />
-                <View style={styles.button}>
-                    <AppButton title={"Change Password"} handler={changePasswordHandler}/>
-                </View>
+                <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                    <InfoListItem title=""
+                                  data={"Settings"} iconName={"cog"}/>
+                </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>
     )
