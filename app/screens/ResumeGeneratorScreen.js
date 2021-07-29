@@ -81,13 +81,14 @@ const ResumeGeneratorScreen = ({navigation}) => {
 
     const previewAndSelectTemplate = async (name, resume) => {
         try {
+            let htmlString;
             await loadLocalResource(resume)
                 .then((content) => {
                     setHtml(content);
-                    setHtmlPreview(content);
+                    htmlString = content;
                 });
 
-            const template = await Print.printToFileAsync({html: htmlPreview});
+            const template = await Print.printToFileAsync({html: htmlString});
             selectTemplate(name, resume);
             navigation.navigate('PDF Preview',
                     {fileUri: template.uri,
@@ -123,7 +124,7 @@ const ResumeGeneratorScreen = ({navigation}) => {
                 </ScrollView>
             </Modal>
             {showLoading ? <LinearProgress color="primary"/> : <View/> }
-            <View style={styles.containerButtons}>
+            <ScrollView contentContainerStyle={styles.containerButtons}>
                 <GeneratorCard handler={() => navigation.navigate("Personal Information")}
                                title={"Edit Information"}
                                imgUrl={require("../assets/editInfo.png")}/>
@@ -135,9 +136,11 @@ const ResumeGeneratorScreen = ({navigation}) => {
                 <GeneratorCard handler={viewFile}
                                title={"Download Resume"}
                                imgUrl={require("../assets/downloadCircle.png")}/>
+                <View style={styles.containerText}>
+                    <Text style={styles.text}>Selected Resume: {selectedResumeName}</Text>
+                </View>
 
-                <Text style={styles.text}>Selected Resume: {selectedResumeName}</Text>
-            </View>
+            </ScrollView>
             {view ?
                 (<View style={styles.containerModal}>
                     <HTMLScreen visible={isPreviewMode}
@@ -193,6 +196,10 @@ const styles = StyleSheet.create({
         flex: 0,
         flexDirection: "row"
     },
+    containerText: {
+      height: 80,
+      width: '90%'
+    },
     image: {
         width: 300,
         height: 350,
@@ -204,8 +211,7 @@ const styles = StyleSheet.create({
             height: 10,
         },
         shadowOpacity: 0.40,
-        shadowRadius: 7.5,
-        elevation: 15
+        shadowRadius: 7.5
     },
     line: {
         height: 50,
