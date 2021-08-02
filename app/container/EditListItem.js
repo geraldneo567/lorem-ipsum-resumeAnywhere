@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     containerButton: {
         padding: 10,
         borderBottomWidth: 1,
-        borderColor: Colors.lightgrey,
+        borderColor: Colors.grey,
         width: '95%',
     },
     text: {

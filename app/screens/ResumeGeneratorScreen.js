@@ -112,12 +112,12 @@ const ResumeGeneratorScreen = ({navigation}) => {
                         <Image style={styles.image} source={require('../assets/nusResume.jpg')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card}
-                                      onPress={() => previewAndSelectTemplate("Template 2", resumeTemplate2)}>
+                                      onPress={() => previewAndSelectTemplate("Template 2", test)}>
                         <Text style={styles.text}>Template 2</Text>
                         <Image style={styles.image} source={require('../assets/resumeTemplate2.jpg')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card}
-                                      onPress={() => previewAndSelectTemplate("Template 3", test)}>
+                                      onPress={() => previewAndSelectTemplate("Template 3", resumeTemplate2)}>
                         <Text style={styles.text}>Template 3</Text>
                         <Image style={styles.image} source={require('../assets/test.jpg')} />
                     </TouchableOpacity>
@@ -197,8 +197,9 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     containerText: {
-      height: 80,
-      width: '90%'
+        alignItems: "center",
+        height: 80,
+        width: '90%'
     },
     image: {
         width: 300,
