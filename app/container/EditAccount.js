@@ -1,81 +1,48 @@
 import React, {useState} from 'react';
-import {Image, Modal, StyleSheet, Text, View} from "react-native";
+import {ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import EditListItem from "./EditListItem";
 import Colors from "../config/colors";
 import AppButton from "./AppButton";
-import {auth, db} from "../config/Database";
-import {Header, Icon, Input} from "react-native-elements";
+import EditPassword from "../screens/EditPassword";
+import EditDetails from "../screens/EditDetails";
+import EditPrimaryEmail from "./EditPrimaryEmail";
 
-const EditAccount = ({navigation, route}) => {
+const EditAccount = ({navigation}) => {
     const [passwordDialogVisible, setPasswordDialogVisible] = useState(false);
-    const [password, setPassword] = useState('')
-    const [reEnterPassword, setReEnterPassword] = useState('')
+    const [detailsDialogVisible, setDetailsDialogVisible] = useState(false);
+    const [emailDialogVisible, setEmailDialogVisible] = useState(false);
 
-    const changePasswordHandler = () => {
-        setPasswordDialogVisible(true);
+    const togglePasswordHandler = () => {
+        setPasswordDialogVisible(!passwordDialogVisible);
     }
 
-    const submitPasswordHandler = () => {
-        if (password === reEnterPassword) {
-            const user = auth.currentUser;
-            user.updatePassword(password).then(() => {
-                setPassword('');
-                setReEnterPassword('');
-                setPasswordDialogVisible(false)
-                alert("Password changed successfully.")
-            }).catch((error) => {
-                alert(error);
-            });
-        } else {
-            alert("Passwords do not match.")
-        }
+    const toggleDetailsHandler = () => {
+        setDetailsDialogVisible(!detailsDialogVisible);
     }
 
-    /*
-    const toggleEditAndSaveInfo = async () => {
-        if (props.title === "Email") {
-            await auth.currentUser.updateEmail(change.toString())
-                .then(toggleEdit)
-                .catch(e => alert(e));
-        } else {
-            await db.collection("User Profiles")
-                .doc(auth.currentUser.uid)
-                .update({phoneNumber: change})
-                .then(toggleEdit)
-                .catch(e => alert(e));
-        }
+    const toggleEmailHandler = () => {
+        setEmailDialogVisible(!emailDialogVisible);
     }
-     */
 
     return (
-        <View style={{flex: 1, alignItems: "center"}}>
-            <Modal visible={passwordDialogVisible}>
-                <Header
-                    leftComponent={<Icon name={"closecircleo"}
-                                         type={"antdesign"}
-                                         onPress={() => setPasswordDialogVisible(false)}/>}
-                    centerComponent={{text: 'Change Password', style: styles.headerTitle}} />
-                <Image source={require('../assets/passwordlock.jpg')} style={{marginTop: 20, height: 300, width: 300, alignSelf: 'center'}}>
-
-                </Image>
-                <View style={{marginTop: 40}}>
-                    <Input textContentType={"password"} secureTextEntry={true} placeholder={"Enter new password"} onChangeText={text => setPassword(text)}/>
-                    <Input textContentType={"password"} secureTextEntry={true} placeholder={"Re-enter password"} onChangeText={text => setReEnterPassword(text)}/>
-                    <AppButton title={"Confirm Change Password"} handler={submitPasswordHandler}/>
+        <ImageBackground source={require('../assets/ImageBackground.png')}
+                         imageStyle={{opacity: 0.75}}
+                         style={styles.containerImage}>
+            <SafeAreaView style={{flex: 1, alignItems: "center"}}>
+                <EditPassword visible={passwordDialogVisible} toggle={togglePasswordHandler} />
+                <EditDetails visible={detailsDialogVisible} toggle={toggleDetailsHandler} />
+                <EditPrimaryEmail visible={emailDialogVisible} toggle={toggleEmailHandler} />
+                <View style={styles.container}>
+                    <Text style={styles.header}>Settings</Text>
+                    <EditListItem title={"Edit Account Details"} handler={toggleDetailsHandler} />
+                    <EditListItem title={"Change Primary Email"} handler={toggleEmailHandler} />
+                    <EditListItem title={"Change Password"} handler={togglePasswordHandler} />
                 </View>
-            </Modal>
-
-            <View style={styles.container}>
-                <Text style={styles.header}>Settings</Text>
-                <EditListItem title={"Edit Account Details"} handler={changePasswordHandler} />
-                <EditListItem title={"Change Password"} handler={changePasswordHandler} />
-            </View>
-            <View style={{height: 50, width: 200}}>
-                <AppButton title={"Back to User Profile"} handler={() => navigation.goBack()} />
-            </View>
-
-        </View>
-
+                <View style={{height: 50, width: 200}}>
+                    <AppButton title={"Back to User Profile"} handler={() => navigation.goBack()} />
+                </View>
+            </SafeAreaView>
+        </ImageBackground>
     );
 }
 
@@ -104,6 +71,11 @@ const styles = StyleSheet.create({
         width: 300,
         justifyContent: "center",
         alignSelf: "center",
+    },
+    containerImage: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'center'
     },
     header: {
         padding: 8,

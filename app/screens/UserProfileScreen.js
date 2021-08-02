@@ -18,25 +18,14 @@ import InfoListItem from "../container/InfoListItem";
 import {Icon, Input} from "react-native-elements";
 
 export default function UserProfile({navigation}) {
-    const [hasPermission, setHasPermission] = useState(false);
     const [name, setName] = useState("");
     const [callCode, setCallCode] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("");
     const [personalProfile, setPersonalProfile] = useState("");
     const [email, setEmail] = useState("");
     const [country, setCountry] = useState("");
+    const [hasPermission, setHasPermission] = useState(false);
     const [imgUrl, setImgUrl] = useState("https://picsum.photos/id/1025/200");
-    const [changeName, setChangeName] = useState(false);
-
-    const toggleChangeName = () => {
-        setChangeName(!changeName);
-    }
-
-    const changeDisplayName = async () => {
-        await auth.currentUser.updateProfile({
-            displayName: name
-        }).then(toggleChangeName);
-    }
 
     const loadProfileInformation = async () => {
         let docRef = db.collection("User Profiles").doc(auth.currentUser.uid)
@@ -59,15 +48,14 @@ export default function UserProfile({navigation}) {
     useEffect(() => {
         (async () => loadProfileInformation())();
             (async () => {
-                if (Platform.OS !== 'web') {
+                if (Platform.OS !== 'web' && status !== "granted") {
                     const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
                     if (status !== "granted") {
                         alert("Sorry, we need camera roll permissions to make this work!");
                     }
                 }
             })();
-        },
-        [email, phoneNumber]);
+        }, [imgUrl]);
 
     async function uploadImageAsync(uri) {
         const blob = await new Promise((resolve, reject) => {
@@ -122,22 +110,7 @@ export default function UserProfile({navigation}) {
                     </TouchableOpacity>
 
                     <View style={styles.contact}>
-                        {!changeName ?
-                            (<View style={styles.containerChangeName}>
-                                <Text style={styles.name}>{name || "Test User"}</Text>
-                                <Icon style={styles.edit}
-                                      name="pencil"
-                                      type="material-community"
-                                      onPress={toggleChangeName} />
-                        </View>)
-                            : (<View style={styles.containerChangeName}>
-                                <Input style={styles.name}
-                                       value={name}
-                                       onChangeText={text => setName(text)}/>
-                                <Icon name="check"
-                                      type="material-community"
-                                      onPress={changeDisplayName} />
-                            </View>) }
+                        <Text style={styles.name}>{name || "Test User"}</Text>
                         <Text style={styles.text}>{personalProfile || ""}</Text>
                     </View>
                 </View>
@@ -146,7 +119,7 @@ export default function UserProfile({navigation}) {
                               data={email}
                               iconName={"email-outline"} />
                 <InfoListItem title="Mobile"
-                              data={phoneNumber}
+                              data={callCode + ' ' + phoneNumber}
                               iconName={"phone-outline"} />
                 <InfoListItem title="Country"
                               data={country}
@@ -227,9 +200,5 @@ const styles = StyleSheet.create({
     input: {
         height: 100,
         width: 100
-    },
-    headerTitle: {
-        fontSize: 20,
-        color: Colors.white
     }
 })

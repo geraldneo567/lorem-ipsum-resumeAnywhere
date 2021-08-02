@@ -46,6 +46,8 @@ const PersonalInformationScreen =  ( {navigation} ) => {
                 setWorkExperiences(doc.data().workExperiences);
                 setEducation(doc.data().education);
                 setPersonalProfile(doc.data().personalProfile);
+                setCallCode(doc.data().callCode);
+                setCountry(doc.data().country);
             }
             return () => console.log("Done")
         })
