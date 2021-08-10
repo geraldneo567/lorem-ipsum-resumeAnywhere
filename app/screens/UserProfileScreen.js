@@ -15,7 +15,6 @@ import Colors from "../config/colors";
 
 import * as ImagePicker from 'expo-image-picker';
 import InfoListItem from "../container/InfoListItem";
-import {Icon, Input} from "react-native-elements";
 
 export default function UserProfile({navigation}) {
     const [name, setName] = useState("");
@@ -48,14 +47,14 @@ export default function UserProfile({navigation}) {
     useEffect(() => {
         (async () => loadProfileInformation())();
             (async () => {
-                if (Platform.OS !== 'web' && status !== "granted") {
+                if (Platform.OS !== 'web') {
                     const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
                     if (status !== "granted") {
                         alert("Sorry, we need camera roll permissions to make this work!");
                     }
                 }
             })();
-        }, [imgUrl]);
+        }, [name, phoneNumber]);
 
     async function uploadImageAsync(uri) {
         const blob = await new Promise((resolve, reject) => {

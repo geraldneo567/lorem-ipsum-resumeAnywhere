@@ -20,6 +20,7 @@ const DocumentTest = ({navigation}) => {
     const [fileURI, setFileURI] = useState('');
     const [fileName, setFileName] = useState('');
     const [files, setFiles] = useState([]);
+    let refresh = false;
 
     const loadFiles = async () => {
         let docRef = db.collection("Files").doc(auth.currentUser.uid)
@@ -37,15 +38,18 @@ const DocumentTest = ({navigation}) => {
         fileURI
     }
 
-    useEffect(() => {(async () => loadFiles())()}, []);
+    useEffect(() => {(async () => loadFiles())()}, [refresh]);
 
     const updateResponse = async (response) => {
         try {
             if (response.type === 'success') {
-                const cUri = await FileSystem.getContentUriAsync(response.uri);
-                setFileURI(cUri);
-                setFileName(response.name);
+                await FileSystem.getContentUriAsync(response.uri)
+                    .then((cUri) => {
+                        setFileURI(response.uri);
+                        setFileName(response.name);
+                    });
                 setFiles([...files, file]);
+                refresh = !refresh;
                 return true;
             } else {
                 return false;
@@ -67,10 +71,9 @@ const DocumentTest = ({navigation}) => {
         try {
             const resp = await DocumentPicker
                 .getDocumentAsync({type: '*/*'})
-            const exist = updateResponse(resp);
+            const exist = await updateResponse(resp);
             if (exist) {
                 await updateDatabase();
-                setTimeout(() => {}, 1500);
             }
         } catch (err) {
             console.log(err);
